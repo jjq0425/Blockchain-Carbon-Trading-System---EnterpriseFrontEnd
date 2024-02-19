@@ -19,6 +19,7 @@ function getGitHash() {
 }
 // eslint-disable-next-line no-unused-vars
 const isProd = process.env.NODE_ENV === 'production'
+const baseURL = process.env.VUE_APP_STATIC_URL
 // eslint-disable-next-line no-unused-vars
 const assetsCDN = {
   // webpack build externals
@@ -121,7 +122,7 @@ const vueConfig = {
     }
   },
 
-  publicPath: '/Blockchain-Carbon-Trading-System---EnterpriseFrontEnd/',
+  publicPath: baseURL + '/',
   devServer: {
     // development server port 8000
     port: 8000

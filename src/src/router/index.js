@@ -7,6 +7,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import { constantRouterMap } from '@/config/router.config'
 
+const baseURL = process.env.VUE_APP_STATIC_URL
+
+console.log(">>>>", process.env)
+
 // hack router push callback
 const originalPush = Router.prototype.push
 Router.prototype.push = function push(location, onResolve, onReject) {
@@ -18,6 +22,7 @@ Vue.use(Router)
 
 const createRouter = () =>
   new Router({
+    base: process.env.VUE_APP_STATIC_URL + '/',
     mode: 'history',
     routes: constantRouterMap
   })
