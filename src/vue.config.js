@@ -121,6 +121,7 @@ const vueConfig = {
     }
   },
 
+  publicPath: '/Blockchain-Carbon-Trading-System---EnterpriseFrontEnd/',
   devServer: {
     // development server port 8000
     port: 8000
