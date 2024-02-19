@@ -22,7 +22,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: '17'  # 设置为你需要的Node.js版本
+          node-version: '18'  # 设置为你需要的Node.js版本
 
       # - name: Change to src directory
         
