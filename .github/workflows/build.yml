@@ -25,6 +25,7 @@ jobs:
           node-version: '17'  # 设置为你需要的Node.js版本
 
       - name: Change to src directory
+        run: cd src
         working-directory: ./src
 
       # 生成静态文件
