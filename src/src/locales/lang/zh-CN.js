@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 import antd from 'ant-design-vue/es/locale-provider/zh_CN'
 import momentCN from 'moment/locale/zh-cn'
 import global from './zh-CN/global'
@@ -22,7 +27,7 @@ export default {
 
   'layouts.usermenu.dialog.title': '信息',
   'layouts.usermenu.dialog.content': '您确定要注销吗？',
-  'layouts.userLayout.title': 'Ant Design 是西湖区最具影响力的 Web 设计规范',
+  'layouts.userLayout.title': '链接绿色未来，碳盟领航之道',
   ...components,
   ...global,
   ...menu,

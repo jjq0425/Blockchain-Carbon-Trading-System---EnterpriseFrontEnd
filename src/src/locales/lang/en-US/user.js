@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 export default {
   'user.login.userName': 'userName',
   'user.login.password': 'password',
@@ -35,7 +40,7 @@ export default {
   'user.register-result.view-mailbox': 'View mailbox',
   'user.email.required': 'Please enter your email!',
   'user.email.wrong-format': 'The email address is in the wrong format!',
-  'user.userName.required': 'Please enter account name or email address',
+  'user.userName.required': 'Please enter account name',
   'user.password.required': 'Please enter your password!',
   'user.password.twice.msg': 'The passwords entered twice do not match!',
   'user.password.strength.msg':

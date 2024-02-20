@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 export default {
   'user.login.userName': '用户名',
   'user.login.password': '密码',
@@ -18,7 +23,7 @@ export default {
   'user.login.forgot-password': '忘记密码',
   'user.login.sign-in-with': '其他登录方式',
   'user.login.signup': '注册企业账户',
-  'user.login.login': '登录',
+  'user.login.login': '企业登录',
   'user.login.gotoSuperviser': '前往监管端',
   'user.register.register': '注册',
   'user.register.email.placeholder': '邮箱',
@@ -34,7 +39,7 @@ export default {
   'user.register-result.view-mailbox': '查看邮箱',
   'user.email.required': '请输入邮箱地址！',
   'user.email.wrong-format': '邮箱地址格式错误！',
-  'user.userName.required': '请输入帐户名或邮箱地址',
+  'user.userName.required': '请输入帐户名',
   'user.password.required': '请输入密码！',
   'user.password.twice.msg': '两次输入的密码不匹配!',
   'user.password.strength.msg': '密码强度不够 ',

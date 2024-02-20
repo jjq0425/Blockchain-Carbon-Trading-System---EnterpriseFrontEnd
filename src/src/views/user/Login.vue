@@ -1,7 +1,44 @@
 <template>
   <div class="main">
     <a-form id="formLogin" class="user-layout-login" ref="formLogin" :form="form" @submit="handleSubmit">
-      <a-tabs
+      <a-alert
+        v-if="isLoginError"
+        type="error"
+        showIcon
+        style="margin-bottom: 24px"
+        :message="$t('user.login.message-invalid-credentials')"
+      />
+      <a-form-item>
+        <a-input
+          size="large"
+          type="text"
+          :placeholder="$t('user.login.username.placeholder')"
+          v-decorator="[
+            'username',
+            {
+              rules: [{ required: true, message: $t('user.userName.required') }, { validator: handleUsernameOrEmail }],
+              validateTrigger: 'change',
+            },
+          ]"
+        >
+          <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }" />
+        </a-input>
+      </a-form-item>
+
+      <a-form-item>
+        <a-input-password
+          size="large"
+          :placeholder="$t('user.login.password.placeholder')"
+          v-decorator="[
+            'password',
+            { rules: [{ required: true, message: $t('user.password.required') }], validateTrigger: 'blur' },
+          ]"
+        >
+          <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }" />
+        </a-input-password>
+      </a-form-item>
+      <!-- 切换登录方式（预留） -->
+      <!-- <a-tabs
         :activeKey="customActiveKey"
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
         @change="handleTabClick"
@@ -95,7 +132,7 @@
             </a-col>
           </a-row>
         </a-tab-pane>
-      </a-tabs>
+      </a-tabs> -->
 
       <!-- <a-form-item>
         <a-checkbox v-decorator="['rememberMe', { valuePropName: 'checked' }]">{{
@@ -142,43 +179,54 @@
           <a-icon class="item-icon" type="weibo-circle"></a-icon>
         </a> -->
 
-        <router-link class="register" :to="{ name: 'register' }">{{ $t('user.login.signup') }}</router-link>
+        <!-- <router-link class="register" :to="{ name: 'register' }">{{ $t('user.login.signup') }}</router-link> -->
+        <span
+          style="color: #1890ff; cursor: pointer"
+          class="register"
+          :to="{ name: 'register' }"
+          @click="$refs.RegisterModal.open()"
+          >{{ $t('user.login.signup') }}</span
+        >
       </div>
     </a-form>
 
     <br />
 
-    <div style="margin-top: 100px"></div>
-    <hr />
-    <div
-      class="login_lang_change"
-      @click="ChangeLanguage"
-      style="text-align: center; cursor: pointer; color: #134089; float: left"
-    >
-      <Icon type="global" style="padding-right: 3px" />
-      <span v-if="this.$store.state.app.lang.includes('en')">Switch to Chinese(切换中文)</span>
-      <span v-else>切换英文(Switch to English)</span>
-    </div>
+    <div style="margin-top: 90px"></div>
+    <!-- <div style="margin-top: 30px" v-if="isLoginError"></div> -->
+    <div>
+      <hr />
+      <div
+        class="login_lang_change"
+        @click="ChangeLanguage"
+        style="text-align: center; cursor: pointer; color: #134089; float: left"
+      >
+        <Icon type="global" style="padding-right: 3px" />
+        <span v-if="this.$store.state.app.lang.includes('en')">Switch to Chinese(切换中文)</span>
+        <span v-else>切换英文(Switch to English)</span>
+      </div>
 
-    <div
-      class="login_lang_change"
-      @click="ChangeLanguage"
-      style="text-align: center; cursor: pointer; color: #134089; float: right"
-    >
-      <span>{{ $t('user.login.gotoSuperviser') }}</span>
-      <a-icon type="arrow-right" style="padding-left: 3px" />
+      <div
+        class="login_lang_change"
+        @click="ChangeLanguage"
+        style="text-align: center; cursor: pointer; color: #134089; float: right"
+      >
+        <span>{{ $t('user.login.gotoSuperviser') }}</span>
+        <a-icon type="arrow-right" style="padding-left: 3px" />
+      </div>
     </div>
 
     <!-- <select-lang
       class="ant-pro-global-header-index-action"
       style="color: black; position: absolute; top: 10px; left: 100px"
     /> -->
-    <two-step-captcha
+    <!-- <two-step-captcha
       v-if="requiredTwoStepCaptcha"
       :visible="stepCaptchaVisible"
       @success="stepCaptchaSuccess"
       @cancel="stepCaptchaCancel"
-    ></two-step-captcha>
+    ></two-step-captcha> -->
+    <RegisterModal ref="RegisterModal"></RegisterModal>
   </div>
 </template>
 
@@ -190,12 +238,14 @@ import { timeFix } from '@/utils/util'
 import { getSmsCaptcha, get2step } from '@/api/login'
 import SelectLang from '@/components/SelectLang'
 import { Icon } from 'ant-design-vue'
+import RegisterModal from './RegisterModal.vue'
 
 export default {
   components: {
     TwoStepCaptcha,
     SelectLang,
     Icon,
+    RegisterModal,
   },
   data() {
     return {
@@ -217,6 +267,9 @@ export default {
 
       forGetPwdModal: {
         visible: false,
+      },
+      RegisterModal: {
+        // visible: false,
       },
     }
   },
@@ -380,6 +433,8 @@ export default {
 
 <style lang="less" scoped>
 .user-layout-login {
+  height: 200px;
+
   label {
     font-size: 14px;
   }
