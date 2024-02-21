@@ -3,6 +3,10 @@
     <div class="container">
       <div class="user-layout-lang">
         <!-- <select-lang class="select-lang-trigger" /> -->
+        <span @click="() => this.$refs.NetworkSetting.open()">
+          <a-icon type="api" style="color: aliceblue; margin-right: 20px; cursor: pointer" />
+          <network-setting ref="NetworkSetting"></network-setting>
+        </span>
       </div>
 
       <div class="user-layout-content" style="margin-top: 20px">
@@ -91,12 +95,14 @@
 import { deviceMixin } from '@/store/device-mixin'
 import SelectLang from '@/components/SelectLang'
 import { Carousel } from 'ant-design-vue'
+import NetworkSetting from '@/components/GlobalHeader/NetworkSetting.vue'
 
 export default {
   name: 'UserLayout',
   components: {
     SelectLang,
     Carousel,
+    NetworkSetting,
   },
   mixins: [deviceMixin],
   mounted() {

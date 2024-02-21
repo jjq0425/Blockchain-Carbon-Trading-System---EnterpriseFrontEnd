@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 const getters = {
   isMobile: state => state.app.isMobile,
   lang: state => state.app.lang,
@@ -10,7 +15,9 @@ const getters = {
   roles: state => state.user.roles,
   userInfo: state => state.user.info,
   addRouters: state => state.permission.addRouters,
-  multiTab: state => state.app.multiTab
+  multiTab: state => state.app.multiTab,
+  baseUrl: state => state.app.baseURL
+
 }
 
 export default getters

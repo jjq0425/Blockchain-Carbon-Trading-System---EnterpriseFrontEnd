@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 import { mapState } from 'vuex'
 
 const baseMixin = {
@@ -14,14 +19,15 @@ const baseMixin = {
 
       isMobile: state => state.app.isMobile,
       sideCollapsed: state => state.app.sideCollapsed,
-      multiTab: state => state.app.multiTab
+      multiTab: state => state.app.multiTab,
+      baseUrl: state => state.app.baseURL
     }),
-    isTopMenu () {
+    isTopMenu() {
       return this.layout === 'topmenu'
     }
   },
   methods: {
-    isSideMenu () {
+    isSideMenu() {
       return !this.isTopMenu
     }
   }

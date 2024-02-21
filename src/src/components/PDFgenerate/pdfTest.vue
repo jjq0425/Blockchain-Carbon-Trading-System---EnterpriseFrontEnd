@@ -44,6 +44,20 @@ export default {
       this.visible = false
     },
     /**
+     * 生成随机密码用于加密文件
+     */
+    generateRandomKey(length) {
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      const charactersLength = characters.length
+      let result = ''
+      for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(window.crypto.getRandomValues(new Uint8Array(1)) * 1) % charactersLength)
+
+        //   真随机数，可以吹牛https://developer.mozilla.org/zh-CN/docs/Web/API/Crypto/getRandomValues
+      }
+      return result
+    },
+    /**
      * 生成PDF（测试）
      */
     runPdf() {
@@ -54,9 +68,13 @@ export default {
       let JSPDF_splittedText
       let JSPDF_lines
       let JSPDF_blockHeight
+      let KEY = this.generateRandomKey(48)
 
       //封面
-      const doc = new jsPDF()
+      console.log('文件加密密码为：', KEY)
+      const doc = new jsPDF({
+        encryption: { userPermissions: ['print', 'copy'], ownerPassword: KEY },
+      })
       doc.addFont('Fangsong_GB2312-normal.ttf', 'Fangsong_GB2312', 'normal')
       doc.addFont('simheibd-normal.ttf', 'simheibd', 'normal')
       doc.addFont('simhei-normal.ttf', 'simhei', 'normal')
@@ -134,10 +152,7 @@ export default {
         body: [
           //表格内容 长度与上面对应
           ['单位名称', '电子科技大学'],
-          [
-            '单位地址',
-            '电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学电子科技大学',
-          ],
+          ['单位地址', '成都市成华区建设北路二段4号'],
           ['单位性质', 'XXXXX'],
           ['组织机构代码', '91350122MA31GW0N65'],
           ['所属行业', 'XXXXXXX'],
@@ -181,19 +196,273 @@ export default {
       })
       yPos = doc.lastAutoTable.finalY
 
+      doc.setFont('simheibd')
+      doc.setFontSize(17)
+      doc.setLineHeightFactor = 1.5
+      text = '    二、温室气体排放'
+      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
+      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
+      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
+      yPos += 15 //段前5
+      for (let i = 0; i < JSPDF_lines; i++) {
+        if (yPos >= doc.internal.pageSize.height - 30) {
+          doc.addPage()
+          yPos = 30
+        } else if (i != 0) {
+          yPos = yPos + JSPDF_lineHeight
+        }
+        doc.text(20, yPos, JSPDF_splittedText[i])
+      }
+
       autoTable(doc, {
         startY: yPos + 5,
-        columnStyles: { europe: { halign: 'center' } }, // European countries centered
+        head: [
+          //表头
+          ['类目', '详情'],
+        ],
         body: [
-          { europe: 'Sweden', america: 'Canada', asia: 'China' },
-          { europe: 'Norway', america: 'Mexico', asia: 'Japan' },
+          //表格内容 长度与上面对应
+          ['单位名称', '电子科技大学'],
+          ['单位地址', '成都市成华区建设北路二段4号'],
+          ['单位性质', 'XXXXX'],
+          ['组织机构代码', '91350122MA31GW0N65'],
+          ['所属行业', 'XXXXXXX'],
+          ['报告年度', '2022'],
+          ['法定代表人', '曾涌'],
+          ['填报负责人', 'ABC'],
+          ['负责人邮箱', 'jiang_jinqian@qq.com'],
         ],
-        columns: [
-          { header: 'Europe', dataKey: 'europe' },
-          { header: 'Asia', dataKey: 'asia' },
-        ],
-      })
+        styles: {
+          font: 'Fangsong_GB2312', //字体
+          //   fontStyle: 'normal', //字体样式
+          fontSize: 14,
 
+          valign: 'middle',
+          lineWidth: 0.1,
+          fillColor: [255, 255, 255],
+          color: [0, 0, 0],
+          textColor: [0, 0, 0],
+          lineColor: [0, 0, 0],
+        },
+        headStyles: {
+          font: 'simheibd', //字体
+          fontStyle: 'normal', //字体样式
+          fontSize: 14,
+          halign: 'center',
+          valign: 'middle',
+          lineWidth: 0.1,
+          fillColor: [255, 255, 255],
+          color: [0, 0, 0],
+          textColor: [0, 0, 0],
+          lineColor: [0, 0, 0],
+        },
+        columnStyles: {
+          0: { halign: 'center', cellWidth: 40 },
+          1: {
+            halign: 'left',
+          },
+        },
+        cellStyles: { overflow: 'linebreak' },
+        theme: 'grid',
+      })
+      yPos = doc.lastAutoTable.finalY
+
+      doc.setFont('simheibd')
+      doc.setFontSize(17)
+      doc.setLineHeightFactor = 1.5
+      text = '    三、活动水平数据及来源说明'
+      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
+      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
+      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
+      yPos += 15 //段前5
+      for (let i = 0; i < JSPDF_lines; i++) {
+        if (yPos >= doc.internal.pageSize.height - 30) {
+          doc.addPage()
+          yPos = 30
+        } else if (i != 0) {
+          yPos = yPos + JSPDF_lineHeight
+        }
+        doc.text(20, yPos, JSPDF_splittedText[i])
+      }
+
+      doc.setFont('simheibd')
+      doc.setFontSize(17)
+      doc.setLineHeightFactor = 1.5
+      text = '    四、排放因子数据及来源说明'
+      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
+      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
+      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
+      yPos += 15 //段前5
+      for (let i = 0; i < JSPDF_lines; i++) {
+        if (yPos >= doc.internal.pageSize.height - 30) {
+          doc.addPage()
+          yPos = 30
+        } else if (i != 0) {
+          yPos = yPos + JSPDF_lineHeight
+        }
+        doc.text(20, yPos, JSPDF_splittedText[i])
+      }
+
+      doc.setFont('Fangsong_GB2312')
+      doc.setFontSize(17)
+      doc.setLineHeightFactor = 1.8
+      text = '    本报告真实、可靠，如报告中的信息与实际情况不符，本企业将承担相应的法律责任。'
+      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
+      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
+      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
+      yPos += 25 //段前5
+      for (let i = 0; i < JSPDF_lines; i++) {
+        if (yPos >= doc.internal.pageSize.height - 30) {
+          doc.addPage()
+          yPos = 30
+        } else if (i != 0) {
+          yPos = yPos + JSPDF_lineHeight
+        }
+        doc.text(20, yPos, JSPDF_splittedText[i])
+      }
+
+      doc.setFont('Fangsong_GB2312')
+      doc.setFontSize(17)
+      doc.setLineHeightFactor = 1.8
+      text = '法人（签字）：          '
+      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
+      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
+      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
+      yPos += 20 //段前5
+      for (let i = 0; i < JSPDF_lines; i++) {
+        if (yPos >= doc.internal.pageSize.height - 30) {
+          doc.addPage()
+          yPos = 30
+        } else if (i != 0) {
+          yPos = yPos + JSPDF_lineHeight
+        }
+        doc.text(115, yPos, JSPDF_splittedText[i])
+      }
+
+      doc.setFont('Fangsong_GB2312')
+      doc.setFontSize(17)
+      doc.setLineHeightFactor = 1.8
+      text = '2022 年 12 月 10 日'
+      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
+      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
+      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
+      yPos += 15 //段前5
+      for (let i = 0; i < JSPDF_lines; i++) {
+        if (yPos >= doc.internal.pageSize.height - 30) {
+          doc.addPage()
+          yPos = 30
+        } else if (i != 0) {
+          yPos = yPos + JSPDF_lineHeight
+        }
+        doc.text(125, yPos, JSPDF_splittedText[i])
+      }
+
+      doc.setFont('Fangsong_GB2312')
+      doc.setFontSize(15)
+      doc.setLineHeightFactor = 1.8
+      text = '附表 1 报告主体二氧化碳排放量报告'
+      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
+      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
+      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
+      yPos += 25 //段前5
+      for (let i = 0; i < JSPDF_lines; i++) {
+        if (yPos >= doc.internal.pageSize.height - 30) {
+          doc.addPage()
+          yPos = 30
+        } else if (i != 0) {
+          yPos = yPos + JSPDF_lineHeight
+        }
+        doc.text(20, yPos, JSPDF_splittedText[i])
+      }
+
+      doc.setFont('Fangsong_GB2312')
+      doc.setFontSize(15)
+      doc.setLineHeightFactor = 1.8
+      text = '附表 2 报告主体活动水平数据'
+      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
+      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
+      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
+      yPos += 10 //段前5
+      for (let i = 0; i < JSPDF_lines; i++) {
+        if (yPos >= doc.internal.pageSize.height - 30) {
+          doc.addPage()
+          yPos = 30
+        } else if (i != 0) {
+          yPos = yPos + JSPDF_lineHeight
+        }
+        doc.text(20, yPos, JSPDF_splittedText[i])
+      }
+
+      doc.setFont('Fangsong_GB2312')
+      doc.setFontSize(15)
+      doc.setLineHeightFactor = 1.8
+      text = '附表 3 报告主体排放因子和计算系数'
+      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
+      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
+      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
+      yPos += 10 //段前5
+      for (let i = 0; i < JSPDF_lines; i++) {
+        if (yPos >= doc.internal.pageSize.height - 30) {
+          doc.addPage()
+          yPos = 30
+        } else if (i != 0) {
+          yPos = yPos + JSPDF_lineHeight
+        }
+        doc.text(20, yPos, JSPDF_splittedText[i])
+      }
+
+      doc.addPage()
+      yPos = 30
+
+      this.addWaterMark(doc)
+    },
+    /**
+     *
+     * @param {jsPDF()} doc jsPDF对象
+     * @description 添加水印
+     */
+    addWaterMark(doc) {
+      var pageCount = doc.internal.getNumberOfPages() //Total Page Number
+      for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i)
+        if (i == 1) {
+          doc.setFont('simheibd')
+          doc.setFontSize(20)
+          doc.setTextColor('#ff1e00')
+          doc.text('非正式报告！报告仅供审核使用', doc.internal.pageSize.getWidth() / 2, 120, { align: 'center' })
+        } else {
+          doc.setFont('Fangsong_GB2312')
+          doc.setFontSize(10)
+          doc.setTextColor('#ff1e00')
+          doc.text('非正式报告！报告仅供审核使用', doc.internal.pageSize.getWidth() / 2, 10, { align: 'center' })
+        }
+        // 添加水印
+        doc.setTextColor('#000000')
+        doc.setFont('simhei')
+        doc.setFontSize(10)
+        doc.saveGraphicsState() // 保存图形状态
+        doc.setGState(doc.GState({ opacity: 0.3 })) // 设置透明度为0.3
+        for (let j = 0; j <= 3; j++) {
+          for (let k = 0; k <= 3; k++) {
+            doc.text(
+              '电子科技大学2022年度碳排放报告——碳盟链道生成',
+              (j * doc.internal.pageSize.getWidth()) / 3,
+              (k * doc.internal.pageSize.getHeight()) / 3 - 20,
+              42
+            ) // 水印文本, 横向坐标， 纵向坐标， 倾斜角度
+          }
+        }
+        doc.restoreGraphicsState() // 设置完毕之后，清除图形状态，防止影响其他内容
+      }
       this.addPageCountAndDownload(doc)
     },
     /**
@@ -213,6 +482,7 @@ export default {
         doc.text(pageCurrent + '/' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.height - 10)
       }
 
+      //   console.log(doc)
       doc.save('a4.pdf')
     },
   },

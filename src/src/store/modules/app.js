@@ -11,6 +11,7 @@ import {
   TOGGLE_COLOR,
   TOGGLE_WEAK,
   TOGGLE_MULTI_TAB,
+  SET_NETWORK_BASEURL,
   // i18n
   APP_LANGUAGE
 } from '@/store/mutation-types'
@@ -30,6 +31,7 @@ const app = {
     weak: false,
     multiTab: true,
     lang: 'en-US',
+    baseUrl: 'hhh',
     _antLocale: {}
   },
   mutations: {
@@ -80,10 +82,14 @@ const app = {
     [TOGGLE_MULTI_TAB]: (state, bool) => {
       storage.set(TOGGLE_MULTI_TAB, bool)
       state.multiTab = bool
+    },
+    [SET_NETWORK_BASEURL]: (state, baseUrl) => {
+      state.baseUrl = baseUrl
     }
+
   },
   actions: {
-    setLang ({ commit }, lang) {
+    setLang({ commit }, lang) {
       return new Promise((resolve, reject) => {
         commit(APP_LANGUAGE, lang)
         loadLanguageAsync(lang).then(() => {
@@ -92,7 +98,10 @@ const app = {
           reject(e)
         })
       })
-    }
+    },
+    // setbaseUrl({ commit }, baseUrl) {
+    //   commit(setbaseUrl, baseUrl)
+    // }
   }
 }
 
