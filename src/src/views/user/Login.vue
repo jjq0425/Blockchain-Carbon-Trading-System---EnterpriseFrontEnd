@@ -162,7 +162,7 @@
         }}</span>
         <a-modal v-model="forGetPwdModal.visible" :title="$t('modal.notice.title')">
           <template slot="footer">
-            <a-button key="ok" type="primary" :loading="loading" @click="forGetPwd(0)">
+            <a-button key="ok" type="primary" @click="forGetPwd(0)">
               {{ $t('modal.btn.ok2') }}
             </a-button>
           </template>
