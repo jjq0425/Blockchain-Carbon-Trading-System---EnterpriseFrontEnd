@@ -31,7 +31,7 @@ const app = {
     weak: false,
     multiTab: true,
     lang: 'en-US',
-    baseUrl: 'hhh',
+    baseUrl: 'https://console-mock.apipost.cn/mock/b2880e0e-7b68-4425-9aea-8e0f230bb462',
     _antLocale: {}
   },
   mutations: {

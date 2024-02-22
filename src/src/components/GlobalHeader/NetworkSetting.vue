@@ -14,7 +14,7 @@
     @cancel="close"
     destroyOnClose
   >
-    <a-form :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }" @submit="handleSubmit">
+    <a-form :label-col="{ span: 8 }" :wrapper-col="{ span: 12 }">
       <a-form-item label="旧服务器地址">
         <span>{{ OldServer }}</span>
       </a-form-item>
@@ -23,7 +23,8 @@
         <div style="font-size: 10px; color: grey">服务器地址必须以http://或者https://开头！并且结尾不能包含/</div>
       </a-form-item>
       <a-form-item label="测试结果">
-        <span>{{ TestRes }}</span>
+        <div>{{ TestRes }}</div>
+        <div style="font-size: 10px; color: grey">不填新服务器地址则按旧地址测试</div>
       </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -61,7 +62,7 @@ export default {
       this.TestRes = '未测试'
     },
     getOldServer() {
-      console.log(this.$store.state.app.baseUrl)
+      // console.log(this.$store.state.app.baseUrl)
       this.OldServer = this.$store.state.app.baseUrl
     },
     setNewServer() {
@@ -89,11 +90,19 @@ export default {
       //       this.TestRes = err.data + '   (测试失败)'
       //       this.$message.error('测试失败！')
       //     })
-      let testUrl = this.NewServer + '/api/user/getInfo'
-      testUrl = 'https://console-mock.apipost.cn/mock/b2880e0e-7b68-4425-9aea-8e0f230bb462/test?apipost_id=feefc2'
+      let testUrl = this.NewServer + '/test'
+      if (this.NewServer == '' || this.NewServer == 'https://') {
+        this.$notification.open({
+          message: `按旧地址测试`,
+          description: '您未设置新地址，按旧地址' + this.OldServer + '测试',
+        })
+        testUrl = this.OldServer + '/test'
+      }
       request({
         url: testUrl,
         method: 'get',
+        timeout: 1000,
+        NetworkSetting: true,
       })
         .then((res) => {
           this.TestRes = res

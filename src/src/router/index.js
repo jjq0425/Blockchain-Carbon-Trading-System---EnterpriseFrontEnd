@@ -3,13 +3,18 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 import Vue from 'vue'
 import Router from 'vue-router'
 import { constantRouterMap } from '@/config/router.config'
 
-const baseURL = process.env.VUE_APP_STATIC_URL
+// const baseURL = process.env.VUE_APP_STATIC_URL
 
-console.log(">>>>", process.env)
+// console.log(">>>>", process.env)
 
 // hack router push callback
 const originalPush = Router.prototype.push

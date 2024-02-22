@@ -285,7 +285,7 @@ export default {
   },
   methods: {
     ChangeLanguage() {
-      console.log(this.$store.state.app.lang)
+      // console.log(this.$store.state.app.lang)
       if (this.$store.state.app.lang.includes('en')) {
         this.$store.dispatch('setLang', 'zh-CN')
       } else {
@@ -397,7 +397,7 @@ export default {
       })
     },
     loginSuccess(res) {
-      console.log(res)
+      // console.log('loginSucess', res)
       // check res.homePage define, set $router.push name res.homePage
       // Why not enter onComplete
       /*
@@ -420,6 +420,7 @@ export default {
       this.isLoginError = false
     },
     requestFailed(err) {
+      // console.log('loginFailed', err)
       this.isLoginError = true
       this.$notification['error']({
         message: '错误',

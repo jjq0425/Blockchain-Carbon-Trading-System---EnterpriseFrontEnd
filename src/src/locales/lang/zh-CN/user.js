@@ -1,19 +1,10 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
 export default {
   'user.login.userName': '用户名',
   'user.login.password': '密码',
   'user.login.username.placeholder': '请输入企业账号 ',
   'user.login.password.placeholder': '请输入密码 ',
-  'user.login.message-invalid-credentials': '账户或密码错误',
+  'user.login.message-invalid-credentials': '企业账户或密码错误',
   'user.login.message-invalid-verification-code': '验证码错误',
   'user.login.tab-login-credentials': '账户密码登录',
   'user.login.tab-login-mobile': '手机号登录',
@@ -25,13 +16,13 @@ export default {
   'user.login.signup': '注册企业账户',
   'user.login.login': '企业登录',
   'user.login.gotoSuperviser': '前往监管端',
-  'user.register.register': '注册',
+  'user.register.register': '企业注册',
   'user.register.email.placeholder': '邮箱',
   'user.register.password.placeholder': '请至少输入 6 个字符。请不要使用简单的密码。',
   'user.register.password.popover-message': '请至少输入 6 个字符。请不要使用简单的密码。',
   'user.register.confirm-password.placeholder': '确认密码',
   'user.register.get-verification-code': '获取验证码',
-  'user.register.sign-in': '使用已有账户登录',
+  'user.register.sign-in': '使用已有企业账户登录',
   'user.register-result.msg': '你的账户：{email} 注册成功',
   'user.register-result.activation-email':
     '激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。',

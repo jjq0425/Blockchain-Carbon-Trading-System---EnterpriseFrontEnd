@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 import router, { resetRouter } from './router'
 import store from './store'
 import storage from 'store'
@@ -15,6 +20,7 @@ const loginRoutePath = '/user/login'
 const defaultRoutePath = '/dashboard/workplace'
 
 router.beforeEach((to, from, next) => {
+  console.log("RouterTo>>to, from, next", to, from, next)
   NProgress.start() // start progress bar
   to.meta && typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
   /* has token */
@@ -26,6 +32,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // check login user.roles is null
       if (store.getters.roles.length === 0) {
+        console.warn('>>本地无权限，正在获取用户信息')
         // request login userInfo
         store
           .dispatch('GetInfo')
@@ -56,6 +63,7 @@ router.beforeEach((to, from, next) => {
               description: '请求用户信息失败，请重试'
             })
             // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
+
             store.dispatch('Logout').then(() => {
               next({ path: loginRoutePath, query: { redirect: to.fullPath } })
             })
