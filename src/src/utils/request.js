@@ -35,7 +35,7 @@ const errorHandler = (error) => {
         description: data.message
       })
     }
-    if (error.response.status === 401 && !(data.result && data.result.isLogin)) {
+    if (error.response.status === 401 && !(data.data && data.data.LoginApi)) {
       notification.error({
         message: 'Unauthorized',
         description: 'Authorization verification failed'
@@ -74,10 +74,10 @@ request.interceptors.request.use(config => {
     // 检查URL是否匹配正则表达式
     // console.log(regex2.test(config.url), regex1.test(config.url))
     if (regex2.test(config.url)) {
-      config.url += '&apipost_id=feefc2'
+      config.url += ''
     }
     else if (regex1.test(config.url)) {
-      config.url += '?apipost_id=feefc2'
+      config.url += ''
     }
   }
 

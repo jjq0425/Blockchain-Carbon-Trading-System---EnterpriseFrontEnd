@@ -24,7 +24,7 @@
           本地服务地址</a-button
         >
         <a-button
-          @click="SetNewServerDefault('https://console-mock.apipost.cn/mock/b2880e0e-7b68-4425-9aea-8e0f230bb462')"
+          @click="SetNewServerDefault('https://mock.apifox.com/m1/2214773-0-default')"
           style="margin-right: 20px"
         >
           Mock服务地址</a-button

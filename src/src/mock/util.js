@@ -18,6 +18,7 @@ export const builder = (data, message, code = 0, headers = {}) => {
     responseBody._headers = headers
   }
   responseBody.timestamp = new Date().getTime()
+  console.log("[MOCK RES] ", JSON.stringify(responseBody))
   return responseBody
 }
 

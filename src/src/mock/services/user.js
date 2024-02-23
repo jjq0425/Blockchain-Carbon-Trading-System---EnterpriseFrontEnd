@@ -6,7 +6,7 @@ const info = options => {
   const userInfo = {
     id: '4291d7da9005377ec9aec4a71ea837f',
     name: '天野远子',
-    username: 'tyyz',
+    // username: 'tyyz',
     // password: 'tyyz',
     avatar: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png',
     status: 1,
