@@ -2,22 +2,22 @@ import Mock from 'mockjs2'
 import { builder } from '../util'
 
 const info = options => {
-  console.log('options', options)
+  console.warn('Mock>>options', options)
   const userInfo = {
     id: '4291d7da9005377ec9aec4a71ea837f',
     name: '天野远子',
     username: 'tyyz',
-    password: 'tyyz',
-    avatar: '/avatar2.jpg',
+    // password: 'tyyz',
+    avatar: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png',
     status: 1,
-    telephone: '',
-    lastLoginIp: '27.154.74.117',
-    lastLoginTime: 1534837621348,
-    creatorId: 'admin',
-    createTime: 1497160610259,
-    merchantCode: 'TLif2btpzg079h15bk',
-    deleted: 0,
-    roleId: 'admin',
+    // telephone: '',
+    // lastLoginIp: '27.154.74.117',
+    // lastLoginTime: 1534837621348,
+    // creatorId: 'admin',
+    // createTime: 1497160610259,
+    // merchantCode: 'TLif2btpzg079h15bk',
+    // deleted: 0,
+    // roleId: 'admin',
     role: {}
   }
   // role
@@ -31,37 +31,39 @@ const info = options => {
     deleted: 0,
     permissions: [
       {
+        permissionId: 'dashboard',
         roleId: 'admin',
         permissionId: 'dashboard',
         permissionName: '仪表盘',
         actions:
-          '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+          // '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+          '',
         actionEntitySet: [
-          {
-            action: 'add',
-            describe: '新增',
-            defaultCheck: false
-          },
-          {
-            action: 'query',
-            describe: '查询',
-            defaultCheck: false
-          },
-          {
-            action: 'get',
-            describe: '详情',
-            defaultCheck: false
-          },
-          {
-            action: 'update',
-            describe: '修改',
-            defaultCheck: false
-          },
-          {
-            action: 'delete',
-            describe: '删除',
-            defaultCheck: false
-          }
+          // {
+          //   action: 'add',
+          //   describe: '新增',
+          //   defaultCheck: false
+          // },
+          // {
+          //   action: 'query',
+          //   describe: '查询',
+          //   defaultCheck: false
+          // },
+          // {
+          //   action: 'get',
+          //   describe: '详情',
+          //   defaultCheck: false
+          // },
+          // {
+          //   action: 'update',
+          //   describe: '修改',
+          //   defaultCheck: false
+          // },
+          // {
+          //   action: 'delete',
+          //   describe: '删除',
+          //   defaultCheck: false
+          // }
         ],
         actionList: null,
         dataAccess: null
@@ -461,7 +463,85 @@ const info = options => {
     dataAccess: null
   })
 
-  userInfo.role = roleObj
+  const roleObj2 = {
+    // id: 'admin',
+    // name: '管理员',
+    // describe: '拥有所有权限',
+    // status: 1,
+    // creatorId: 'system',
+    // createTime: 1497160610259,
+    // deleted: 0,
+    permissions: [
+      // {
+      //   permissionId: 'dashboard',
+      //   roleId: 'admin',
+      //   permissionId: 'dashboard',
+      //   permissionName: '仪表盘',
+      //   actions:
+      //     // '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
+      //     '',
+      //   actionEntitySet: [
+
+      //   ],
+      //   actionList: null,
+      //   dataAccess: null
+      // },
+      // {
+      //   roleId: 'admin',
+      //   permissionId: 'exception',
+      //   permissionName: '异常页面权限',
+      //   actions:
+      //     '',
+      //   actionEntitySet: [
+
+      //   ],
+      //   actionList: null,
+      //   dataAccess: null
+      // },
+
+
+
+      // {
+      //   roleId: 'admin',
+      //   permissionId: 'form',
+      //   permissionName: '表单权限',
+      //   actions:
+      //     '',
+      //   actionEntitySet: [
+
+      //   ],
+      //   actionList: null,
+      //   dataAccess: null
+      // },
+      {
+        // roleId: 'admin',
+        permissionId: 'table',
+        // permissionName: '列表权限',
+        // actions:'',
+        // actionEntitySet: [],
+        // actionList: null,
+        // dataAccess: null
+      },
+
+
+
+      // {
+      //   roleId: 'admin',
+      //   permissionId: 'user',
+      //   permissionName: '用户管理',
+      //   actions:
+      //     '',
+      //   actionEntitySet: [
+
+      //   ],
+      //   actionList: null,
+      //   dataAccess: null
+      // }
+    ]
+  }
+
+  userInfo.role = roleObj2
+  console.log('Mock>>userInfo res', userInfo)
   return builder(userInfo)
 }
 
@@ -469,10 +549,12 @@ const info = options => {
  * 使用 用户登录的 token 获取用户有权限的菜单
  * 返回结构必须按照这个结构体形式处理，或根据
  * /src/router/generator-routers.js  文件的菜单结构处理函数对应即可
+ * 非动态路由没用
  * @param {*} options
  * @returns
  */
 const userNav = options => {
+  // console.log("Mock>>userNav")
   const nav = [
     // dashboard
     {

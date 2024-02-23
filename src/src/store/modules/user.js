@@ -65,14 +65,14 @@ const user = {
             role.permissions = result.role.permissions.map(permission => {
               const per = {
                 ...permission,
-                actionList: (permission.actionEntitySet || {}).map(item => item.action)
+                actionList: (permission.actionEntitySet == null ? [] : permission.actionEntitySet).map(item => item.action)
               }
               return per
             })
             role.permissionList = role.permissions.map(permission => { return permission.permissionId })
             // 覆盖响应体的 role, 供下游使用
             result.role = role
-
+            console.log("User.js>>ROLE", role, result)
             commit('SET_ROLES', role)
             commit('SET_INFO', result)
             commit('SET_NAME', { name: result.name, welcome: welcome() })

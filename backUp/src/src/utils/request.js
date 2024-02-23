@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 import axios from 'axios'
 import store from '@/store'
 import storage from 'store'
@@ -26,13 +31,13 @@ const errorHandler = (error) => {
     const token = storage.get(ACCESS_TOKEN)
     if (error.response.status === 403) {
       notification.error({
-        message: 'Forbidden',
+        message: '403响应 Forbidden',
         description: data.message
       })
     }
-    if (error.response.status === 401 && !(data.result && data.result.isLogin)) {
+    if (error.response.status === 401 && !(data.data && data.data.LoginApi)) {
       notification.error({
-        message: 'Unauthorized',
+        message: '401响应 Unauthorized',
         description: 'Authorization verification failed'
       })
       if (token) {
@@ -46,6 +51,9 @@ const errorHandler = (error) => {
   }
   return Promise.reject(error)
 }
+
+
+
 
 // request interceptor
 request.interceptors.request.use(config => {

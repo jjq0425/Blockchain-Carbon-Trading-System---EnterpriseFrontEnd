@@ -438,4 +438,18 @@ export default {
 .ant-pro-page-header-search {
   border-radius: 100px;
 }
+
+/* 解决侧边栏太空 */
+.ant-menu-item {
+  margin-top: 15px !important;
+  margin-bottom: 20px !important;
+}
+.ant-menu-submenu {
+  margin-top: 15px !important;
+  margin-bottom: 20px !important;
+}
+.ant-menu-submenu .ant-menu-item {
+  margin-top: 5px !important;
+  margin-bottom: 10px !important;
+}
 </style>
