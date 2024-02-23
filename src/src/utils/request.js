@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 import axios from 'axios'
 import store from '@/store'
 import storage from 'store'
@@ -72,7 +77,7 @@ request.interceptors.request.use(config => {
       config.url += '&apipost_id=feefc2'
     }
     else if (regex1.test(config.url)) {
-      config.url += '?&apipost_id=feefc2'
+      config.url += '?apipost_id=feefc2'
     }
   }
 

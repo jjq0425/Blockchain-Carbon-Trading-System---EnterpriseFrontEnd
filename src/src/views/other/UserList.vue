@@ -204,8 +204,8 @@ export default {
         return getRoleList(parameter).then((res) => {
           console.log('getRoleList', res)
           // 展开全部行
-          this.expandedRowKeys = res.result.data.map((item) => item.id)
-          return res.result
+          this.expandedRowKeys = res.data.data.map((item) => item.id)
+          return res.data
         })
       },
 

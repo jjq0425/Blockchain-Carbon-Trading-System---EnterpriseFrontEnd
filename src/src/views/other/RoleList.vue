@@ -122,7 +122,7 @@ export default {
             params: Object.assign(parameter, this.queryParam),
           })
           .then((res) => {
-            return res.result
+            return res.data
           })
       },
 

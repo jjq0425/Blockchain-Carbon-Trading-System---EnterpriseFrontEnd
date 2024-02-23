@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 import { isIE } from '@/utils/util'
 
@@ -17,10 +22,10 @@ if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'tr
   const Mock = require('mockjs2')
   require('./services/auth')
   require('./services/user')
-  // require('./services/manage')
-  // require('./services/other')
-  // require('./services/tagCloud')
-  // require('./services/article')
+  require('./services/manage')
+  require('./services/other')
+  require('./services/tagCloud')
+  require('./services/article')
 
   Mock.setup({
     timeout: 800 // setter delay time

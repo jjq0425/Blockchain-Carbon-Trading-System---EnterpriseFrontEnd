@@ -4,10 +4,12 @@ import { builder, getQueryParameters } from '../util'
 const totalCount = 5701
 
 const serverList = (options) => {
-  const parameters = getQueryParameters(options)
 
+  const parameters = getQueryParameters(options)
+  console.log(parameters)
   const result = []
   const pageNo = parseInt(parameters.pageNo)
+  // console.log(pageNo, parameters.pageNo, parseInt(parameters.pageNo))
   const pageSize = parseInt(parameters.pageSize)
   const totalPage = Math.ceil(totalCount / pageSize)
   const key = (pageNo - 1) * pageSize
@@ -26,6 +28,7 @@ const serverList = (options) => {
       editable: false
     })
   }
+
 
   return builder({
     pageSize: pageSize,
