@@ -1,8 +1,4 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
 /**
  * 项目默认配置项
  * primaryColor - 默认主题色, 如果修改颜色不生效，请清理 localStorage
