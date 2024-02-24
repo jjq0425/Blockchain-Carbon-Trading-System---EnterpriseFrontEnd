@@ -24,6 +24,9 @@
         >
           <a-icon type="exclamation-circle" /> &nbsp;&nbsp; 关闭弹窗后下载将中断
         </div>
+        <div v-else style="width: 100%; text-align: center; font-size: 10px; color: grey; margin-top: 20px">
+          <a-icon type="exclamation-circle" /> &nbsp;&nbsp; 请允许浏览器下载文件，点击右上角 × 关闭弹窗
+        </div>
       </div>
     </div>
     <a-progress
@@ -36,7 +39,7 @@
       :strokeWidth="2"
       :showInfo="false"
     />
-    <div>{{ downloadStepInfo }}</div>
+    <div>[{{ NowPercentage }}%] {{ downloadStepInfo }}</div>
   </a-modal>
 </template>
   
@@ -111,11 +114,13 @@ export default {
       this.runPdf()
     },
     close() {
-      this.id = null
-      this.downloadStep = 0
-      this.downloadStepInfo = '正在准备下载'
-      this.NowPercentage = 0
       this.visible = false
+      setTimeout(() => {
+        this.id = null
+        this.downloadStep = 0
+        this.downloadStepInfo = '正在准备下载'
+        this.NowPercentage = 0
+      }, 100)
     },
     /**
      * 生成随机密码用于加密文件
