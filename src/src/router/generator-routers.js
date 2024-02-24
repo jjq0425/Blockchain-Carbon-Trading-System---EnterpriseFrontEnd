@@ -19,18 +19,18 @@ const constantRouterComponents = {
   Analysis: () => import('@/views/dashboard/Analysis'),
 
   // form
-  BasicForm: () => import('@/views/form/basicForm'),
-  StepForm: () => import('@/views/form/stepForm/StepForm'),
-  AdvanceForm: () => import('@/views/form/advancedForm/AdvancedForm'),
+  BasicForm: () => import('@/views/info/basicForm'),
+  StepForm: () => import('@/views/info/stepForm/StepForm'),
+  AdvanceForm: () => import('@/views/info/advancedForm/AdvancedForm'),
 
   // list
-  TableList: () => import('@/views/list/TableList'),
-  StandardList: () => import('@/views/list/BasicList'),
-  CardList: () => import('@/views/list/CardList'),
-  SearchLayout: () => import('@/views/list/search/SearchLayout'),
-  SearchArticles: () => import('@/views/list/search/Article'),
-  SearchProjects: () => import('@/views/list/search/Projects'),
-  SearchApplications: () => import('@/views/list/search/Applications'),
+  TableList: () => import('@/views/trade/TableList'),
+  StandardList: () => import('@/views/trade/BasicList'),
+  CardList: () => import('@/views/trade/CardList'),
+  SearchLayout: () => import('@/views/trade/search/SearchLayout'),
+  SearchArticles: () => import('@/views/trade/search/Article'),
+  SearchProjects: () => import('@/views/trade/search/Projects'),
+  SearchApplications: () => import('@/views/trade/search/Applications'),
   ProfileBasic: () => import('@/views/profile/basic'),
   ProfileAdvanced: () => import('@/views/profile/advanced/Advanced'),
 
