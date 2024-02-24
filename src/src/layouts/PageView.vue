@@ -21,10 +21,10 @@ export default {
 }
 .ant-pro-page-header-wrap {
   /* background: url('@/assets/bg.png') no-repeat center left;  */
-  background: var(--base-bg-backgroud) no-repeat center left;
+  background: #134089 var(--base-bg-backgroud) no-repeat center left;
   /* background: url('@/assets/beauty/bg/bg1.png') no-repeat center left;  */
   background-size: cover; /* 背景图片覆盖整个区域 */
-  background-color: #f7f9fe; /* 浅蓝色背景 */
+  background-color: #f7f9fe;
   background-position: 100% 0; /* 背景图片的位置在右侧 */
   background-size: contain; /* 确保图片在水平方向上完整显示 */
   /* background-clip: padding-box;  */
@@ -32,10 +32,10 @@ export default {
 }
 .ant-page-header {
   /* background-color: #134089; */
-  background: var(--base-bg-backgroud) no-repeat center left !important;
+  background: #134089 var(--base-bg-backgroud) no-repeat center left !important;
 
   background-size: cover !important; /* 背景图片覆盖整个区域 */
-  background-color: #f7f9fe !important; /* 浅蓝色背景 */
+
   background-position: 100% 0 !important; /* 背景图片的位置在右侧 */
 
   color: white !important;
