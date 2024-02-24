@@ -34,7 +34,7 @@ Vue.config.productionTip = false
 // mount axios to `Vue.$http` and `this.$http`
 Vue.use(VueAxios)
 Vue.use(VueClipboard)
-Vue.use(animated)
+// Vue.use(animated)
 // use pro-layout components
 Vue.component('pro-layout', ProLayout)
 Vue.component('page-container', PageHeaderWrapper)
