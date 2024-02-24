@@ -6,10 +6,10 @@
           <a-avatar size="large" :src="currentUser.avatar" />
         </div>
         <div class="content">
-          <div class="content-title" style="color: white">
+          <div class="content-title animate__animated animate__fadeInUp" style="color: white">
             {{ timeFix }}，{{ user.name }}<span class="welcome-text" style="color: white"></span>
           </div>
-          <div style="color: white" class="animate__animated animate__fadeInUp">{{ welcome }}</div>
+          <div style="color: white" class="animate__animated animate__fadeInUp animate__delay-1s">{{ welcome }}</div>
         </div>
       </div>
     </template>
