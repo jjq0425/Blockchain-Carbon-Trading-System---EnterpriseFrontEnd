@@ -1,9 +1,30 @@
+<!--
+ * @Author: jjq
+ * @Description: 
+ * 
+-->
 <template>
   <page-header-wrapper>
     <!-- PageHeader 第二种使用方式 (v-slot) -->
-    <template v-slot:content>
-      将一个冗长或用户不熟悉的表单任务分成多个步骤，指导用户完成。
+    <template v-slot:extraContent>
+      <transition-group
+        appear
+        name="animate__animated animate__bounce"
+        enter-active-class="animate__jackInTheBox"
+        leave-active-class="animate__backOutUp"
+      >
+        <div
+          class=""
+          style="height: 100px; margin-top: -20px; margin-right: 80px; position: absolute"
+          key="pageRightPNG"
+        >
+          <img style="height: 100%; transform: scale(1.7)" src="@/assets/beauty/pageRight/Data.png" />
+        </div>
+      </transition-group>
+
+      <div style="height: 30px"></div>
     </template>
+    <template v-slot:content> 将一个冗长或用户不熟悉的表单任务分成多个步骤，指导用户完成。 </template>
     <a-card :bordered="false">
       <a-steps class="steps" :current="currentTab">
         <a-step title="填写转账信息" />
@@ -11,9 +32,9 @@
         <a-step title="完成" />
       </a-steps>
       <div class="content">
-        <step1 v-if="currentTab === 0" @nextStep="nextStep"/>
-        <step2 v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep"/>
-        <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish"/>
+        <step1 v-if="currentTab === 0" @nextStep="nextStep" />
+        <step2 v-if="currentTab === 1" @nextStep="nextStep" @prevStep="prevStep" />
+        <step3 v-if="currentTab === 2" @prevStep="prevStep" @finish="finish" />
       </div>
     </a-card>
   </page-header-wrapper>
@@ -29,38 +50,37 @@ export default {
   components: {
     Step1,
     Step2,
-    Step3
+    Step3,
   },
-  data () {
+  data() {
     return {
       currentTab: 0,
       // form
-      form: null
+      form: null,
     }
   },
   methods: {
-
     // handler
-    nextStep () {
+    nextStep() {
       if (this.currentTab < 2) {
         this.currentTab += 1
       }
     },
-    prevStep () {
+    prevStep() {
       if (this.currentTab > 0) {
         this.currentTab -= 1
       }
     },
-    finish () {
+    finish() {
       this.currentTab = 0
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="less" scoped>
-  .steps {
-    max-width: 750px;
-    margin: 16px auto;
-  }
+.steps {
+  max-width: 750px;
+  margin: 16px auto;
+}
 </style>

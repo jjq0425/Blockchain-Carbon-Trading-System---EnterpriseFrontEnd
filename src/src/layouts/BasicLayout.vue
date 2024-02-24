@@ -20,8 +20,9 @@
     <template v-slot:menuHeaderRender>
       <div>
         <img src="@/assets/logo.svg" />
-        <h1 v-if="lang.includes('zh')">{{ title }}标题测试</h1>
-        <h1 v-else style="font-size: 17px">CarbonBChain</h1>
+        <h1 v-if="lang.includes('zh')">{{ title }}</h1>
+        <!-- 标题测试 -->
+        <h1 v-else style="font-size: 17px">CarbonChain</h1>
         <!-- 可用width来控制tag -->
         <img
           v-if="lang.includes('zh')"
@@ -57,7 +58,15 @@
     <template v-slot:footerRender>
       <global-footer />
     </template>
-    <router-view />
+    <!-- <router-view /> -->
+    <!-- <transition-group
+      appear
+      name="animate__animated animate__bounce "
+      enter-active-class="animate__fadeIn animate__faster"
+      leave-active-class="animate__fadeOut"
+    > -->
+    <router-view key="ROUTER_VIEW" />
+    <!-- </transition-group> -->
   </pro-layout>
 </template>
 

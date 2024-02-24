@@ -10,7 +10,22 @@
     content="段落示意：蚂蚁金服务设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态， 提供跨越设计与开发的体验解决方案。"
   >
     <template v-slot:extraContent>
-      <div style="width: 155px; margin-top: -20px"><img style="width: 100%" :src="extraImage" /></div>
+      <transition-group
+        appear
+        name="animate__animated animate__bounce"
+        enter-active-class="animate__jackInTheBox"
+        leave-active-class="animate__backOutUp"
+      >
+        <div
+          class=""
+          style="height: 100px; margin-top: -20px; margin-right: 80px; position: absolute"
+          key="pageRightPNG"
+        >
+          <img style="height: 100%; transform: scale(2)" src="@/assets/beauty/pageRight/Trade.svg" />
+        </div>
+      </transition-group>
+
+      <div style="height: 50px"></div>
     </template>
     <a-list rowKey="id" :grid="{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }" :dataSource="dataSource" class="card-list">
       <a-list-item slot="renderItem" slot-scope="item">
@@ -67,7 +82,7 @@ export default {
     return {
       tabActiveKey: 'tab1',
 
-      extraImage: 'https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png',
+      // extraImage: 'https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png',
       dataSource,
     }
   },

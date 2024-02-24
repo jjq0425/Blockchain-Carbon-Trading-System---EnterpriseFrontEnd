@@ -82,7 +82,7 @@
             <a href="_self">条款</a>
           </div>
           <div class="copyright">Copyright &copy; 2018 vueComponent</div> -->
-              <!-- 碳链CarbonLink · 企业端 （修改footer请） -->
+              <!-- 碳盟链道CarbonLink · 企业端 （修改footer请） -->
             </div>
           </div>
         </div>

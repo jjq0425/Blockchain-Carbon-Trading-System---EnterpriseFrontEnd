@@ -121,7 +121,7 @@ export default {
   },
   computed: {
     qrcodeVal() {
-      return `otpauth://totp/碳链:测试公司?secret=${this.secretKey}&issuer=碳链`
+      return `otpauth://totp/碳盟链道:测试公司?secret=${this.secretKey}&issuer=碳盟链道`
       // 请替换测试公司！
     },
   },

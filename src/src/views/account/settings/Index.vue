@@ -1,5 +1,26 @@
 <template>
-  <page-header-wrapper class="page-header-index-wide">
+  <page-header-wrapper
+    class="page-header-index-wide"
+    content="段落示意：蚂蚁金服务设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态， 提供跨越设计与开发的体验解决方案。"
+  >
+    <template v-slot:extraContent>
+      <transition-group
+        appear
+        name="animate__animated animate__bounce"
+        enter-active-class="animate__jackInTheBox"
+        leave-active-class="animate__backOutUp"
+      >
+        <div
+          class=""
+          style="height: 100px; margin-top: -20px; margin-right: 80px; position: absolute"
+          key="pageRightPNG"
+        >
+          <img style="height: 100%; transform: scale(1.2)" src="@/assets/beauty/pageRight/Setting.png" />
+        </div>
+      </transition-group>
+
+      <div style="height: 30px"></div>
+    </template>
     <a-card :bordered="false" :bodyStyle="{ padding: '16px 0', height: '100%' }" :style="{ height: '100%' }">
       <div class="account-settings-info-main" :class="{ mobile: isMobile }">
         <div class="account-settings-info-left">

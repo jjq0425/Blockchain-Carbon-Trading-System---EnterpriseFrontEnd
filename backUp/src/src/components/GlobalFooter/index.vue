@@ -9,7 +9,8 @@
       <!-- <a href="https://www.github.com/vueComponent/pro-layout" target="_blank">Pro Layout</a>
       <a href="https://www.github.com/vueComponent/ant-design-vue-pro" target="_blank">Github</a>
       <a href="https://www.github.com/sendya/" target="_blank">@Sendya</a> -->
-      <span>碳链系统测试Footer · 企业端</span>
+      <span>碳盟链道 · 企业端</span>
+      <!-- 系统测试Footer -->
     </template>
     <!-- <template v-slot:copyright>
       <a href="https://github.com/vueComponent" target="_blank">vueComponent</a>

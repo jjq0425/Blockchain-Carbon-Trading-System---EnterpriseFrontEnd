@@ -9,7 +9,7 @@
           <div class="content-title" style="color: white">
             {{ timeFix }}，{{ user.name }}<span class="welcome-text" style="color: white"></span>
           </div>
-          <div style="color: white">{{ welcome }}</div>
+          <div style="color: white" class="animate__animated animate__fadeInUp">{{ welcome }}</div>
         </div>
       </div>
     </template>

@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="PDF测试"
+    title="碳排放报告PDF下载"
     :visible="visible"
     :maskClosable="false"
     :confirmLoading="confirmLoading"
@@ -11,13 +11,21 @@
   >
     <div style="display: flex; justify-content: space-around; align-items: center">
       <div style="width: 40%">
-        <video src="https://chatglm.cn//media/analyze.9527f201.mp4" loop autoplay style="width: 100%"></video>
+        <!-- <video src="https://chatglm.cn//media/analyze.9527f201.mp4" loop autoplay style="width: 100%"></video>
+         -->
+        <video src="@/assets/components/PDFgenerate/DownloadVideo.mp4" loop autoplay style="width: 100%"></video>
       </div>
       <div style="width: 60%; text-align: center">
         <div v-if="NowPercentage != 100" style="font-weight: bold; font-size: 30px; color: #108ee9">
           下载中，请稍后...
         </div>
-        <div v-else-if="NowPercentage == 100" style="font-weight: bold; font-size: 30px; color: #0ca678">下载成功</div>
+        <div
+          v-else-if="NowPercentage == 100"
+          class="animate__animated animate__tada animate__repeat-2"
+          style="font-weight: bold; font-size: 30px; color: #0ca678"
+        >
+          下载成功
+        </div>
         <div
           v-if="NowPercentage != 100"
           style="width: 100%; text-align: center; font-size: 10px; color: grey; margin-top: 20px"
