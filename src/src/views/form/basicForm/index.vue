@@ -104,6 +104,9 @@
 </template>
 
 <script>
+import changeBgCSS from '../../../utils/ChangeBgCSS'
+import ChangeBgCSS from '../../../utils/ChangeBgCSS'
+
 export default {
   name: 'BaseForm',
   data() {
@@ -121,6 +124,9 @@ export default {
         }
       })
     },
+  },
+  mounted() {
+    ChangeBgCSS('INFO')
   },
 }
 </script>

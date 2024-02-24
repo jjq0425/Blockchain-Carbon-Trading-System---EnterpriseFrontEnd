@@ -394,4 +394,15 @@ export default {
 }
 </style>
 
+<style scoped>
+.extra-content {
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  border-radius: 6px;
+}
+</style>
+
+
+
+
 

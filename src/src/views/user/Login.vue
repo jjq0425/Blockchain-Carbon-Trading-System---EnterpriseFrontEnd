@@ -423,14 +423,14 @@ export default {
             message: '欢迎',
             description: `${timeFix()}，登录成功`,
           })
-        }, 1000)
+        }, 50)
       } else {
         setTimeout(() => {
           this.$notification.success({
             message: 'Welcome',
             description: `Login Sccess`,
           })
-        }, 1000)
+        }, 50)
       }
       this.isLoginError = false
     },

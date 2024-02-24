@@ -14,28 +14,24 @@
       </a-row>
     </a-card>
 
-    <a-card
-      style="margin-top: 24px"
-      :bordered="false"
-      title="标准列表">
-
+    <a-card style="margin-top: 24px" :bordered="false" title="标准列表">
       <div slot="extra">
         <a-radio-group v-model="status">
           <a-radio-button value="all">全部</a-radio-button>
           <a-radio-button value="processing">进行中</a-radio-button>
           <a-radio-button value="waiting">等待中</a-radio-button>
         </a-radio-group>
-        <a-input-search style="margin-left: 16px; width: 272px;" />
+        <a-input-search style="margin-left: 16px; width: 272px" />
       </div>
 
       <div class="operate">
         <a-button type="dashed" style="width: 100%" icon="plus" @click="add">添加</a-button>
       </div>
 
-      <a-list size="large" :pagination="{showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50}">
+      <a-list size="large" :pagination="{ showSizeChanger: true, showQuickJumper: true, pageSize: 5, total: 50 }">
         <a-list-item :key="index" v-for="(item, index) in data">
           <a-list-item-meta :description="item.description">
-            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar"/>
+            <a-avatar slot="avatar" size="large" shape="square" :src="item.avatar" />
             <a slot="title">{{ item.title }}</a>
           </a-list-item-meta>
           <div slot="actions">
@@ -47,7 +43,7 @@
                 <a-menu-item><a>编辑</a></a-menu-item>
                 <a-menu-item><a>删除</a></a-menu-item>
               </a-menu>
-              <a>更多<a-icon type="down"/></a>
+              <a>更多<a-icon type="down" /></a>
             </a-dropdown>
           </div>
           <div class="list-content">
@@ -60,7 +56,11 @@
               <p>{{ item.startAt }}</p>
             </div>
             <div class="list-content-item">
-              <a-progress :percent="item.progress.value" :status="!item.progress.status ? null : item.progress.status" style="width: 180px" />
+              <a-progress
+                :percent="item.progress.value"
+                :status="!item.progress.status ? null : item.progress.status"
+                style="width: 180px"
+              />
             </div>
           </div>
         </a-list-item>
@@ -73,6 +73,7 @@
 // 演示如何使用 this.$dialog 封装 modal 组件
 import TaskForm from './modules/TaskForm'
 import Info from './components/Info'
+import ChangeBgCSS from '../../utils/ChangeBgCSS'
 
 const data = []
 data.push({
@@ -82,8 +83,8 @@ data.push({
   owner: '付晓晓',
   startAt: '2018-07-26 22:44',
   progress: {
-    value: 90
-  }
+    value: 90,
+  },
 })
 data.push({
   title: 'Angular',
@@ -92,8 +93,8 @@ data.push({
   owner: '曲丽丽',
   startAt: '2018-07-26 22:44',
   progress: {
-    value: 54
-  }
+    value: 54,
+  },
 })
 data.push({
   title: 'Ant Design',
@@ -102,8 +103,8 @@ data.push({
   owner: '林东东',
   startAt: '2018-07-26 22:44',
   progress: {
-    value: 66
-  }
+    value: 66,
+  },
 })
 data.push({
   title: 'Ant Design Pro',
@@ -112,8 +113,8 @@ data.push({
   owner: '周星星',
   startAt: '2018-07-26 22:44',
   progress: {
-    value: 30
-  }
+    value: 30,
+  },
 })
 data.push({
   title: 'Bootstrap',
@@ -123,98 +124,105 @@ data.push({
   startAt: '2018-07-26 22:44',
   progress: {
     status: 'exception',
-    value: 100
-  }
+    value: 100,
+  },
 })
 
 export default {
   name: 'StandardList',
   components: {
     TaskForm,
-    Info
+    Info,
   },
-  data () {
+  data() {
     return {
       data,
-      status: 'all'
+      status: 'all',
     }
   },
+  mounted() {
+    ChangeBgCSS('TRADE')
+  },
   methods: {
-    add () {
-      this.$dialog(TaskForm,
+    add() {
+      this.$dialog(
+        TaskForm,
         // component props
         {
           record: {},
           on: {
-            ok () {
+            ok() {
               console.log('ok 回调')
             },
-            cancel () {
+            cancel() {
               console.log('cancel 回调')
             },
-            close () {
+            close() {
               console.log('modal close 回调')
-            }
-          }
+            },
+          },
         },
         // modal props
         {
           title: '新增',
           width: 700,
           centered: true,
-          maskClosable: false
-        })
+          maskClosable: false,
+        }
+      )
     },
-    edit (record) {
+    edit(record) {
       console.log('record', record)
-      this.$dialog(TaskForm,
+      this.$dialog(
+        TaskForm,
         // component props
         {
           record,
           on: {
-            ok () {
+            ok() {
               console.log('ok 回调')
             },
-            cancel () {
+            cancel() {
               console.log('cancel 回调')
             },
-            close () {
+            close() {
               console.log('modal close 回调')
-            }
-          }
+            },
+          },
         },
         // modal props
         {
           title: '操作',
           width: 700,
           centered: true,
-          maskClosable: false
-        })
-    }
-  }
+          maskClosable: false,
+        }
+      )
+    },
+  },
 }
 </script>
 
 <style lang="less" scoped>
 .ant-avatar-lg {
-    width: 48px;
-    height: 48px;
-    line-height: 48px;
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
 }
 
 .list-content-item {
-    color: rgba(0, 0, 0, .45);
-    display: inline-block;
-    vertical-align: middle;
-    font-size: 14px;
-    margin-left: 40px;
-    span {
-        line-height: 20px;
-    }
-    p {
-        margin-top: 4px;
-        margin-bottom: 0;
-        line-height: 22px;
-    }
+  color: rgba(0, 0, 0, 0.45);
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  margin-left: 40px;
+  span {
+    line-height: 20px;
+  }
+  p {
+    margin-top: 4px;
+    margin-bottom: 0;
+    line-height: 22px;
+  }
 }
 </style>

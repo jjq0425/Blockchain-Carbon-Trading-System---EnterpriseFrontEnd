@@ -361,7 +361,7 @@ export default {
 
 /* 滚动条整体样式 */
 ::-webkit-scrollbar {
-  width: 10px; /* 设置滚动条的宽度 */
+  width: 5px; /* 设置滚动条的宽度 */
   /* height: 2000000000000000px; */
 }
 
@@ -447,5 +447,35 @@ export default {
 .ant-menu-submenu .ant-menu-item {
   margin-top: 5px !important;
   margin-bottom: 10px !important;
+}
+
+.ant-menu-item .anticon,
+.ant-menu-submenu-title .anticon {
+  font-size: 18px;
+}
+
+.ant-menu-item-selected > a {
+  font-weight: bold;
+}
+
+.ant-pro-sider-menu-sider.fix-sider-bar .ant-menu-inline {
+  background: transparent;
+}
+.ant-pro-sider-menu-sider.light .ant-menu-light {
+  background: url('@/assets/beauty/sidebar/sidebar.png');
+  background-position: -100% 0%;
+  backdrop-filter: blur(10px);
+  /* animation: moveSideBarBackground 20s ease-in-out infinite;  */
+}
+@keyframes moveSideBarBackground {
+  0% {
+    background-position: -100% 0;
+  }
+  50% {
+    background-position: -50% 30%;
+  }
+  100% {
+    background-position: -100% 0;
+  }
 }
 </style>

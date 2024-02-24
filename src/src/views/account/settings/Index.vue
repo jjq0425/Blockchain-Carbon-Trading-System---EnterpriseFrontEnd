@@ -49,6 +49,7 @@
 <script>
 import { RouteView } from '@/layouts'
 import { baseMixin } from '@/store/app-mixin'
+import ChangeBgCSS from '../../../utils/ChangeBgCSS'
 
 export default {
   components: {
@@ -86,6 +87,7 @@ export default {
   },
   mounted() {
     this.updateMenu()
+    ChangeBgCSS('SETTING')
   },
   methods: {
     onOpenChange(openKeys) {
