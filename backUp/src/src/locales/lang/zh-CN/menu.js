@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 export default {
     'menu.welcome': '欢迎',
     'menu.home': '主页',
@@ -33,7 +38,7 @@ export default {
     'menu.exception.trigger': '触发错误',
     'menu.account': '个人页',
     'menu.account.center': '个人中心',
-    'menu.account.settings': '个人设置',
+    'menu.account.settings': '企业设置',
     'menu.account.trigger': '触发报错',
     'menu.account.logout': '退出登录'
 }
