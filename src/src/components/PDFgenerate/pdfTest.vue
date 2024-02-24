@@ -4,23 +4,49 @@
     :visible="visible"
     :maskClosable="false"
     :confirmLoading="confirmLoading"
-    :width="400"
+    :width="600"
     :footer="null"
     @cancel="close"
     destroyOnClose
   >
-    正在下载中，请稍后...
+    <div style="display: flex; justify-content: space-around; align-items: center">
+      <div style="width: 40%">
+        <video src="https://chatglm.cn//media/analyze.9527f201.mp4" loop autoplay style="width: 100%"></video>
+      </div>
+      <div style="width: 60%; text-align: center">
+        <div v-if="NowPercentage != 100" style="font-weight: bold; font-size: 30px; color: #108ee9">
+          下载中，请稍后...
+        </div>
+        <div v-else-if="NowPercentage == 100" style="font-weight: bold; font-size: 30px; color: #0ca678">下载成功</div>
+        <div
+          v-if="NowPercentage != 100"
+          style="width: 100%; text-align: center; font-size: 10px; color: grey; margin-top: 20px"
+        >
+          <a-icon type="exclamation-circle" /> &nbsp;&nbsp; 关闭弹窗后下载将中断
+        </div>
+      </div>
+    </div>
+    <a-progress
+      :stroke-color="{
+        from: '#108ee9',
+        to: '#87d068',
+      }"
+      :percent="NowPercentage"
+      :status="NowPercentage == 100 ? 'success' : 'active'"
+      :strokeWidth="2"
+      :showInfo="false"
+    />
+    <div>{{ downloadStepInfo }}</div>
   </a-modal>
 </template>
   
   
   
 <script>
-require('@/assets/fonts/Fangsong_GB2312-normal')
-require('@/assets/fonts/simhei-normal')
-require('@/assets/fonts/simheibd-normal')
-require('@/assets/fonts/HYYunHei-45W-normal')
-
+// require('@/assets/fonts/Fangsong_GB2312-normal')
+// require('@/assets/fonts/simhei-normal')
+// require('@/assets/fonts/simheibd-normal')
+// require('@/assets/fonts/HYYunHei-45W-normal')
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 export default {
@@ -30,17 +56,65 @@ export default {
       visible: false,
       confirmLoading: false,
       id: null,
+      downloadStep: 0,
+      downloadStepInfo: '正在准备下载',
+      StartPercentage: [0, 10, 30, 70, 80, 85, 95],
+      // StopPercentage: [0, 30, 70, 80, 85, 90, 100],
+      NowPercentage: 0,
     }
+  },
+  watch: {
+    downloadStep: {
+      handler(newVal, oldVal) {
+        switch (newVal) {
+          case 0:
+            this.downloadStepInfo = '正在准备下载'
+            break
+          case 1:
+            this.downloadStepInfo = '正在初始化信息'
+            break
+          case 2:
+            this.downloadStepInfo = '正在加载必要组件，若为首次加载速度较慢，请稍等'
+            break
+          case 3:
+            this.downloadStepInfo = '正在加载字体A，若为首次加载速度较慢，请稍等'
+            break
+          case 4:
+            this.downloadStepInfo = '正在加载字体B'
+            break
+          case 5:
+            this.downloadStepInfo = '正在生成初始密钥'
+            break
+          case 6:
+            this.downloadStepInfo = '正在生成最后文件'
+            break
+          case 7:
+            this.downloadStepInfo = '文件生成成功'
+            break
+        }
+        if (newVal != 0) {
+          this.NowPercentage = this.StartPercentage[newVal - 1]
+        }
+        if (newVal == 7) {
+          this.NowPercentage = 100
+        }
+      },
+      immediate: true,
+    },
   },
   computed: {},
   methods: {
     open(id) {
       this.id = id
+
       this.visible = true
       this.runPdf()
     },
     close() {
       this.id = null
+      this.downloadStep = 0
+      this.downloadStepInfo = '正在准备下载'
+      this.NowPercentage = 0
       this.visible = false
     },
     /**
@@ -57,10 +131,33 @@ export default {
       }
       return result
     },
+    setProgress() {
+      let this_ = this
+      let progressTime = setInterval(() => {
+        if (this_.NowPercentage < this_.StartPercentage[this_.downloadStep]) {
+          this_.NowPercentage++
+        } else if (this_.NowPercentage == 100) {
+          clearInterval(progressTime)
+        }
+      }, 100)
+    },
+    async importFont() {
+      this.downloadStep = 1
+      await import('@/assets/fonts/Fangsong_GB2312-normal')
+      this.downloadStep = 2
+      await import('@/assets/fonts/simhei-normal')
+      this.downloadStep = 3
+      await import('@/assets/fonts/simheibd-normal')
+      this.downloadStep = 4
+      await import('@/assets/fonts/HYYunHei-45W-normal')
+    },
     /**
      * 生成PDF（测试）
      */
-    runPdf() {
+    async runPdf() {
+      this.setProgress()
+      await this.importFont()
+
       let yPos = 0
       let line = null
       let text = null
@@ -68,6 +165,7 @@ export default {
       let JSPDF_splittedText
       let JSPDF_lines
       let JSPDF_blockHeight
+      this.downloadStep = 5
       let KEY = this.generateRandomKey(48)
 
       //封面
@@ -79,6 +177,8 @@ export default {
       doc.addFont('simheibd-normal.ttf', 'simheibd', 'normal')
       doc.addFont('simhei-normal.ttf', 'simhei', 'normal')
       doc.addFont('HYYunHei-45W-normal.ttf', 'HYYunHei-45W', 'normal')
+
+      this.downloadStep = 6
       doc.setFont('simheibd')
       doc.setFontSize(25)
       doc.text('中国发电企业温室气体排放报告', doc.internal.pageSize.getWidth() / 2, 100, { align: 'center' })
@@ -483,7 +583,16 @@ export default {
       }
 
       //   console.log(doc)
-      doc.save('a4.pdf')
+
+      setTimeout(() => {
+        if (this.visible) {
+          doc.save('a4.pdf')
+          // console.log('>>下载结束')
+
+          this.downloadStep = 7
+          // console.log(this.downloadStep)
+        }
+      }, 1000)
     },
   },
   mounted() {},
