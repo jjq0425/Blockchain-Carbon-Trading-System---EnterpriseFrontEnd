@@ -6,23 +6,29 @@
           <a-avatar size="large" :src="currentUser.avatar" />
         </div>
         <div class="content">
-          <div class="content-title">
-            {{ timeFix }}，{{ user.name }}<span class="welcome-text">，{{ welcome }}</span>
+          <div class="content-title" style="color: white">
+            {{ timeFix }}，{{ user.name }}<span class="welcome-text" style="color: white"></span>
           </div>
-          <div>前端工程师 | 蚂蚁金服 - 某某某事业群 - VUE平台</div>
+          <div style="color: white">{{ welcome }}</div>
         </div>
       </div>
     </template>
     <template v-slot:extraContent>
       <div class="extra-content">
         <div class="stat-item">
-          <a-statistic title="项目数" :value="56" />
+          <!-- <a-statistic title="项目数" :value="56" /> -->
+          <div style="font-size: 14px">行业类型</div>
+          <div style="font-size: 18px; margin-top: 10px; font-weight: bold">电力</div>
         </div>
         <div class="stat-item">
-          <a-statistic title="团队内排名" :value="8" suffix="/ 24" />
+          <!-- <a-statistic title="团队内排名" :value="8" suffix="/ 24" /> -->
+          <div style="font-size: 14px">碳币余额</div>
+          <div style="font-size: 18px; margin-top: 10px; font-weight: bold">23.56</div>
         </div>
         <div class="stat-item">
-          <a-statistic title="项目访问" :value="2223" />
+          <!-- <a-statistic title="项目访问" :value="2223" /> -->
+          <div style="font-size: 14px">行业类型</div>
+          <div style="font-size: 18px; margin-top: 10px; font-weight: bold">电力</div>
         </div>
       </div>
     </template>
@@ -130,6 +136,7 @@ import { timeFix } from '@/utils/util'
 import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar } from '@/components'
+import store from '@/store'
 
 import { getRoleList, getServiceList } from '@/api/manage'
 
@@ -198,11 +205,14 @@ export default {
     ...mapState({
       nickname: (state) => state.user.nickname,
       welcome: (state) => state.user.welcome,
+      avatar: (state) => state.user.avatar,
     }),
     currentUser() {
       return {
-        name: 'Serati Ma',
-        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        // name: 'Serati Ma',
+        // avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        name: this.nickname,
+        avatar: this.avatar,
       }
     },
     userInfo() {
@@ -383,3 +393,5 @@ export default {
   }
 }
 </style>
+
+

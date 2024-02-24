@@ -16,8 +16,8 @@ export function timeFix() {
 }
 
 export function welcome() {
-  const arr_CN = ['让我们共同为碳中和努力！', '保持活力，节约能源。', '节能降耗，绿色运行。', '一同共建绿色企业。']
-  const arr_EN = ['low-carbon life,starting from scratch', 'love low-carbon,love life', 'Accompanied by low-carbon Health', 'Share the low-carbon life,build a green home']
+  const arr_CN = ["碧空如洗，绿意盎然，我们承诺碳中和，绘就地球生态画卷。", "科技之光，照亮未来，助力碳中和，共筑绿色地球家园。", "绿色发展，智慧生活，携手共进，迈向碳中和新纪元。", "减碳护蓝，行动诠释责任，科技引领未来，共绘绿色地球。", "低碳生活，从我做起，选择绿色能源，共创美好未来。", "节能减碳，绿色发展，贡献力量，让地球更加美好。", "绿色出行，智慧生活，共同迈向碳中和，共筑绿色地球。", "科技创新，引领绿色发展，贡献力量，守护地球家园。", "绿色能源，智慧生活，共同迈向碳中和，守护地球家园。", "节能减碳，从我做起，贡献力量，让地球更加美好。"]
+  const arr_EN = ["Clear blue skies, lush greenery, we pledge carbon neutrality, painting a ecological masterpiece of Earth.", "The light of technology, illuminating the future, supports carbon neutrality, co-building a green Earth.", "Green development, smart living, joining hands, strides towards a new era of carbon neutrality.", "Reducing carbon, protecting the blue planet, actions interpret responsibility, technology leads the future, co-creating a green Earth.", "Low-carbon living, starting from me, choosing green energy, co-creating a bright future.", "Energy saving and carbon reduction, green development, contributing our efforts, making Earth even more beautiful.", "Green travel, smart living, moving towards carbon neutrality together, co-building a green Earth.", "Technological innovation, leading green development, contributing our efforts, protecting our Earth.", "Green energy, smart living, moving towards carbon neutrality together, guarding our Earth.", "Energy saving and carbon reduction, starting from me, contributing our efforts, making Earth even more beautiful."]
   // 从store（Vuex）中判断语言
   let arr = []
   if (store.getters.lang === 'en-US') {

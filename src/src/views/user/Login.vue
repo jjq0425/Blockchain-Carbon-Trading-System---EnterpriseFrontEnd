@@ -274,14 +274,20 @@ export default {
     }
   },
   created() {
-    get2step({})
-      .then((res) => {
-        this.requiredTwoStepCaptcha = res.data.stepCode
-      })
-      .catch(() => {
-        this.requiredTwoStepCaptcha = false
-      })
+    // get2step({})
+    //   .then((res) => {
+    //     this.requiredTwoStepCaptcha = res.data.stepCode
+    //   })
+    //   .catch(() => {
+    //     this.requiredTwoStepCaptcha = false
+    //   })
     // this.requiredTwoStepCaptcha = true
+    this.$nextTick(() => {
+      this.form.setFieldsValue({
+        username: 'uestc',
+        password: '123456',
+      })
+    })
   },
   methods: {
     ChangeLanguage() {
@@ -411,12 +417,21 @@ export default {
       */
       this.$router.push({ path: '/' })
       // 延迟 1 秒显示欢迎信息
-      setTimeout(() => {
-        this.$notification.success({
-          message: '欢迎',
-          description: `${timeFix()}，欢迎回来`,
-        })
-      }, 1000)
+      if (this.$store.state.app.lang.includes('zh')) {
+        setTimeout(() => {
+          this.$notification.success({
+            message: '欢迎',
+            description: `${timeFix()}，登录成功`,
+          })
+        }, 1000)
+      } else {
+        setTimeout(() => {
+          this.$notification.success({
+            message: 'Welcome',
+            description: `Login Sccess`,
+          })
+        }, 1000)
+      }
       this.isLoginError = false
     },
     requestFailed(err) {
