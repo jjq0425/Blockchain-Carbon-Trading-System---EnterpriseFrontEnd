@@ -1,5 +1,10 @@
 /*
  * @Author: jjq
+ * @Description: 
+ * 
+ */
+/*
+ * @Author: jjq
  * @Description
  * 
  */
@@ -15,21 +20,22 @@ export default {
     'menu.dashboard.analysis': '分析页',
     'menu.dashboard.monitor': '监控页',
     'menu.dashboard.workplace': '工作台',
-    'menu.form': '信息填报',
-    'menu.form.basic-form': '基础表单',
-    'menu.form.step-form': '分步表单',
-    'menu.form.step-form.info': '分步表单（填写转账信息）',
-    'menu.form.step-form.confirm': '分步表单（确认转账信息）',
-    'menu.form.step-form.result': '分步表单（完成）',
-    'menu.form.advanced-form': '高级表单',
-    'menu.list': '碳币交易',
-    'menu.list.table-list': '查询表格',
-    'menu.list.basic-list': '标准列表',
-    'menu.list.card-list': '卡片列表',
-    'menu.list.search-list': '搜索列表',
-    'menu.list.search-list.articles': '搜索列表（文章）',
-    'menu.list.search-list.projects': '搜索列表（项目）',
-    'menu.list.search-list.applications': '搜索列表（应用）',
+    'menu.info': '信息填报',
+    'menu.info.basic-form': '基础表单',
+    'menu.info.step-form': '分步表单',
+    'menu.info.step-form.info': '分步表单（填写转账信息）',
+    'menu.info.step-form.confirm': '分步表单（确认转账信息）',
+    'menu.info.step-form.result': '分步表单（完成）',
+    'menu.info.advanced-form': '高级表单',
+    'menu.info.infoSubmission': '数据报送',
+    'menu.trade': '碳币交易',
+    'menu.trade.table-list': '查询表格',
+    'menu.trade.basic-list': '标准列表',
+    'menu.trade.card-list': '卡片列表',
+    'menu.trade.search-list': '搜索列表',
+    'menu.trade.search-list.articles': '搜索列表（文章）',
+    'menu.trade.search-list.projects': '搜索列表（项目）',
+    'menu.trade.search-list.applications': '搜索列表（应用）',
     'menu.profile': '详情页',
     'menu.profile.basic': '基础详情页',
     'menu.profile.advanced': '高级详情页',

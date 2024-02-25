@@ -609,7 +609,7 @@ const userNav = options => {
       id: 10,
       meta: {
         icon: 'form',
-        title: 'menu.form'
+        title: 'menu.info'
       },
       redirect: '/form/base-form',
       component: 'RouteView'
@@ -619,7 +619,7 @@ const userNav = options => {
       parentId: 10,
       id: 6,
       meta: {
-        title: 'menu.form.basic-form'
+        title: 'menu.info.basic-form'
       },
       component: 'BasicForm'
     },
@@ -628,7 +628,7 @@ const userNav = options => {
       parentId: 10,
       id: 5,
       meta: {
-        title: 'menu.form.step-form'
+        title: 'menu.info.step-form'
       },
       component: 'StepForm'
     },
@@ -637,7 +637,7 @@ const userNav = options => {
       parentId: 10,
       id: 4,
       meta: {
-        title: 'menu.form.advanced-form'
+        title: 'menu.info.advanced-form'
       },
       component: 'AdvanceForm'
     },
@@ -649,7 +649,7 @@ const userNav = options => {
       id: 10010,
       meta: {
         icon: 'table',
-        title: 'menu.list',
+        title: 'menu.trade',
         show: true
       },
       redirect: '/list/table-list',
@@ -661,7 +661,7 @@ const userNav = options => {
       id: 10011,
       path: '/list/table-list/:pageNo([1-9]\\d*)?',
       meta: {
-        title: 'menu.list.table-list',
+        title: 'menu.trade.table-list',
         show: true
       },
       component: 'TableList'
@@ -671,7 +671,7 @@ const userNav = options => {
       parentId: 10010,
       id: 10012,
       meta: {
-        title: 'menu.list.basic-list',
+        title: 'menu.trade.basic-list',
         show: true
       },
       component: 'StandardList'
@@ -681,7 +681,7 @@ const userNav = options => {
       parentId: 10010,
       id: 10013,
       meta: {
-        title: 'menu.list.card-list',
+        title: 'menu.trade.card-list',
         show: true
       },
       component: 'CardList'
@@ -691,7 +691,7 @@ const userNav = options => {
       parentId: 10010,
       id: 10014,
       meta: {
-        title: 'menu.list.search-list',
+        title: 'menu.trade.search-list',
         show: true
       },
       redirect: '/list/search/article',
@@ -702,7 +702,7 @@ const userNav = options => {
       parentId: 10014,
       id: 10015,
       meta: {
-        title: 'menu.list.search-list.articles',
+        title: 'menu.trade.search-list.articles',
         show: true
       },
       component: 'SearchArticles'
@@ -712,7 +712,7 @@ const userNav = options => {
       parentId: 10014,
       id: 10016,
       meta: {
-        title: 'menu.list.search-list.projects',
+        title: 'menu.trade.search-list.projects',
         show: true
       },
       component: 'SearchProjects'
@@ -722,7 +722,7 @@ const userNav = options => {
       parentId: 10014,
       id: 10017,
       meta: {
-        title: 'menu.list.search-list.applications',
+        title: 'menu.trade.search-list.applications',
         show: true
       },
       component: 'SearchApplications'

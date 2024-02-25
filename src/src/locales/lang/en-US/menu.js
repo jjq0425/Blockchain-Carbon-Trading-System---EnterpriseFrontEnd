@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 export default {
     'menu.welcome': 'Welcome',
     'menu.home': 'Home',
@@ -10,21 +15,22 @@ export default {
     'menu.dashboard.analysis': 'Analysis',
     'menu.dashboard.monitor': 'Monitor',
     'menu.dashboard.workplace': 'Workplace',
-    'menu.form': 'Information Submission',
-    'menu.form.basic-form': 'Basic Form',
-    'menu.form.step-form': 'Step Form',
-    'menu.form.step-form.info': 'Step Form(write transfer information)',
-    'menu.form.step-form.confirm': 'Step Form(confirm transfer information)',
-    'menu.form.step-form.result': 'Step Form(finished)',
-    'menu.form.advanced-form': 'Advanced Form',
-    'menu.list': 'Carbon Trade',
-    'menu.list.table-list': 'Search Table',
-    'menu.list.basic-list': 'Basic List',
-    'menu.list.card-list': 'Card List',
-    'menu.list.search-list': 'Search List',
-    'menu.list.search-list.articles': 'Search List(articles)',
-    'menu.list.search-list.projects': 'Search List(projects)',
-    'menu.list.search-list.applications': 'Search List(applications)',
+    'menu.info': 'Information Submission',
+    'menu.info.basic-form': 'Basic Form',
+    'menu.info.step-form': 'Step Form',
+    'menu.info.step-form.info': 'Step Form(write transfer information)',
+    'menu.info.step-form.confirm': 'Step Form(confirm transfer information)',
+    'menu.info.step-form.result': 'Step Form(finished)',
+    'menu.info.advanced-form': 'Advanced Form',
+    'menu.info.infoSubmission': 'Annual Submission',
+    'menu.trade': 'Carbon Trade',
+    'menu.trade.table-list': 'Search Table',
+    'menu.trade.basic-list': 'Basic List',
+    'menu.trade.card-list': 'Card List',
+    'menu.trade.search-list': 'Search List',
+    'menu.trade.search-list.articles': 'Search List(articles)',
+    'menu.trade.search-list.projects': 'Search List(projects)',
+    'menu.trade.search-list.applications': 'Search List(applications)',
     'menu.profile': 'Profile',
     'menu.profile.basic': 'Basic Profile',
     'menu.profile.advanced': 'Advanced Profile',

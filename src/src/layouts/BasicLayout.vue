@@ -42,9 +42,9 @@
     <template v-slot:headerContentRender>
       <div>
         <!-- <span> {{ route.breadcrumbName }}</span> -->
-        <a-tooltip title="刷新页面">
+        <!-- <a-tooltip title="刷新页面">
           <a-icon type="reload" style="font-size: 18px; cursor: pointer" @click="reload()" />
-        </a-tooltip>
+        </a-tooltip> -->
       </div>
     </template>
 

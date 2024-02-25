@@ -53,26 +53,40 @@ export const asyncRouterMap = [
         path: '/info',
         redirect: '/info/base-form',
         component: RouteView,
-        meta: { title: 'menu.form', icon: 'form', },
+        meta: { title: 'menu.info', icon: 'form', },
         children: [
           {
             path: '/info/base-form',
             name: 'BaseForm',
             component: () => import('@/views/info/basicForm'),
-            meta: { title: 'menu.form.basic-form', keepAlive: true, }
+            meta: { title: 'menu.info.basic-form', keepAlive: true, }
           },
           {
             path: '/info/step-form',
             name: 'StepForm',
             // redirect: '/info/advanced-form',
             component: () => import('@/views/info/stepForm/StepForm'),
-            meta: { title: 'menu.form.step-form', keepAlive: true, }
+            meta: { title: 'menu.info.step-form', keepAlive: true, }
           },
           {
             path: '/info/advanced-form',
             name: 'AdvanceForm',
             component: () => import('@/views/info/advancedForm/AdvancedForm'),
-            meta: { title: 'menu.form.advanced-form', keepAlive: true, },
+            meta: { title: 'menu.info.advanced-form', keepAlive: true, },
+            // hidden: true
+          },
+          {
+            path: '/info/submission',
+            name: 'InfoSubmission',
+            component: () => import('@/views/info/infoSubmission/infoSubmission'),
+            meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
+            hidden: true
+          },
+          {
+            path: '/info/submission',
+            name: 'AnnualSubmissionCenter',
+            component: () => import('@/views/info/infoSubmission/AnnualSubmissionCenter'),
+            meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
             // hidden: true
           }
         ]
@@ -83,51 +97,51 @@ export const asyncRouterMap = [
         name: 'trade',
         component: RouteView,
         redirect: '/trade/table-list',
-        meta: { title: 'menu.list', icon: 'transaction', permission: ['table'] },
+        meta: { title: 'menu.trade', icon: 'transaction', permission: ['table'] },
         children: [
           {
             path: '/trade/table-list/:pageNo([1-9]\\d*)?',
             name: 'TableListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('@/views/trade/TableList'),
-            meta: { title: 'menu.list.table-list', keepAlive: true, permission: ['table'] }
+            meta: { title: 'menu.trade.table-list', keepAlive: true, permission: ['table'] }
           },
           {
             path: '/trade/basic-list',
             name: 'BasicList',
             component: () => import('@/views/trade/BasicList'),
-            meta: { title: 'menu.list.basic-list', keepAlive: true, permission: ['table'] }
+            meta: { title: 'menu.trade.basic-list', keepAlive: true, permission: ['table'] }
           },
           {
             path: '/trade/card',
             name: 'CardList',
             component: () => import('@/views/trade/CardList'),
-            meta: { title: 'menu.list.card-list', keepAlive: true, permission: ['table'] }
+            meta: { title: 'menu.trade.card-list', keepAlive: true, permission: ['table'] }
           },
           {
             path: '/trade/search',
             name: 'SearchList',
             component: () => import('@/views/trade/search/SearchLayout'),
             redirect: '/trade/search/article',
-            meta: { title: 'menu.list.search-list', keepAlive: true, permission: ['table'] },
+            meta: { title: 'menu.trade.search-list', keepAlive: true, permission: ['table'] },
             children: [
               {
                 path: '/trade/search/article',
                 name: 'SearchArticles',
                 component: () => import('../views/trade/search/Article'),
-                meta: { title: 'menu.list.search-list.articles', permission: ['table'] }
+                meta: { title: 'menu.trade.search-list.articles', permission: ['table'] }
               },
               {
                 path: '/trade/search/project',
                 name: 'SearchProjects',
                 component: () => import('../views/trade/search/Projects'),
-                meta: { title: 'menu.list.search-list.projects', permission: ['table'] }
+                meta: { title: 'menu.trade.search-list.projects', permission: ['table'] }
               },
               {
                 path: '/trade/search/application',
                 name: 'SearchApplications',
                 component: () => import('../views/trade/search/Applications'),
-                meta: { title: 'menu.list.search-list.applications', permission: ['table'] }
+                meta: { title: 'menu.trade.search-list.applications', permission: ['table'] }
               }
             ]
           }
