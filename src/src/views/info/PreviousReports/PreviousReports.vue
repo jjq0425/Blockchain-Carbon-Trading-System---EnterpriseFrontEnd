@@ -49,12 +49,17 @@ export default {
           title: '上报任务',
           dataIndex: 'task',
         },
+
         {
           title: '上报截止时间',
           dataIndex: 'callNo',
           sorter: true,
           needTotal: true,
           customRender: (text) => text + ' 次',
+        },
+        {
+          title: '排放总量',
+          dataIndex: 'EmissionSum',
         },
         {
           title: '上报状态',
