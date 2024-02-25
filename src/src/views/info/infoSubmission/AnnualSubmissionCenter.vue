@@ -33,6 +33,7 @@
               margin-bottom: 20px;
             "
             class="info-submission-task-card"
+            @click="$router.push({ name: 'InfoSubmission' })"
           >
             <div
               style="padding: 20px; border-radius: 8px 8px 0 0; color: white"

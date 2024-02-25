@@ -56,6 +56,13 @@ export const asyncRouterMap = [
         meta: { title: 'menu.info', icon: 'form', },
         children: [
           {
+            path: '/info/submissionCenter',
+            name: 'AnnualSubmissionCenter',
+            component: () => import('@/views/info/infoSubmission/AnnualSubmissionCenter'),
+            meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
+            // hidden: true
+          },
+          {
             path: '/info/base-form',
             name: 'BaseForm',
             component: () => import('@/views/info/basicForm'),
@@ -73,7 +80,7 @@ export const asyncRouterMap = [
             name: 'AdvanceForm',
             component: () => import('@/views/info/advancedForm/AdvancedForm'),
             meta: { title: 'menu.info.advanced-form', keepAlive: true, },
-            // hidden: true
+            hidden: true
           },
           {
             path: '/info/submission',
@@ -82,13 +89,7 @@ export const asyncRouterMap = [
             meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
             hidden: true
           },
-          {
-            path: '/info/submission',
-            name: 'AnnualSubmissionCenter',
-            component: () => import('@/views/info/infoSubmission/AnnualSubmissionCenter'),
-            meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
-            // hidden: true
-          }
+
         ]
       },
       // 碳币交易
