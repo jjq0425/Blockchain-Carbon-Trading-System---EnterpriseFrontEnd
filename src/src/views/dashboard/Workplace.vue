@@ -137,6 +137,7 @@ import { mapState } from 'vuex'
 import { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import { Radar } from '@/components'
 import store from '@/store'
+import ChangeBgCSS from '../../utils/ChangeBgCSS'
 
 import { getRoleList, getServiceList } from '@/api/manage'
 
@@ -232,6 +233,7 @@ export default {
     })
   },
   mounted() {
+    ChangeBgCSS('')
     this.getProjects()
     this.getActivity()
     this.getTeams()

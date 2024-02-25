@@ -23,6 +23,7 @@ export default {
     'menu.info.step-form.result': 'Step Form(finished)',
     'menu.info.advanced-form': 'Advanced Form',
     'menu.info.infoSubmission': 'Annual Submission',
+    'menu.info.previousReports': 'Previous Reports',
     'menu.trade': 'Carbon Trade',
     'menu.trade.table-list': 'Search Table',
     'menu.trade.basic-list': 'Basic List',

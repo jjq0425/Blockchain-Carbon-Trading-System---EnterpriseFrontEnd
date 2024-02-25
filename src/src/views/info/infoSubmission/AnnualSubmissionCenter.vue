@@ -1,5 +1,7 @@
 <template>
-  <page-header-wrapper content="年度数据上报">
+  <page-header-wrapper
+    content="作为我国碳交易市场的重要组成部分，碳数据上报对于推动碳减排工作具有重要意义。本页面提供了一个便捷、高效的碳数据上报平台，让您能够轻松完成碳数据的收集、整理和提交。"
+  >
     <template v-slot:extraContent>
       <transition-group
         appear
@@ -197,12 +199,12 @@ export default {
   methods: {
     CardBgCalculate(idx) {
       const bgStr = [
-        `linear-gradient(135deg,#ce9ffc,#7367f0)`,
-        `linear-gradient(275deg,#5efce8,#736efe)`,
+        // `linear-gradient(135deg,#ce9ffc,#7367f0)`,
+        `linear-gradient(250deg,#52e5e7,#130cb7)`,
         `linear-gradient(135deg,#43cbff,#9708cc)`,
         `linear-gradient(135deg,#fd6e6a,#ffc600)`,
         `linear-gradient(135deg,#f54ea2,#ff7676)`,
-        `linear-gradient(135deg,#ffa6b7,#1e2ad2)`,
+        `linear-gradient(275deg,#42e695,#3bb2b8)`,
       ]
 
       return bgStr[idx % bgStr.length]

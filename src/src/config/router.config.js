@@ -36,7 +36,7 @@ export const asyncRouterMap = [
           // {
           //   path: 'https://www.baidu.com/',
           //   name: 'Monitor',
-          //   meta: { title: 'menu.dashboard.monitor', target: '_blank' }
+          //   meta: { titl/e: 'menu.dashboard.monitor', target: '_blank' }
           // },
           {
             path: '/dashboard/workplace',
@@ -51,7 +51,7 @@ export const asyncRouterMap = [
       // 信息上报
       {
         path: '/info',
-        redirect: '/info/base-form',
+        redirect: '/info/submissionCenter',
         component: RouteView,
         meta: { title: 'menu.info', icon: 'form', },
         children: [
@@ -63,32 +63,39 @@ export const asyncRouterMap = [
             // hidden: true
           },
           {
-            path: '/info/base-form',
-            name: 'BaseForm',
-            component: () => import('@/views/info/basicForm'),
-            meta: { title: 'menu.info.basic-form', keepAlive: true, }
+            path: '/info/PreviousReports',
+            name: 'PreviousReports',
+            component: () => import('@/views/info/PreviousReports/PreviousReports'),
+            meta: { title: 'menu.info.previousReports', keepAlive: true, },
+            // hidden: true
           },
-          {
-            path: '/info/step-form',
-            name: 'StepForm',
-            // redirect: '/info/advanced-form',
-            component: () => import('@/views/info/stepForm/StepForm'),
-            meta: { title: 'menu.info.step-form', keepAlive: true, }
-          },
-          {
-            path: '/info/advanced-form',
-            name: 'AdvanceForm',
-            component: () => import('@/views/info/advancedForm/AdvancedForm'),
-            meta: { title: 'menu.info.advanced-form', keepAlive: true, },
-            hidden: true
-          },
-          {
-            path: '/info/submission',
-            name: 'InfoSubmission',
-            component: () => import('@/views/info/infoSubmission/infoSubmission'),
-            meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
-            hidden: true
-          },
+          // {
+          //   path: '/info/base-form',
+          //   name: 'BaseForm',
+          //   component: () => import('@/views/info/basicForm'),
+          //   meta: { title: 'menu.info.basic-form', keepAlive: true, }
+          // },
+          // {
+          //   path: '/info/step-form',
+          //   name: 'StepForm',
+          //   // redirect: '/info/advanced-form',
+          //   component: () => import('@/views/info/stepForm/StepForm'),
+          //   meta: { title: 'menu.info.step-form', keepAlive: true, }
+          // },
+          // {
+          //   path: '/info/advanced-form',
+          //   name: 'AdvanceForm',
+          //   component: () => import('@/views/info/advancedForm/AdvancedForm'),
+          //   meta: { title: 'menu.info.advanced-form', keepAlive: true, },
+          //   hidden: true
+          // },
+          // {
+          //   path: '/info/submission',
+          //   name: 'InfoSubmission',
+          //   component: () => import('@/views/info/infoSubmission/infoSubmission'),
+          //   meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
+          //   hidden: true
+          // },
 
         ]
       },
