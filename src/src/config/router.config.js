@@ -89,13 +89,13 @@ export const asyncRouterMap = [
           //   meta: { title: 'menu.info.advanced-form', keepAlive: true, },
           //   hidden: true
           // },
-          // {
-          //   path: '/info/submission',
-          //   name: 'InfoSubmission',
-          //   component: () => import('@/views/info/infoSubmission/infoSubmission'),
-          //   meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
-          //   hidden: true
-          // },
+          {
+            path: '/info/submission',
+            name: 'InfoSubmission',
+            component: () => import('@/views/info/infoSubmission/infoSubmission'),
+            meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
+            hidden: true
+          },
 
         ]
       },
