@@ -69,12 +69,12 @@
     </a-card>
 
     <!-- fixed footer toolbar -->
-    <footer-tool-bar :is-mobile="isMobile" :collapsed="sideCollapsed">
+    <footer-tool-bar :is-mobile="isMobile" :collapsed="sideCollapsed" class="footer-submission">
       <span class="popover-wrapper">
         <a-popover
           title="表单校验信息"
           overlayClassName="antd-pro-pages-forms-style-errorPopover"
-          trigger="click"
+          trigger="hover"
           :getPopupContainer="(trigger) => trigger.parentNode"
         >
           <template slot="content">
@@ -90,11 +90,16 @@
             </li>
           </template>
           <span class="antd-pro-pages-forms-style-errorIcon" v-if="errors.length > 0">
-            <a-icon type="exclamation-circle" />{{ errors.length }}
+            <a-icon
+              theme="twoTone"
+              type="exclamation-circle"
+              two-tone-color="#fa5252"
+              class="animate__animated animate__flash animate__repeat-2"
+            />{{ errors.length }}
           </span>
         </a-popover>
       </span>
-      <a-button type="primary" @click="validate" :loading="loading">提交</a-button>
+      <a-button type="primary" @click="validate" :loading="loading" icon="upload"> 提交</a-button>
     </footer-tool-bar>
   </page-header-wrapper>
 </template>
@@ -358,5 +363,14 @@ export default {
     color: rgba(0, 0, 0, 0.45);
     font-size: 12px;
   }
+}
+</style>
+
+<style lang="less" scoped>
+.footer-submission {
+  background: linear-gradient(30deg, #edf2ff, white) !important;
+  // background: red !important;
+  box-shadow: 0px 0 3px #adb5bd !important;
+  /* animation: FooterBGcolorChange 1.5s infinite; */
 }
 </style>

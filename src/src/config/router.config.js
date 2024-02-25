@@ -64,6 +64,7 @@ export const asyncRouterMap = [
           {
             path: '/info/step-form',
             name: 'StepForm',
+            // redirect: '/info/advanced-form',
             component: () => import('@/views/info/stepForm/StepForm'),
             meta: { title: 'menu.form.step-form', keepAlive: true, }
           },
@@ -71,7 +72,8 @@ export const asyncRouterMap = [
             path: '/info/advanced-form',
             name: 'AdvanceForm',
             component: () => import('@/views/info/advancedForm/AdvancedForm'),
-            meta: { title: 'menu.form.advanced-form', keepAlive: true, }
+            meta: { title: 'menu.form.advanced-form', keepAlive: true, },
+            // hidden: true
           }
         ]
       },

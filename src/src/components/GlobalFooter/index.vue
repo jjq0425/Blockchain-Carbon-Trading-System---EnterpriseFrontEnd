@@ -8,13 +8,19 @@
  * @Description: 
  * 
 -->
+<!--
+ * @Author: jjq
+ * @Description: 
+ * 
+-->
 <template>
   <global-footer class="footer custom-render">
     <template v-slot:links>
       <!-- <a href="https://www.github.com/vueComponent/pro-layout" target="_blank">Pro Layout</a>
       <a href="https://www.github.com/vueComponent/ant-design-vue-pro" target="_blank">Github</a>
       <a href="https://www.github.com/sendya/" target="_blank">@Sendya</a> -->
-      <span>碳盟链道 · 企业端</span>
+      <span v-if="lang.includes('zh')">碳盟链道 · 企业端</span>
+      <span v-else>CarbonChain · Enterprise</span>
       <!-- 系统测试Footer -->
     </template>
     <!-- <template v-slot:copyright>
@@ -25,11 +31,17 @@
 
 <script>
 import { GlobalFooter } from '@ant-design-vue/pro-layout'
+import store from '@/store'
 
 export default {
   name: 'ProGlobalFooter',
   components: {
     GlobalFooter,
+  },
+  computed: {
+    lang() {
+      return store.state.app.lang
+    },
   },
 }
 </script>

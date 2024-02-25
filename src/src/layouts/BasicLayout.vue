@@ -433,13 +433,6 @@ export default {
   }
 }
 
-/* 底部提交 */
-.ant-pro-footer-toolbar {
-  background: linear-gradient(30deg, #edf2ff, white) !important;
-  box-shadow: 0px 0 3px #adb5bd !important;
-  /* animation: FooterBGcolorChange 1.5s infinite; */
-}
-
 .ant-pro-page-header-search {
   border-radius: 100px;
 }
