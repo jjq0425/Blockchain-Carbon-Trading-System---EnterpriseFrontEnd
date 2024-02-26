@@ -61,7 +61,21 @@ const user = {
         getInfo().then(response => {
           // const { result } = response
           const result = response.data || response.result
+
+          if (result.role == null || result.role == undefined) {
+            result.role =
+            {
+              permissions: [
+                {
+                  permissionId: "trade"
+                }
+              ]
+            }
+
+          }
+          console.log(result.role.permissions)
           if (result.role && result.role.permissions.length > 0) {
+
             const role = { ...result.role }
             role.permissions = result.role.permissions.map(permission => {
               const per = {
@@ -73,11 +87,21 @@ const user = {
             role.permissionList = role.permissions.map(permission => { return permission.permissionId })
             // 覆盖响应体的 role, 供下游使用
             result.role = role
+            if (result.avatar == null) {
+              result.avatar = 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+            }
+            if (result.name == null) {
+              result.name = result.enterpriseName
+            }
             console.log("User.js>>ROLE", role, result)
             commit('SET_ROLES', role)
             commit('SET_INFO', result)
+            console.log(result)
             commit('SET_NAME', { name: result.name, welcome: welcome() })
+            // commit('SET_AVATAR', result.avatar)
+            // 设置头像--关闭
             commit('SET_AVATAR', result.avatar)
+
             // 下游
             resolve(result)
           } else {
@@ -91,17 +115,23 @@ const user = {
 
     // 登出
     Logout({ commit, state }) {
+
       return new Promise((resolve) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          storage.remove(ACCESS_TOKEN)
-          resolve()
-        }).catch((err) => {
-          console.log('logout fail:', err)
-          // resolve()
-        }).finally(() => {
-        })
+        // logout(state.token).then(() => {
+        //   commit('SET_TOKEN', '')
+        //   commit('SET_ROLES', [])
+        //   storage.remove(ACCESS_TOKEN)
+        //   resolve()
+        // }).catch((err) => {
+        //   console.log('logout fail:', err)
+        //   // resolve()
+        // }).finally(() => {
+        // })
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        storage.remove(ACCESS_TOKEN)
+        resolve()
+
       })
     }
 

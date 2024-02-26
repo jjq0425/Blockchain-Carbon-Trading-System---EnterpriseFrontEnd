@@ -1,3 +1,8 @@
+<!--
+ * @Author: jjq
+ * @Description: 
+ * 
+-->
 
 <template>
   <!-- hidden PageHeaderWrapper title demo -->
@@ -51,8 +56,8 @@ export default {
         },
 
         {
-          title: '上报截止时间',
-          dataIndex: 'callNo',
+          title: '上报时间',
+          dataIndex: 'submissionTime',
           sorter: true,
           needTotal: true,
           customRender: (text) => text + ' 次',

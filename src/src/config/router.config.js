@@ -105,51 +105,51 @@ export const asyncRouterMap = [
         name: 'trade',
         component: RouteView,
         redirect: '/trade/table-list',
-        meta: { title: 'menu.trade', icon: 'transaction', permission: ['table'] },
+        meta: { title: 'menu.trade', icon: 'transaction', permission: ['trade'] },
         children: [
           {
             path: '/trade/table-list/:pageNo([1-9]\\d*)?',
             name: 'TableListWrapper',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('@/views/trade/TableList'),
-            meta: { title: 'menu.trade.table-list', keepAlive: true, permission: ['table'] }
+            meta: { title: 'menu.trade.table-list', keepAlive: true, permission: ['trade'] }
           },
           {
             path: '/trade/basic-list',
             name: 'BasicList',
             component: () => import('@/views/trade/BasicList'),
-            meta: { title: 'menu.trade.basic-list', keepAlive: true, permission: ['table'] }
+            meta: { title: 'menu.trade.basic-list', keepAlive: true, permission: ['trade'] }
           },
           {
             path: '/trade/card',
             name: 'CardList',
             component: () => import('@/views/trade/CardList'),
-            meta: { title: 'menu.trade.card-list', keepAlive: true, permission: ['table'] }
+            meta: { title: 'menu.trade.card-list', keepAlive: true, permission: ['trade'] }
           },
           {
             path: '/trade/search',
             name: 'SearchList',
             component: () => import('@/views/trade/search/SearchLayout'),
             redirect: '/trade/search/article',
-            meta: { title: 'menu.trade.search-list', keepAlive: true, permission: ['table'] },
+            meta: { title: 'menu.trade.search-list', keepAlive: true, permission: ['trade'] },
             children: [
               {
                 path: '/trade/search/article',
                 name: 'SearchArticles',
                 component: () => import('../views/trade/search/Article'),
-                meta: { title: 'menu.trade.search-list.articles', permission: ['table'] }
+                meta: { title: 'menu.trade.search-list.articles', permission: ['trade'] }
               },
               {
                 path: '/trade/search/project',
                 name: 'SearchProjects',
                 component: () => import('../views/trade/search/Projects'),
-                meta: { title: 'menu.trade.search-list.projects', permission: ['table'] }
+                meta: { title: 'menu.trade.search-list.projects', permission: ['trade'] }
               },
               {
                 path: '/trade/search/application',
                 name: 'SearchApplications',
                 component: () => import('../views/trade/search/Applications'),
-                meta: { title: 'menu.trade.search-list.applications', permission: ['table'] }
+                meta: { title: 'menu.trade.search-list.applications', permission: ['trade'] }
               }
             ]
           }

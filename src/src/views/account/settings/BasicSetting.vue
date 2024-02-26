@@ -2,22 +2,22 @@
   <div class="account-settings-info-view">
     <a-row :gutter="16" type="flex" justify="center">
       <a-col :order="isMobile ? 2 : 1" :md="24" :lg="16">
-        <a-form layout="vertical">
-          <a-form-item :label="$t('account.settings.basic.nickname')">
-            <a-input :placeholder="$t('account.settings.basic.nickname-message')" />
-          </a-form-item>
-          <a-form-item :label="$t('account.settings.basic.profile')">
+        <a-form-model layout="vertical" :model="form" ref="BasicForm">
+          <a-form-model-item :label="$t('account.settings.basic.EnterpriseName')" prop="EnterpriseName">
+            <a-input :placeholder="$t('account.settings.basic.EnterpriseName-message')" v-model="form.EnterpriseName" />
+          </a-form-model-item>
+          <a-form-model-item :label="$t('account.settings.basic.profile')">
             <a-textarea rows="4" :placeholder="$t('account.settings.basic.profile-message')" />
-          </a-form-item>
+          </a-form-model-item>
 
-          <a-form-item :label="$t('account.settings.basic.email')" :required="false">
+          <a-form-model-item :label="$t('account.settings.basic.email')" :required="false">
             <a-input placeholder="example@ant.design" />
-          </a-form-item>
+          </a-form-model-item>
 
-          <a-form-item>
+          <a-form-model-item>
             <a-button type="primary">{{ $t('account.settings.basic.update') }}</a-button>
-          </a-form-item>
-        </a-form>
+          </a-form-model-item>
+        </a-form-model>
       </a-col>
       <a-col :order="1" :md="24" :lg="8" :style="{ minHeight: '180px' }">
         <div class="ant-upload-preview" @click="$refs.modal.edit(1)">
@@ -63,6 +63,9 @@ export default {
         fixed: true,
         fixedNumber: [1, 1],
       },
+      form: {
+        EnterpriseName: '',
+      },
     }
   },
   methods: {
@@ -71,9 +74,14 @@ export default {
       store.commit('SET_AVATAR', url)
       console.log('ava', url, store.state.user.avatar)
     },
+    initForm() {
+      this.form.EnterpriseName = store.state.user.name
+      // console.log(store.state.user)
+    },
   },
   mounted() {
     this.option.img = store.state.user.avatar
+    this.initForm()
   },
 }
 </script>

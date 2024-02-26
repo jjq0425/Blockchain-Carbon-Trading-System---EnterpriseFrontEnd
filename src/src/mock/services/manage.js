@@ -101,7 +101,7 @@ const activity = () => {
   return builder([{
     id: 1,
     user: {
-      nickname: '@name',
+      EnterpriseName: '@name',
       avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
     },
     project: {
@@ -114,7 +114,7 @@ const activity = () => {
   {
     id: 1,
     user: {
-      nickname: '蓝莓酱',
+      EnterpriseName: '蓝莓酱',
       avatar: 'https://gw.alipayobjects.com/zos/rmsportal/jZUIxmJycoymBprLOUbT.png'
     },
     project: {
@@ -127,7 +127,7 @@ const activity = () => {
   {
     id: 1,
     user: {
-      nickname: '@name',
+      EnterpriseName: '@name',
       avatar: '@image(64x64)'
     },
     project: {
@@ -140,7 +140,7 @@ const activity = () => {
   {
     id: 1,
     user: {
-      nickname: '曲丽丽',
+      EnterpriseName: '曲丽丽',
       avatar: '@image(64x64)'
     },
     project: {
@@ -153,7 +153,7 @@ const activity = () => {
   {
     id: 1,
     user: {
-      nickname: '@name',
+      EnterpriseName: '@name',
       avatar: '@image(64x64)'
     },
     project: {
@@ -166,7 +166,7 @@ const activity = () => {
   {
     id: 1,
     user: {
-      nickname: '曲丽丽',
+      EnterpriseName: '曲丽丽',
       avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png'
     },
     project: {

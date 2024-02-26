@@ -79,6 +79,8 @@ request.interceptors.request.use(config => {
     else if (regex1.test(config.url)) {
       config.url += ''
     }
+
+    // console.log(config)
   }
 
   return config

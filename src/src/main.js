@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 // with polyfills
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
@@ -16,6 +21,7 @@ import { VueAxios } from './utils/request'
 import ProLayout, { PageHeaderWrapper } from '@ant-design-vue/pro-layout'
 import themePluginConfig from '../config/themePluginConfig'
 import animated from 'animate.css'
+
 
 
 // mock
@@ -34,6 +40,7 @@ Vue.config.productionTip = false
 // mount axios to `Vue.$http` and `this.$http`
 Vue.use(VueAxios)
 Vue.use(VueClipboard)
+
 // Vue.use(animated)
 // use pro-layout components
 Vue.component('pro-layout', ProLayout)

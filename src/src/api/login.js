@@ -3,10 +3,15 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 import request from '@/utils/request'
 
 const userApi = {
-  Login: '/auth/EnterpriseLogin',
+  Login: '/auth/enterpriseLogin',
   Logout: '/auth/EnterpriseLogout',
 
   // get my info
@@ -55,10 +60,10 @@ export function getSmsCaptcha(parameter) {
 export function getInfo() {
   return request({
     url: userApi.UserInfo,
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    method: 'post',
+    // headers: {
+    //   'Content-Type': 'application/json;charset=UTF-8'
+    // }
   })
 }
 

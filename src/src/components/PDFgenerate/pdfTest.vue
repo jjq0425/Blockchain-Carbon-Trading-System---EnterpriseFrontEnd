@@ -54,10 +54,6 @@
   
   
 <script>
-// require('@/assets/fonts/Fangsong_GB2312-normal')
-// require('@/assets/fonts/simhei-normal')
-// require('@/assets/fonts/simheibd-normal')
-// require('@/assets/fonts/HYYunHei-45W-normal')
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 export default {
@@ -69,7 +65,7 @@ export default {
       id: null,
       downloadStep: 0,
       downloadStepInfo: '正在准备下载',
-      StartPercentage: [0, 10, 30, 70, 80, 85, 95],
+      StartPercentage: [0, 10, 30, 70, 80, 85, 98],
       // StopPercentage: [0, 30, 70, 80, 85, 90, 100],
       NowPercentage: 0,
     }
@@ -131,6 +127,19 @@ export default {
       }, 100)
     },
     /**
+     * 设置进度条
+     */
+    setProgress() {
+      let this_ = this
+      let progressTime = setInterval(() => {
+        if (this_.NowPercentage < this_.StartPercentage[this_.downloadStep]) {
+          this_.NowPercentage++
+        } else if (this_.NowPercentage == 100) {
+          clearInterval(progressTime)
+        }
+      }, 100)
+    },
+    /**
      * 生成随机密码用于加密文件
      */
     generateRandomKey(length) {
@@ -144,16 +153,9 @@ export default {
       }
       return result
     },
-    setProgress() {
-      let this_ = this
-      let progressTime = setInterval(() => {
-        if (this_.NowPercentage < this_.StartPercentage[this_.downloadStep]) {
-          this_.NowPercentage++
-        } else if (this_.NowPercentage == 100) {
-          clearInterval(progressTime)
-        }
-      }, 100)
-    },
+    /**
+     * 导入字体
+     */
     async importFont() {
       this.downloadStep = 1
       await import('@/assets/fonts/Fangsong_GB2312-normal')
@@ -165,99 +167,132 @@ export default {
       await import('@/assets/fonts/HYYunHei-45W-normal')
     },
     /**
-     * 生成PDF（测试）
+     * --------------------------------------------------------------------------------
+     *                    PDF生成相关代码
+     * --------------------------------------------------------------------------------
      */
-    async runPdf() {
-      this.setProgress()
-      await this.importFont()
-
-      let yPos = 0
-      let line = null
-      let text = null
-      let JSPDF_lineHeight
-      let JSPDF_splittedText
-      let JSPDF_lines
-      let JSPDF_blockHeight
-      this.downloadStep = 5
+    // --------------以下是生成主体相关代码------------------------
+    /**
+     * 适用于所有函数
+     * @param {Object} JSPDF_para JSPDF参数
+     * @returns {Object} JSPDF_para JSPDF参数
+     * @description 所有函数均为async异步函数，需要再runPDF中使用await来等待函数执行完毕，否则顺序会不一致。
+     * 所有函数均需要返回JSPDF_para，以便后续函数使用。
+     */
+    /**
+     * 初始化
+     */
+    async initPdf(JSPDF_para) {
       let KEY = this.generateRandomKey(48)
 
-      //封面
       console.log('文件加密密码为：', KEY)
-      const doc = new jsPDF({
+      JSPDF_para.doc = new jsPDF({
         encryption: { userPermissions: ['print', 'copy'], ownerPassword: KEY },
       })
-      doc.addFont('Fangsong_GB2312-normal.ttf', 'Fangsong_GB2312', 'normal')
-      doc.addFont('simheibd-normal.ttf', 'simheibd', 'normal')
-      doc.addFont('simhei-normal.ttf', 'simhei', 'normal')
-      doc.addFont('HYYunHei-45W-normal.ttf', 'HYYunHei-45W', 'normal')
+      JSPDF_para.doc.addFont('Fangsong_GB2312-normal.ttf', 'Fangsong_GB2312', 'normal')
+      JSPDF_para.doc.addFont('simheibd-normal.ttf', 'simheibd', 'normal')
+      JSPDF_para.doc.addFont('simhei-normal.ttf', 'simhei', 'normal')
+      JSPDF_para.doc.addFont('HYYunHei-45W-normal.ttf', 'HYYunHei-45W', 'normal')
 
       this.downloadStep = 6
-      doc.setFont('simheibd')
-      doc.setFontSize(25)
-      doc.text('中国发电企业温室气体排放报告', doc.internal.pageSize.getWidth() / 2, 100, { align: 'center' })
-      //   doc.cellAddPage()
 
-      doc.setFontSize(15)
-      doc
+      return JSPDF_para
+    },
+    /**
+     * 生成封面
+     */
+    async generateCover(JSPDF_para) {
+      JSPDF_para.doc.setFont('simheibd')
+      JSPDF_para.doc.setFontSize(25)
+      JSPDF_para.doc.text('中国发电企业温室气体排放报告', JSPDF_para.doc.internal.pageSize.getWidth() / 2, 100, {
+        align: 'center',
+      })
+
+      JSPDF_para.doc.setFontSize(15)
+      JSPDF_para.doc
         .setFont('simhei')
         .text('报告主体（盖章）： ', 45, 220)
         .setFont('simhei')
-        .text('电子科技大学', 45 + doc.getTextWidth('报告主体（盖章）： '), 220)
-      doc.text('报告年度： ' + '2022年度', 45, 235)
-      doc.text('报告日期： ' + '2022 年 6 月 13 日', 45, 250)
+        .text('电子科技大学', 45 + JSPDF_para.doc.getTextWidth('报告主体（盖章）： '), 220)
+      JSPDF_para.doc.text('报告年度： ' + '2022年度', 45, 235)
+      JSPDF_para.doc.text('报告日期： ' + '2022 年 6 月 13 日', 45, 250)
+      return JSPDF_para
+    },
+    /**
+     * 第二页-开头
+     */
+    async SecondPageHead(JSPDF_para) {
+      JSPDF_para.doc.addPage()
+      JSPDF_para.yPos = 30
 
-      doc.addPage()
-      yPos = 30
-
-      doc.setFont('Fangsong_GB2312')
-      doc.setFontSize(17)
-      doc.setLineHeightFactor = 1.8
-      text =
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text =
         '    根据国家发展和改革委员会发布的《中国发电企业温室气体排放核算方法与报告指南（试行）》，本报告主体核算了' +
         ' 2022 ' +
         '年度温室气体排放量，并填写了相关数据表格。现将有关情况报告如下:'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      doc.text(20, yPos, JSPDF_splittedText, { lineHeightFactor: 1.8 })
-      yPos += JSPDF_blockHeight
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.doc.text(20, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText, { lineHeightFactor: 1.8 })
+      JSPDF_para.yPos += JSPDF_para.JSPDF_blockHeight
 
-      doc.setFont('simheibd')
-      doc.setFontSize(17)
-      doc.setLineHeightFactor = 1.8
-      text = '    一、企业基本情况'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      doc.text(20, yPos + 5, JSPDF_splittedText, { lineHeightFactor: 1.8 })
-      yPos += JSPDF_blockHeight
+      return JSPDF_para
+    },
+    /**
+     * 第二页-企业基本情况
+     */
+    async EnterpriseBasicSituation(JSPDF_para) {
+      JSPDF_para.doc.setFont('simheibd')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text = '    一、企业基本情况'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.doc.text(20, JSPDF_para.yPos + 5, JSPDF_para.JSPDF_splittedText, { lineHeightFactor: 1.8 })
+      JSPDF_para.yPos += JSPDF_para.JSPDF_blockHeight
 
-      doc.setFont('Fangsong_GB2312')
-      doc.setFontSize(15)
-      doc.setLineHeightFactor = 1.5
-      text =
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(15)
+      JSPDF_para.doc.setLineHeightFactor = 1.5
+      JSPDF_para.text =
         '    电子科技大学（University of Electronic Science and Technology of China），简称“电子科大”，坐落于四川省成都市，是中华人民共和国教育部直属高校，由教育部、工业和信息化部、四川省和成都市共建；位列国家“双一流”、“985工程”、“211工程”，入选“2011计划”、“111计划”、卓越工程师教育培养计划、国家建设高水平大学公派研究生项目、中国政府奖学金来华留学生接收院校、全国深化创新创业教育改革示范高校，为“两电一邮”成员；是一所完整覆盖整个电子类学科，以电子信息科学技术为核心，以工为主，理工渗透，理、工、管、文、医协调发展的多科性研究型全国重点大学。 学校原名成都电讯工程学院，1956年由交通大学（现上海交通大学、西安交通大学）、南京工学院（现东南大学）、华南工学院（现华南理工大学）的电讯工程有关专业合并创建而成；1960年被列为全国重点高等学校；1961年被确定为七所国防工业院校之一；1988年更名为电子科技大学；2000年由原信息产业部主管划转为教育部主管；2017年进入国家“双一流”建设高校行列。2019年教育部和四川省签约共同推进学校世界一流大学建设。 截至2023年8月，学校有清水河、沙河、九里堤3个校区，校舍总建筑面积149万余平方米；设有25个教学科研单位，65个本科专业；有博士后流动站15个，一级学科博士点19个，一级学科硕士点31个，博士专业学位授权点4个、硕士专业学位授权点12个；有教职工3800余人，在读本、硕、博学生42000余人。2017年进入国家“双一流”建设高校行列。2019年教育部和四川省签约共同推进学校世界一流大学建设。 截至2023年8月，学校有清水河、沙河、九里堤3个校区，校舍总建筑面积149万余平方米；设有25个教学科研单位，65个本科专业；有博士后流动站15个，一级学科博士点19个，一级学科硕士点31个，博士专业学位授权点4个、硕士专业学位授权点12个；有教职工3800余人，在读本、硕、博学生42000余人。2017年进入国家“双一流”建设高校行列。2019年教育部和四川省签约共同推进学校世界一流大学建设。 截至2023年8月，学校有清水河、沙河、九里堤3个校区，校舍总建筑面积149万余平方米；设有25个教学科研单位，65个本科专业；有博士后流动站15个，一级学科博士点19个，一级学科硕士点31个，博士专业学位授权点4个、硕士专业学位授权点12个；有教职工3800余人，在读本、硕、博学生42000余人。'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 5 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 5 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(20, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(20, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
-      //   doc.text(20, yPos + 5, JSPDF_splittedText, { lineHeightFactor: 1.5 })
-      //   yPos += JSPDF_blockHeight
 
-      autoTable(doc, {
-        startY: yPos + 5,
+      autoTable(JSPDF_para.doc, {
+        startY: JSPDF_para.yPos + 5,
         head: [
           //表头
           ['类目', '详情'],
@@ -307,29 +342,40 @@ export default {
         cellStyles: { overflow: 'linebreak' },
         theme: 'grid',
       })
-      yPos = doc.lastAutoTable.finalY
+      JSPDF_para.yPos = JSPDF_para.doc.lastAutoTable.finalY
 
-      doc.setFont('simheibd')
-      doc.setFontSize(17)
-      doc.setLineHeightFactor = 1.5
-      text = '    二、温室气体排放'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 15 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      return JSPDF_para
+    },
+    /**
+     * 第二页-温室气体排放
+     */
+    async EnterpriseEmission(JSPDF_para) {
+      JSPDF_para.doc.setFont('simheibd')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.5
+      JSPDF_para.text = '    二、温室气体排放'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 15 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(20, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(20, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
 
-      autoTable(doc, {
-        startY: yPos + 5,
+      autoTable(JSPDF_para.doc, {
+        startY: JSPDF_para.yPos + 5,
         head: [
           //表头
           ['类目', '详情'],
@@ -379,233 +425,580 @@ export default {
         cellStyles: { overflow: 'linebreak' },
         theme: 'grid',
       })
-      yPos = doc.lastAutoTable.finalY
+      JSPDF_para.yPos = JSPDF_para.doc.lastAutoTable.finalY
 
-      doc.setFont('simheibd')
-      doc.setFontSize(17)
-      doc.setLineHeightFactor = 1.5
-      text = '    三、活动水平数据及来源说明'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 15 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      return JSPDF_para
+    },
+    /**
+     * 第二页-活动水平数据及来源
+     */
+    async EnterpriseActivityFactorAndSource(JSPDF_para) {
+      JSPDF_para.doc.setFont('simheibd')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.5
+      JSPDF_para.text = '    三、活动水平数据及来源说明'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 15 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(20, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(20, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
 
-      doc.setFont('simheibd')
-      doc.setFontSize(17)
-      doc.setLineHeightFactor = 1.5
-      text = '    四、排放因子数据及来源说明'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 15 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      return JSPDF_para
+    },
+    /**
+     * 第二页-排放因子数据及来源
+     */
+    async EnterpriseEmissionFactorAndSource(JSPDF_para) {
+      JSPDF_para.doc.setFont('simheibd')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.5
+      JSPDF_para.text = '    四、排放因子数据及来源说明'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 15 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(20, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(20, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
 
-      doc.setFont('Fangsong_GB2312')
-      doc.setFontSize(17)
-      doc.setLineHeightFactor = 1.8
-      text = '    本报告真实、可靠，如报告中的信息与实际情况不符，本企业将承担相应的法律责任。'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 25 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      return JSPDF_para
+    },
+    /**
+     * 第二页-承诺签字
+     */
+    async SecondPageSignature(JSPDF_para) {
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text = '    本报告真实、可靠，如报告中的信息与实际情况不符，本企业将承担相应的法律责任。'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 25 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(20, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(20, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
 
-      doc.setFont('Fangsong_GB2312')
-      doc.setFontSize(17)
-      doc.setLineHeightFactor = 1.8
-      text = '法人（签字）：          '
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 20 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text = '法人（签字）：          '
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 20 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(115, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(115, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
 
-      doc.setFont('Fangsong_GB2312')
-      doc.setFontSize(17)
-      doc.setLineHeightFactor = 1.8
-      text = '2022 年 12 月 10 日'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 15 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text = '2022 年 12 月 10 日'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 15 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(125, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(125, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
 
-      doc.setFont('Fangsong_GB2312')
-      doc.setFontSize(15)
-      doc.setLineHeightFactor = 1.8
-      text = '附表 1 报告主体二氧化碳排放量报告'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 25 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      return JSPDF_para
+    },
+    /**
+     * 第二页-附表描述
+     */
+    async ExtraTableDescription(JSPDF_para) {
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(15)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text = '附表 1 报告主体二氧化碳排放量报告'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 25 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(20, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(20, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
 
-      doc.setFont('Fangsong_GB2312')
-      doc.setFontSize(15)
-      doc.setLineHeightFactor = 1.8
-      text = '附表 2 报告主体活动水平数据'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 10 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(15)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text = '附表 2 报告主体活动水平数据'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 10 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(20, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(20, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
 
-      doc.setFont('Fangsong_GB2312')
-      doc.setFontSize(15)
-      doc.setLineHeightFactor = 1.8
-      text = '附表 3 报告主体排放因子和计算系数'
-      JSPDF_lineHeight = (doc.getLineHeight(text) / doc.internal.scaleFactor) * (doc.getLineHeightFactor() + 0.4)
-      JSPDF_splittedText = doc.splitTextToSize(text, doc.internal.pageSize.getWidth() - 40)
-      JSPDF_lines = JSPDF_splittedText.length // splitted text is a string array
-      JSPDF_blockHeight = JSPDF_lines * JSPDF_lineHeight
-      yPos += 10 //段前5
-      for (let i = 0; i < JSPDF_lines; i++) {
-        if (yPos >= doc.internal.pageSize.height - 30) {
-          doc.addPage()
-          yPos = 30
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(15)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text = '附表 3 报告主体排放因子和计算系数'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+      JSPDF_para.yPos += 10 //段前5
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
         } else if (i != 0) {
-          yPos = yPos + JSPDF_lineHeight
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
         }
-        doc.text(20, yPos, JSPDF_splittedText[i])
+        JSPDF_para.doc.text(20, JSPDF_para.yPos, JSPDF_para.JSPDF_splittedText[i])
       }
 
-      doc.addPage()
-      yPos = 30
+      return JSPDF_para
+    },
+    //------------------------------以下是生成附表----------------------------
+    /**
+     * 生成附表
+     */
+    async ExtraTable(JSPDF_para) {
+      JSPDF_para.doc.addPage()
+      JSPDF_para.yPos = 30
+      JSPDF_para = await this.ExtraTable_EmissionCO2(JSPDF_para) //设置附表1
 
-      this.addWaterMark(doc)
+      JSPDF_para.doc.addPage()
+      JSPDF_para.yPos = 30
+      // JSPDF_para = await this.ExtraTable_ActivityFactor(JSPDF_para) //设置附表2活动水平
+
+      return JSPDF_para
+    },
+    /**
+     * 生成附表_报告主体 年二氧化碳排放量报告
+     */
+    async ExtraTable_EmissionCO2(JSPDF_para) {
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text = '附表1    报告主体 2022 年二氧化碳排放量报告'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
+        } else if (i != 0) {
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
+        }
+        JSPDF_para.doc.text(
+          JSPDF_para.doc.internal.pageSize.getWidth() / 2,
+          JSPDF_para.yPos,
+          JSPDF_para.JSPDF_splittedText[i],
+          { align: 'center' }
+        )
+      }
+
+      autoTable(JSPDF_para.doc, {
+        startY: JSPDF_para.yPos + 15,
+        head: [
+          //表头
+          [
+            { content: '企业二氧化碳排放总量（tCO₂）', colSpan: 2 },
+            { content: '1000', styles: { halign: 'center' } },
+          ],
+        ],
+        body: [
+          //表格内容 长度与上面对应
+          [
+            { content: '', styles: { lineWidth: { top: 0.1, right: 0, bottom: 0.1, left: 0.1 } } },
+            {
+              content: '化石燃料燃烧排放量（tCO₂）',
+              styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0 } },
+            },
+            { content: '100', styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0.1 } } },
+          ],
+          [
+            { content: '', styles: { lineWidth: { top: 0.1, right: 0, bottom: 0.1, left: 0.1 } } },
+            {
+              content: '脱硫过程排放量（tCO₂）',
+              styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0 } },
+            },
+            { content: '100', styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0.1 } } },
+          ],
+          [
+            { content: '', styles: { lineWidth: { top: 0.1, right: 0, bottom: 0.1, left: 0.1 } } },
+            {
+              content: '净购入使用的电力排放量（tCO₂）',
+              styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0 } },
+            },
+            {
+              content: '800',
+              styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0.1 }, halign: 'center' },
+            },
+          ],
+        ],
+        styles: {
+          font: 'HYYunHei-45W', //字体
+          //   fontStyle: 'normal', //字体样式
+          fontSize: 14,
+
+          valign: 'middle',
+          lineWidth: 0,
+          fillColor: [255, 255, 255],
+          color: [0, 0, 0],
+          textColor: [0, 0, 0],
+          lineColor: [0, 0, 0],
+        },
+        headStyles: {
+          font: 'HYYunHei-45W', //字体
+          fontStyle: 'normal', //字体样式
+          fontSize: 14,
+
+          valign: 'middle',
+          lineWidth: 0.1,
+          fillColor: [255, 255, 255],
+          color: [0, 0, 0],
+          textColor: [0, 0, 0],
+          lineColor: [0, 0, 0],
+        },
+        columnStyles: {
+          0: { halign: 'left' },
+          1: {
+            halign: 'left',
+          },
+          2: {
+            halign: 'center',
+          },
+        },
+        cellStyles: { overflow: 'linebreak' },
+        theme: 'grid',
+      })
+      JSPDF_para.yPos = JSPDF_para.doc.lastAutoTable.finalY
+
+      return JSPDF_para
+    },
+    /**
+     * 生成附表_报告主体 年二氧化碳排放量报告
+     */
+    async ExtraTable_EmissionCO2(JSPDF_para) {
+      JSPDF_para.doc.setFont('Fangsong_GB2312')
+      JSPDF_para.doc.setFontSize(17)
+      JSPDF_para.doc.setLineHeightFactor = 1.8
+      JSPDF_para.text = '附表1    报告主体 2022 年二氧化碳排放量报告'
+      JSPDF_para.JSPDF_lineHeight =
+        (JSPDF_para.doc.getLineHeight(JSPDF_para.text) / JSPDF_para.doc.internal.scaleFactor) *
+        (JSPDF_para.doc.getLineHeightFactor() + 0.4)
+      JSPDF_para.JSPDF_splittedText = JSPDF_para.doc.splitTextToSize(
+        JSPDF_para.text,
+        JSPDF_para.doc.internal.pageSize.getWidth() - 40
+      )
+      JSPDF_para.JSPDF_lines = JSPDF_para.JSPDF_splittedText.length // splitted text is a string array
+      JSPDF_para.JSPDF_blockHeight = JSPDF_para.JSPDF_lines * JSPDF_para.JSPDF_lineHeight
+
+      for (let i = 0; i < JSPDF_para.JSPDF_lines; i++) {
+        if (JSPDF_para.yPos >= JSPDF_para.doc.internal.pageSize.height - 30) {
+          JSPDF_para.doc.addPage()
+          JSPDF_para.yPos = 30
+        } else if (i != 0) {
+          JSPDF_para.yPos = JSPDF_para.yPos + JSPDF_para.JSPDF_lineHeight
+        }
+        JSPDF_para.doc.text(
+          JSPDF_para.doc.internal.pageSize.getWidth() / 2,
+          JSPDF_para.yPos,
+          JSPDF_para.JSPDF_splittedText[i],
+          { align: 'center' }
+        )
+      }
+
+      autoTable(JSPDF_para.doc, {
+        startY: JSPDF_para.yPos + 15,
+        head: [
+          //表头
+          [
+            { content: '企业二氧化碳排放总量（tCO₂）', colSpan: 2 },
+            { content: '1000', styles: { halign: 'center' } },
+          ],
+        ],
+        body: [
+          //表格内容 长度与上面对应
+          [
+            { content: '', styles: { lineWidth: { top: 0.1, right: 0, bottom: 0.1, left: 0.1 } } },
+            {
+              content: '化石燃料燃烧排放量（tCO₂）',
+              styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0 } },
+            },
+            { content: '100', styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0.1 } } },
+          ],
+          [
+            { content: '', styles: { lineWidth: { top: 0.1, right: 0, bottom: 0.1, left: 0.1 } } },
+            {
+              content: '脱硫过程排放量（tCO₂）',
+              styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0 } },
+            },
+            { content: '100', styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0.1 } } },
+          ],
+          [
+            { content: '', styles: { lineWidth: { top: 0.1, right: 0, bottom: 0.1, left: 0.1 } } },
+            {
+              content: '净购入使用的电力排放量（tCO₂）',
+              styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0 } },
+            },
+            {
+              content: '800',
+              styles: { lineWidth: { top: 0.1, right: 0.1, bottom: 0.1, left: 0.1 }, halign: 'center' },
+            },
+          ],
+        ],
+        styles: {
+          font: 'HYYunHei-45W', //字体
+          //   fontStyle: 'normal', //字体样式
+          fontSize: 14,
+
+          valign: 'middle',
+          lineWidth: 0,
+          fillColor: [255, 255, 255],
+          color: [0, 0, 0],
+          textColor: [0, 0, 0],
+          lineColor: [0, 0, 0],
+        },
+        headStyles: {
+          font: 'HYYunHei-45W', //字体
+          fontStyle: 'normal', //字体样式
+          fontSize: 14,
+
+          valign: 'middle',
+          lineWidth: 0.1,
+          fillColor: [255, 255, 255],
+          color: [0, 0, 0],
+          textColor: [0, 0, 0],
+          lineColor: [0, 0, 0],
+        },
+        columnStyles: {
+          0: { halign: 'left' },
+          1: {
+            halign: 'left',
+          },
+          2: {
+            halign: 'center',
+          },
+        },
+        cellStyles: { overflow: 'linebreak' },
+        theme: 'grid',
+      })
+      JSPDF_para.yPos = JSPDF_para.doc.lastAutoTable.finalY
+
+      return JSPDF_para
+    },
+    /**
+     * 生成PDF（测试）
+     */
+    async runPdf() {
+      this.setProgress() // 设置进度条
+      await this.importFont() // 导入字体
+
+      let JSPDF_para = {
+        yPos: 0,
+        text: null,
+        line: null,
+        JSPDF_lineHeight: null,
+        JSPDF_splittedText: null,
+        JSPDF_lines: null,
+        JSPDF_blockHeight: null,
+        doc: null,
+      }
+
+      JSPDF_para = await this.initPdf(JSPDF_para) // 初始化+设置密码
+      JSPDF_para = await this.generateCover(JSPDF_para) //设置封面
+      JSPDF_para = await this.SecondPageHead(JSPDF_para) //设置第二页头部
+      JSPDF_para = await this.EnterpriseBasicSituation(JSPDF_para) //设置企业基本情况
+      JSPDF_para = await this.EnterpriseEmission(JSPDF_para) //设置企业温室气体排放
+      JSPDF_para = await this.EnterpriseActivityFactorAndSource(JSPDF_para) //设置企业活动水平及来源
+      JSPDF_para = await this.EnterpriseEmissionFactorAndSource(JSPDF_para) //设置企业排放水平及来源
+      JSPDF_para = await this.SecondPageSignature(JSPDF_para) //设置第二页签名
+      JSPDF_para = await this.ExtraTableDescription(JSPDF_para) //设置附表描述
+      JSPDF_para = await this.ExtraTable(JSPDF_para) //设置附表
+
+      JSPDF_para.doc.addPage()
+      JSPDF_para.yPos = 30
+
+      JSPDF_para = await this.addWaterMark(JSPDF_para)
+      JSPDF_para = await this.addPageCountAndDownload(JSPDF_para)
     },
     /**
      *
-     * @param {jsPDF()} doc jsPDF对象
+     * @param {jsPDF()} JSPDF_para  jsPDF对象
      * @description 添加水印
      */
-    addWaterMark(doc) {
-      var pageCount = doc.internal.getNumberOfPages() //Total Page Number
+    async addWaterMark(JSPDF_para) {
+      var pageCount = JSPDF_para.doc.internal.getNumberOfPages() //Total Page Number
       for (let i = 1; i <= pageCount; i++) {
-        doc.setPage(i)
+        JSPDF_para.doc.setPage(i)
         if (i == 1) {
-          doc.setFont('simheibd')
-          doc.setFontSize(20)
-          doc.setTextColor('#ff1e00')
-          doc.text('非正式报告！报告仅供审核使用', doc.internal.pageSize.getWidth() / 2, 120, { align: 'center' })
+          JSPDF_para.doc.setFont('simheibd')
+          JSPDF_para.doc.setFontSize(20)
+          JSPDF_para.doc.setTextColor('#ff1e00')
+          JSPDF_para.doc.text('非正式报告！报告仅供审核使用', JSPDF_para.doc.internal.pageSize.getWidth() / 2, 120, {
+            align: 'center',
+          })
         } else {
-          doc.setFont('Fangsong_GB2312')
-          doc.setFontSize(10)
-          doc.setTextColor('#ff1e00')
-          doc.text('非正式报告！报告仅供审核使用', doc.internal.pageSize.getWidth() / 2, 10, { align: 'center' })
+          JSPDF_para.doc.setFont('Fangsong_GB2312')
+          JSPDF_para.doc.setFontSize(10)
+          JSPDF_para.doc.setTextColor('#ff1e00')
+          JSPDF_para.doc.text('非正式报告！报告仅供审核使用', JSPDF_para.doc.internal.pageSize.getWidth() / 2, 10, {
+            align: 'center',
+          })
         }
         // 添加水印
-        doc.setTextColor('#000000')
-        doc.setFont('simhei')
-        doc.setFontSize(10)
-        doc.saveGraphicsState() // 保存图形状态
-        doc.setGState(doc.GState({ opacity: 0.3 })) // 设置透明度为0.3
+        JSPDF_para.doc.setTextColor('#000000')
+        JSPDF_para.doc.setFont('simhei')
+        JSPDF_para.doc.setFontSize(10)
+        JSPDF_para.doc.saveGraphicsState() // 保存图形状态
+        JSPDF_para.doc.setGState(JSPDF_para.doc.GState({ opacity: 0.3 })) // 设置透明度为0.3
         for (let j = 0; j <= 3; j++) {
           for (let k = 0; k <= 3; k++) {
-            doc.text(
+            JSPDF_para.doc.text(
               '电子科技大学2022年度碳排放报告——碳盟链道生成',
-              (j * doc.internal.pageSize.getWidth()) / 3,
-              (k * doc.internal.pageSize.getHeight()) / 3 - 20,
+              (j * JSPDF_para.doc.internal.pageSize.getWidth()) / 3,
+              (k * JSPDF_para.doc.internal.pageSize.getHeight()) / 3 - 20,
               42
             ) // 水印文本, 横向坐标， 纵向坐标， 倾斜角度
           }
         }
-        doc.restoreGraphicsState() // 设置完毕之后，清除图形状态，防止影响其他内容
+        JSPDF_para.doc.restoreGraphicsState() // 设置完毕之后，清除图形状态，防止影响其他内容
       }
-      this.addPageCountAndDownload(doc)
+
+      return JSPDF_para
     },
     /**
      *
-     * @param {jsPDF()} doc jsPDF对象
+     * @param {jsPDF()} JSPDF_para  jsPDF对象
      * @description 添加页码并下载PDF
      */
-    addPageCountAndDownload(doc) {
+    async addPageCountAndDownload(JSPDF_para) {
       // 添加页码
-      var pageCount = doc.internal.getNumberOfPages() //Total Page Number
-      doc.setFont('simhei')
-      doc.setFontSize(10)
+      var pageCount = JSPDF_para.doc.internal.getNumberOfPages() //Total Page Number
+      JSPDF_para.doc.setFont('simhei')
+      JSPDF_para.doc.setFontSize(10)
       //   跳过第一页
       for (let i = 2; i <= pageCount; i++) {
-        doc.setPage(i)
-        let pageCurrent = doc.internal.getCurrentPageInfo().pageNumber //Current Page
-        doc.text(pageCurrent + '/' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.height - 10)
+        JSPDF_para.doc.setPage(i)
+        let pageCurrent = JSPDF_para.doc.internal.getCurrentPageInfo().pageNumber //Current Page
+        JSPDF_para.doc.text(
+          pageCurrent + '/' + pageCount,
+          JSPDF_para.doc.internal.pageSize.getWidth() / 2,
+          JSPDF_para.doc.internal.pageSize.height - 10
+        )
       }
 
-      //   console.log(doc)
+      //   console.log(JSPDF_para)
 
       setTimeout(() => {
         if (this.visible) {
-          doc.save('a4.pdf')
-          // console.log('>>下载结束')
+          let DocSavePromise = JSPDF_para.doc.save('a4.pdf', { returnPromise: true })
+          DocSavePromise.then(() => {
+            this.downloadStep = 7
+          })
 
           this.downloadStep = 7
           // console.log(this.downloadStep)
         }
       }, 1000)
+      return JSPDF_para
     },
   },
   mounted() {},

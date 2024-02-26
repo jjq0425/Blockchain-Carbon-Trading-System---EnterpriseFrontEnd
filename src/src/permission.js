@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 import router, { resetRouter } from './router'
 import store from './store'
 import storage from 'store'
@@ -32,7 +37,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // check login user.roles is null
       if (store.getters.roles.length === 0) {
-        console.warn('>>本地无权限，正在获取用户信息')
+
         // request login userInfo
         store
           .dispatch('GetInfo')

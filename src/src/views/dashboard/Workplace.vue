@@ -72,7 +72,7 @@
                 <a-list-item-meta>
                   <a-avatar slot="avatar" size="small" :src="item.user.avatar" />
                   <div slot="title">
-                    <span>{{ item.user.nickname }}</span
+                    <span>{{ item.user.EnterpriseName }}</span
                     >&nbsp; 在&nbsp;<a href="#">{{ item.project.name }}</a
                     >&nbsp; <span>{{ item.project.action }}</span
                     >&nbsp;
@@ -152,7 +152,7 @@ export default {
   data() {
     return {
       timeFix: timeFix(),
-      avatar: '',
+      // avatar: '',
       user: {},
 
       projects: [],
@@ -204,7 +204,7 @@ export default {
   },
   computed: {
     ...mapState({
-      nickname: (state) => state.user.nickname,
+      EnterpriseName: (state) => state.user.EnterpriseName,
       welcome: (state) => state.user.welcome,
       avatar: (state) => state.user.avatar,
     }),
@@ -212,7 +212,7 @@ export default {
       return {
         // name: 'Serati Ma',
         // avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
-        name: this.nickname,
+        name: this.EnterpriseName,
         avatar: this.avatar,
       }
     },
