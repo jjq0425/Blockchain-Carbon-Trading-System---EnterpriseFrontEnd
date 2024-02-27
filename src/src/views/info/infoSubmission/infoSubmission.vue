@@ -75,8 +75,12 @@
     </a-card>
 
     <!-- 开始卡片 -->
-    <a-card :bordered="false" class="animate__animated animate__fadeInUp" v-show="NowStep == 0">
+    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 0">
       <task-comfirm ref="taskComfirm"></task-comfirm>
+    </a-card>
+
+    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 1">
+      <emission-submit ref="emissionSubmit"></emission-submit>
     </a-card>
 
     <!-- fixed footer toolbar -->
@@ -149,6 +153,7 @@ import { baseMixin } from '@/store/app-mixin'
 import ChangeBgCSS from '../../../utils/ChangeBgCSS'
 
 import taskComfirm from '@/views/info/infoSubmission/infoSubmissionStep/taskComfirm'
+import emissionSubmit from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmit'
 
 // const fieldLabels = {
 //   name: '仓库名',
@@ -179,10 +184,11 @@ export default {
     TaskForm,
     //
     taskComfirm,
+    emissionSubmit,
   },
   data() {
     return {
-      NowStep: 0,
+      NowStep: 1,
       taskInfo: {},
 
       errors: [],
@@ -233,6 +239,7 @@ export default {
         })
         Promise.all([taskComfirmForm])
           .then((values) => {
+            this.errors = []
             this.goTonextPage()
           })
           .catch(() => {
@@ -284,6 +291,7 @@ export default {
       this.$router.push({ name: 'AnnualSubmissionCenter' })
     },
     backTolastPage() {
+      this.errors = []
       this.NowStep--
     },
     goTonextPage() {
