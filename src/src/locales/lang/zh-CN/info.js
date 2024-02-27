@@ -1,9 +1,11 @@
 
 export default {
+    'info.submissionCenter.taskSubmit': '上报任务',
     'info.submissionCenter.annualDataSubmit': '年度数据上报',
     'info.submissionCenter.taskBeginTime': '开始时间',
     'info.submissionCenter.taskEndTime': '结束时间',
     'info.submissionCenter.taskStatus': '当前状态',
     'info.submissionCenter.notask': '暂无报送任务',
     'info.submissionCenter.taskLoading': '报送任务加载中',
+    'info.submissionCenter.taskNotBegin': '报送任务目前尚未启动，请耐心等待进一步的指令。在此期间，建议您充分利用时间阅读并理解填报指南中的具体要求，做好材料准备。',
 }

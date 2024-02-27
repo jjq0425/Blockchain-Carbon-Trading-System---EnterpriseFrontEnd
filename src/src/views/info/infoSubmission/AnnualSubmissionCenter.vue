@@ -20,7 +20,7 @@
 
       <div style="height: 30px"></div>
     </template>
-    <a-card class="card" title="上报任务" :bordered="false" style="min-height: 80px">
+    <a-card class="card" :title="$t('info.submissionCenter.taskSubmit')" :bordered="false" style="min-height: 80px">
       <!-- 正常页面 -->
       <div style="display: flex; flex-wrap: wrap">
         <div v-for="(task, idx) in taskList" :key="idx">
@@ -35,7 +35,7 @@
               margin-bottom: 20px;
             "
             class="info-submission-task-card"
-            @click="$router.push({ name: 'InfoSubmission' })"
+            @click="RouteToSubmit(task)"
           >
             <div
               style="padding: 20px; border-radius: 8px 8px 0 0; color: white"
@@ -60,15 +60,24 @@
                 <div>
                   {{ $t('info.submissionCenter.taskEndTime') }}：{{ momentFormat(task.taskBeginTime, 'YYYY-MM-DD') }}
                 </div>
-                <div v-if="lang.includes('zh-CN')">
-                  {{ $t('info.submissionCenter.taskStatus') }}：{{ infoSubmitAuditClass_CN[task.auditStatus] }}
-                </div>
-                <div v-else>
-                  {{ $t('info.submissionCenter.taskStatus') }}：{{ infoSubmitAuditClass_EN[task.auditStatus] }}
-                </div>
+                <template v-if="task.isBegin">
+                  <div v-if="lang.includes('zh-CN')">
+                    {{ $t('info.submissionCenter.taskStatus') }}：{{ infoSubmitAuditClass_CN[task.auditStatus] }}
+                  </div>
+                  <div v-else>
+                    {{ $t('info.submissionCenter.taskStatus') }}：{{ infoSubmitAuditClass_EN[task.auditStatus] }}
+                  </div>
+                </template>
+                <template v-else>
+                  <div v-if="lang.includes('zh-CN')">
+                    {{ $t('info.submissionCenter.taskStatus') }}：未到开始填报时间
+                  </div>
+                  <div v-else>{{ $t('info.submissionCenter.taskStatus') }}：Not yet at the start time</div>
+                </template>
               </div>
 
               <img
+                v-if="task.isBegin"
                 class="info-submission-task-card-arrow animate__animated"
                 src="@/assets/pages/info/infoSubmissionCenter/dataSubmissionTaskArrow.png"
                 style="position: relative; z-index: 1; transform: scale(0.5); width: 70px"
@@ -184,6 +193,17 @@
         >
       </a-row>
     </a-card>
+
+    <!-- 乱七八糟的东西 -->
+    <!-- 暂未开始的弹窗 -->
+    <a-modal v-model="NotBeginMoal.visible" :title="$t('modal.notice.title')">
+      <template slot="footer">
+        <a-button key="ok" type="primary" @click="() => (NotBeginMoal.visible = false)">
+          {{ $t('modal.btn.ok2') }}
+        </a-button>
+      </template>
+      <p>{{ $t('info.submissionCenter.taskNotBegin') }}</p>
+    </a-modal>
   </page-header-wrapper>
 </template>
   
@@ -207,8 +227,13 @@ export default {
       taskListLoading: true,
       // memberLoading: false,
       taskList: [],
+
       infoSubmitAuditClass_CN: infoSubmitAuditClass_CN,
       infoSubmitAuditClass_EN: infoSubmitAuditClass_EN,
+
+      NotBeginMoal: {
+        visible: false,
+      },
     }
   },
   computed: {
@@ -219,7 +244,15 @@ export default {
   mounted() {
     ChangeBgCSS('INFO')
     GetTaskList().then((res) => {
-      this.taskList = res.data.taskList
+      let taskList = res.data.taskList
+      taskList.forEach((item) => {
+        item.isBegin = this.DayAafterOrSameB(
+          this.momentFormat(this.getTodayTimeStamp()),
+          this.momentFormat(item.taskBeginTime)
+        )
+        // console.log(item.isBegin, this.momentFormat(this.getTodayTimeStamp()), this.momentFormat(item.taskBeginTime))
+      })
+      this.taskList = taskList
       this.taskListLoading = false
     })
   },
@@ -236,11 +269,34 @@ export default {
 
       return bgStr[idx % bgStr.length]
     },
-    momentFormat(date, format) {
+    RouteToSubmit(task) {
+      if (task.isBegin) {
+        this.$router.push({
+          path: '/info/submit',
+          query: {
+            taskId: task.taskId,
+          },
+        })
+      } else {
+        this.NotBeginMoal.visible = true
+      }
+    },
+    /**
+     *
+     * dayjs工具函数
+     */
+    momentFormat(date, format = 'YYYY-MM-DD') {
       // return moment().unix().format(format)
+
       date = parseInt(date) * 1000
-      // console.log(date_)
+      // console.log(dayjs().unix())
       return dayjs(date).format(format)
+    },
+    getTodayTimeStamp() {
+      return dayjs().unix()
+    },
+    DayAafterOrSameB(date1, date2) {
+      return dayjs(date1).isAfter(dayjs(date2), 'day') || dayjs(date1).isSame(dayjs(date2), 'day')
     },
   },
 }
