@@ -80,7 +80,7 @@ request.interceptors.request.use(config => {
       config.url += ''
     }
 
-    // console.log(config)
+
   }
 
   return config

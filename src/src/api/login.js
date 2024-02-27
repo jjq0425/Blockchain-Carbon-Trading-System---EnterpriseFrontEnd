@@ -1,14 +1,9 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
 import request from '@/utils/request'
+
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
+const token = storage.get(ACCESS_TOKEN)
 
 const userApi = {
   Login: '/auth/enterpriseLogin',
@@ -48,6 +43,15 @@ export function login(parameter) {
     data: parameter
   })
 }
+export function getInfo() {
+  return request({
+    url: userApi.UserInfo,
+    method: 'post',
+    data: {
+      token: token
+    }
+  })
+}
 
 export function getSmsCaptcha(parameter) {
   return request({
@@ -57,15 +61,7 @@ export function getSmsCaptcha(parameter) {
   })
 }
 
-export function getInfo() {
-  return request({
-    url: userApi.UserInfo,
-    method: 'post',
-    // headers: {
-    //   'Content-Type': 'application/json;charset=UTF-8'
-    // }
-  })
-}
+
 
 export function getCurrentUserNav() {
   return request({

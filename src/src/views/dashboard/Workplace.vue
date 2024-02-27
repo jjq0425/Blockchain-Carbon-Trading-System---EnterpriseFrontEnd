@@ -18,17 +18,22 @@
         <div class="stat-item">
           <!-- <a-statistic title="项目数" :value="56" /> -->
           <div style="font-size: 14px">行业类型</div>
-          <div style="font-size: 18px; margin-top: 10px; font-weight: bold">电力</div>
+          <div style="font-size: 18px; margin-top: 10px; font-weight: bold" v-if="lang.includes('CN')">
+            {{ user.enterpriseClassName_CN }}
+          </div>
+          <div style="font-size: 18px; margin-top: 10px; font-weight: bold" v-else>
+            {{ user.enterpriseClassName_EN }}
+          </div>
         </div>
         <div class="stat-item">
           <!-- <a-statistic title="团队内排名" :value="8" suffix="/ 24" /> -->
-          <div style="font-size: 14px">碳币余额</div>
-          <div style="font-size: 18px; margin-top: 10px; font-weight: bold">23.56</div>
+          <div style="font-size: 14px">剩余碳排量</div>
+          <div style="font-size: 18px; margin-top: 10px; font-weight: bold">{{ user.remainEmission }}</div>
         </div>
         <div class="stat-item">
           <!-- <a-statistic title="项目访问" :value="2223" /> -->
-          <div style="font-size: 14px">行业类型</div>
-          <div style="font-size: 18px; margin-top: 10px; font-weight: bold">电力</div>
+          <div style="font-size: 14px">碳币余额</div>
+          <div style="font-size: 18px; margin-top: 10px; font-weight: bold">{{ user.coCoin }}</div>
         </div>
       </div>
     </template>
@@ -219,18 +224,22 @@ export default {
     userInfo() {
       return this.$store.getters.userInfo
     },
+    lang() {
+      console.log('11', this.$store.state.app.lang)
+      return this.$store.state.app.lang
+    },
   },
   created() {
     this.user = this.userInfo
     this.avatar = this.userInfo.avatar
 
-    getRoleList().then((res) => {
-      // console.log('workplace -> call getRoleList()', res)
-    })
+    // getRoleList().then((res) => {
+    //   // console.log('workplace -> call getRoleList()', res)
+    // })
 
-    getServiceList().then((res) => {
-      // console.log('workplace -> call getServiceList()', res)
-    })
+    // getServiceList().then((res) => {
+    //   // console.log('workplace -> call getServiceList()', res)
+    // })
   },
   mounted() {
     ChangeBgCSS('')
@@ -241,36 +250,36 @@ export default {
   },
   methods: {
     getProjects() {
-      this.$http.get('/list/search/projects').then((res) => {
-        this.projects = res.data && res.data.data
-        this.loading = false
-      })
+      // this.$http.get('/list/search/projects').then((res) => {
+      //   this.projects = res.data && res.data.data
+      //   this.loading = false
+      // })
     },
     getActivity() {
-      this.$http.get('/workplace/activity').then((res) => {
-        this.activities = res.data
-      })
+      // this.$http.get('/workplace/activity').then((res) => {
+      //   this.activities = res.data
+      // })
     },
     getTeams() {
-      this.$http.get('/workplace/teams').then((res) => {
-        this.teams = res.data
-      })
+      // this.$http.get('/workplace/teams').then((res) => {
+      //   this.teams = res.data
+      // })
     },
     initRadar() {
       this.radarLoading = true
 
-      this.$http.get('/workplace/radar').then((res) => {
-        const dv = new DataSet.View().source(res.data)
-        dv.transform({
-          type: 'fold',
-          fields: ['个人', '团队', '部门'],
-          key: 'user',
-          value: 'score',
-        })
+      // this.$http.get('/workplace/radar').then((res) => {
+      //   const dv = new DataSet.View().source(res.data)
+      //   dv.transform({
+      //     type: 'fold',
+      //     fields: ['个人', '团队', '部门'],
+      //     key: 'user',
+      //     value: 'score',
+      //   })
 
-        this.radarData = dv.rows
-        this.radarLoading = false
-      })
+      //   this.radarData = dv.rows
+      //   this.radarLoading = false
+      // })
     },
   },
 }

@@ -3,12 +3,13 @@ import expirePlugin from 'store/plugins/expire'
 import { login, getInfo, logout } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
+import { enterpriseClassName_CN, enterpriseClassName_EN } from '@/config/class/enterpriseClass'
 
 storage.addPlugin(expirePlugin)
 const user = {
   state: {
-    token: '',
-    name: '',
+    token: '',//token
+    name: '',//企业名
     welcome: '',
     avatar: '',
     roles: [],
@@ -61,6 +62,7 @@ const user = {
         getInfo().then(response => {
           // const { result } = response
           const result = response.data || response.result
+          //TODO:如果审核未通过或初次绑定未绑定信息需要处理
 
           if (result.role == null || result.role == undefined) {
             result.role =
@@ -93,7 +95,10 @@ const user = {
             if (result.name == null) {
               result.name = result.enterpriseName
             }
-            console.log("User.js>>ROLE", role, result)
+            // console.log("User.js>>ROLE", role, result)
+            result.enterpriseClassName_CN = enterpriseClassName_CN[result.enterpriseClass]
+            result.enterpriseClassName_EN = enterpriseClassName_EN[result.enterpriseClass]
+
             commit('SET_ROLES', role)
             commit('SET_INFO', result)
             console.log(result)
@@ -102,12 +107,16 @@ const user = {
             // 设置头像--关闭
             commit('SET_AVATAR', result.avatar)
 
+
+
+
             // 下游
             resolve(result)
           } else {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
         }).catch(error => {
+          //TODO:如果审核未通过或初次绑定未绑定信息需要处理，返回404
           reject(error)
         })
       })

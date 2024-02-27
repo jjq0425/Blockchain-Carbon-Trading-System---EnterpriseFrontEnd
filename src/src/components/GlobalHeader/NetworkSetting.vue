@@ -115,7 +115,7 @@ export default {
         method: 'post',
         timeout: 1000,
         data: {
-          testInfo: '这是测试消息',
+          testInfo: '这是测试消息₂³',
         },
         NetworkSetting: true,
       })
