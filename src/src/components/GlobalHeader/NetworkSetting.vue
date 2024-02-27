@@ -112,8 +112,11 @@ export default {
       }
       request({
         url: testUrl,
-        method: 'get',
+        method: 'post',
         timeout: 1000,
+        data: {
+          testInfo: '这是测试消息',
+        },
         NetworkSetting: true,
       })
         .then((res) => {
