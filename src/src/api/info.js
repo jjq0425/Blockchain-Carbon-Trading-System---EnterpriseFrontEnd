@@ -1,0 +1,45 @@
+
+import request from '@/utils/request'
+
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
+const token = storage.get(ACCESS_TOKEN)
+
+const infoApi = {
+    TaskList: '/info/enterpriseTaskList',
+    TaskSubmit: '/info/submission',
+    GetReport: '/public/enterpriseReport'
+}
+
+/**
+ * 
+ * @returns {Promise}
+ * 获取填报任务列表
+ */
+export function GetTaskList() {
+    return request({
+        url: infoApi.TaskList,
+        method: 'post',
+        data: {
+            token: token
+        }
+    })
+
+}
+
+/**
+ * 
+ * @returns {Promise}
+ * 提交填报任务
+ */
+
+export function Submit(parameter) {
+    return request({
+        url: infoApi.TaskList,
+        method: 'post',
+        data: {
+            token: token,
+            ...parameter
+        }
+    })
+}

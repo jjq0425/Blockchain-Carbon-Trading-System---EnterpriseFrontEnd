@@ -63,10 +63,10 @@ export const asyncRouterMap = [
             // hidden: true
           },
           {
-            path: '/info/PreviousReports',
-            name: 'PreviousReports',
-            component: () => import('@/views/info/PreviousReports/PreviousReports'),
-            meta: { title: 'menu.info.previousReports', keepAlive: true, },
+            path: '/info/ReportGuide',
+            name: 'ReportGuide',
+            component: () => import('@/views/info/ReportGuide/ReportGuide'),
+            meta: { title: 'menu.info.reportGuide', keepAlive: true, },
             // hidden: true
           },
           // {

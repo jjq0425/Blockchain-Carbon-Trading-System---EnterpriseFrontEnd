@@ -22,6 +22,8 @@ import result from './en-US/result'
 import account from './en-US/account'
 import modal from './en-US/modal'
 
+import info from './en-US/info'
+
 const components = {
   antLocale: antdEnUS,
   momentName: 'eu',
@@ -43,5 +45,6 @@ export default {
   ...form,
   ...result,
   ...account,
-  ...modal
+  ...modal,
+  ...info
 }

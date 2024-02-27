@@ -23,7 +23,7 @@
     <a-card class="card" title="上报任务" :bordered="false" style="min-height: 80px">
       <!-- 正常页面 -->
       <div style="display: flex; flex-wrap: wrap">
-        <div v-for="(task, idx) in taskList" :key="idx">
+        <div v-for="idx in 10" :key="idx">
           <div
             style="
               width: 300px;
@@ -41,37 +41,25 @@
               style="padding: 20px; border-radius: 8px 8px 0 0; color: white"
               :style="{ background: CardBgCalculate(idx) }"
             >
-              <div style="font-weight: bold; font-size: 20px">
-                {{ task.taskYear }}{{ $t('info.submissionCenter.annualDataSubmit') }}
-              </div>
-              <div v-if="task.taskDescription.length < 24">{{ task.taskDescription }}</div>
-              <a-tooltip placement="rightTop" v-else>
+              <div style="font-weight: bold; font-size: 20px">2023年度数据上报</div>
+
+              <a-tooltip placement="rightTop">
                 <template slot="title">
-                  <span>{{ task.taskDescription }}</span>
+                  <span>请上报2023年数据请上报2023年数据,并仔细提交</span>
                 </template>
-                <div>{{ task.taskDescription.substring(0, 23) + '...' }}</div>
+                <div>请上报2023年数据请上报2023年数据...</div>
               </a-tooltip>
             </div>
             <div style="padding: 20px; z-index: 10; display: flex; justify-content: space-between">
               <div>
-                <div>
-                  {{ $t('info.submissionCenter.taskBeginTime') }}：{{ momentFormat(task.taskBeginTime, 'YYYY-MM-DD') }}
-                </div>
-                <div>
-                  {{ $t('info.submissionCenter.taskEndTime') }}：{{ momentFormat(task.taskBeginTime, 'YYYY-MM-DD') }}
-                </div>
-                <div v-if="lang.includes('zh-CN')">
-                  {{ $t('info.submissionCenter.taskStatus') }}：{{ infoSubmitAuditClass_CN[task.auditStatus] }}
-                </div>
-                <div v-else>
-                  {{ $t('info.submissionCenter.taskStatus') }}：{{ infoSubmitAuditClass_EN[task.auditStatus] }}
-                </div>
+                <div>截止时间：2023年4月15日</div>
+                <div>当前状态：未填报</div>
               </div>
 
               <img
                 class="info-submission-task-card-arrow animate__animated"
                 src="@/assets/pages/info/infoSubmissionCenter/dataSubmissionTaskArrow.png"
-                style="position: relative; z-index: 1; transform: scale(0.5); width: 70px"
+                style="position: relative; z-index: 1; transform: scale(0.5); width: 50px"
               />
             </div>
           </div>
@@ -79,11 +67,11 @@
       </div>
       <!-- 空页面 -->
       <div>
-        <a-result :title="$t('info.submissionCenter.notask')" v-if="taskList.length == 0 && taskListLoading == false">
+        <a-result title="暂无报送任务">
           <template #icon><img style="height: 200px" src="@/assets/default/EmptyInfo.png" /> </template
         ></a-result>
         <!-- 加载中 -->
-        <a-result :title="$t('info.submissionCenter.taskLoading')" v-if="taskListLoading">
+        <a-result title="报送任务加载中">
           <template #icon><a-icon type="loading" /> </template
         ></a-result>
       </div>
@@ -94,7 +82,7 @@
       title="数据上报须知"
       :bordered="false"
       style="min-height: 30px"
-      v-if="lang.includes('zh')"
+      v-if="this.$store.state.app.lang.includes('zh')"
     >
       根据国家发展和改革委员会发布的《中国企业温室气体排放核算方法与报告指南(试行)》，各企业应当按照以下要求上报温室气体排放数据：
 
@@ -192,9 +180,6 @@ import FooterToolBar from '@/components/FooterToolbar'
 import { baseMixin } from '@/store/app-mixin'
 import ChangeBgCSS from '../../../utils/ChangeBgCSS'
 import store from '@/store'
-import { GetTaskList } from '@/api/info'
-import { infoSubmitAuditClass_CN, infoSubmitAuditClass_EN } from '@/config/class/infoSubmitAduitClass'
-import dayjs from 'dayjs'
 
 export default {
   name: 'AdvancedForm',
@@ -204,24 +189,12 @@ export default {
   },
   data() {
     return {
-      taskListLoading: true,
-      // memberLoading: false,
-      taskList: [],
-      infoSubmitAuditClass_CN: infoSubmitAuditClass_CN,
-      infoSubmitAuditClass_EN: infoSubmitAuditClass_EN,
+      loading: false,
+      memberLoading: false,
     }
-  },
-  computed: {
-    lang() {
-      return store.state.app.lang
-    },
   },
   mounted() {
     ChangeBgCSS('INFO')
-    GetTaskList().then((res) => {
-      this.taskList = res.data.taskList
-      this.taskListLoading = false
-    })
   },
   methods: {
     CardBgCalculate(idx) {
@@ -235,12 +208,6 @@ export default {
       ]
 
       return bgStr[idx % bgStr.length]
-    },
-    momentFormat(date, format) {
-      // return moment().unix().format(format)
-      date = parseInt(date) * 1000
-      // console.log(date_)
-      return dayjs(date).format(format)
     },
   },
 }

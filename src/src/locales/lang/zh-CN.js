@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 import antd from 'ant-design-vue/es/locale-provider/zh_CN'
 import momentCN from 'moment/locale/zh-cn'
 import global from './zh-CN/global'
@@ -15,6 +20,9 @@ import form from './zh-CN/form'
 import result from './zh-CN/result'
 import account from './zh-CN/account'
 import modal from './zh-CN/modal'
+
+
+import info from './zh-CN/info'
 
 const components = {
   antLocale: antd,
@@ -37,5 +45,6 @@ export default {
   ...form,
   ...result,
   ...account,
-  ...modal
+  ...modal,
+  ...info
 }

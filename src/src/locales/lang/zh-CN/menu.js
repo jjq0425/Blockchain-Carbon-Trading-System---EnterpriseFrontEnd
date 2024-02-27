@@ -1,18 +1,4 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
 export default {
     'menu.welcome': '欢迎',
     'menu.home': '主页',
@@ -28,7 +14,7 @@ export default {
     'menu.info.step-form.result': '分步表单（完成）',
     'menu.info.advanced-form': '高级表单',
     'menu.info.infoSubmission': '数据报送',
-    'menu.info.previousReports': '历史档案',
+    'menu.info.reportGuide': '填报指南',
     'menu.trade': '碳币交易',
     'menu.trade.table-list': '查询表格',
     'menu.trade.basic-list': '标准列表',
