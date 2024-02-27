@@ -1,7 +1,5 @@
 <template>
-  <page-header-wrapper
-    content="作为我国碳交易市场的重要组成部分，碳数据上报对于推动碳减排工作具有重要意义。本页面提供了一个便捷、高效的碳数据上报平台，让您能够轻松完成碳数据的收集、整理和提交。"
-  >
+  <page-header-wrapper :content="$t('info.submissionCenter.taskSubmit.title')">
     <template v-slot:extraContent>
       <transition-group
         appear
@@ -272,9 +270,9 @@ export default {
     RouteToSubmit(task) {
       if (task.isBegin) {
         this.$router.push({
-          path: '/info/submit',
-          query: {
-            taskId: task.taskId,
+          name: 'InfoSubmission',
+          params: {
+            task: task,
           },
         })
       } else {
