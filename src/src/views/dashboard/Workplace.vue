@@ -225,7 +225,7 @@ export default {
       return this.$store.getters.userInfo
     },
     lang() {
-      console.log('11', this.$store.state.app.lang)
+      // console.log('11', this.$store.state.app.lang)
       return this.$store.state.app.lang
     },
   },

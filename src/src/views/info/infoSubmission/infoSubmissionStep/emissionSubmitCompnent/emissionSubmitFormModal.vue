@@ -218,6 +218,14 @@
     </div>
     <template>
       <div style="width: 100%; text-align: center">
+        <a-popconfirm
+          title="确认将非缺省值参数全置为0?"
+          :ok-text="$t('modal.btn.confirm')"
+          :cancel-text="$t('modal.btn.cancel')"
+          @confirm="setZero"
+        >
+          <a-button style="margin-right: 20px"> 非缺省值参数置0 </a-button>
+        </a-popconfirm>
         <a-button key="back" @click="close" style="margin-right: 20px" type="danger"> 不保存关闭 </a-button>
         <a-button key="submit" type="primary" @click="handleOk"> 保存并提交 </a-button>
       </div>
@@ -506,6 +514,25 @@ export default {
           factor.dataSource = 'MEASURE'
         }
       }
+    },
+    /**
+     * 全部置为0
+     */
+    setZero() {
+      this.emissionForm.activityFactor.forEach((item) => {
+        if (!item.isConst && item.dataSource != 'DEFAULT') {
+          item.dataNum = 0
+        }
+      })
+      this.emissionForm.EmissionFactor.forEach((item) => {
+        if (!item.isConst && item.dataSource != 'DEFAULT') {
+          item.dataNum = 0
+          item.defaultValChooseIdx = -1
+          item.dataSource = 'MEASURE'
+        }
+      })
+      this.reConclude()
+      this.$message.success('已将非缺省值字段全部置为0，缺省值请自行更改')
     },
   },
 }

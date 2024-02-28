@@ -13,6 +13,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 export default {
     'menu.welcome': 'Welcome',
     'menu.home': 'Home',
@@ -28,6 +33,8 @@ export default {
     'menu.info.step-form.result': 'Step Form(finished)',
     'menu.info.advanced-form': 'Advanced Form',
     'menu.info.infoSubmission': 'Annual Submission',
+    'menu.info.infoSubmission.edit': 'Annual Data Submission',
+    'menu.info.infoSubmission.detail': 'Submission Result',
     'menu.info.reportGuide': 'Report guide',
     'menu.trade': 'Carbon Trade',
     'menu.trade.table-list': 'Search Table',

@@ -93,7 +93,7 @@ export const asyncRouterMap = [
             path: '/info/submission',
             name: 'InfoSubmission',
             component: () => import('@/views/info/infoSubmission/infoSubmission'),
-            meta: { title: 'menu.info.infoSubmission', keepAlive: true, },
+            meta: { title: 'menu.info.infoSubmission.edit', keepAlive: true, },
             hidden: true
           },
 

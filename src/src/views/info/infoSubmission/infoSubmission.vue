@@ -190,6 +190,7 @@ export default {
     return {
       NowStep: 1,
       taskInfo: {},
+      submitData: {},
 
       errors: [],
     }
@@ -198,7 +199,7 @@ export default {
     ChangeBgCSS('INFO')
 
     this.taskInfo = this.$route.params.task
-    console.log(this.$route.params.task)
+    // console.log(this.$route.params.task)
   },
   methods: {
     // 最终全页面提交
@@ -248,6 +249,8 @@ export default {
             this.errorList(tmp)
           })
       } else if (this.NowStep == 1) {
+        console.log('submitDataINP2', this.$refs.emissionSubmit.getSourceData())
+        this.submitData = JSON.parse(JSON.stringify(this.$refs.emissionSubmit.getSourceData()))
         this.goTonextPage()
       }
 

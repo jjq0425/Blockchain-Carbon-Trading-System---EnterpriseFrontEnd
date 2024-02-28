@@ -190,6 +190,12 @@ export default {
       // console.log(this.$refs.dataSourceQuestionModal)
       this.$refs.dataSourceQuestionModal.open()
     },
+    /**
+     * 父组件获取
+     */
+    getSourceData() {
+      return this.dataSource
+    },
     // OLD
     // newMember() {
     //   const length = this.data.length

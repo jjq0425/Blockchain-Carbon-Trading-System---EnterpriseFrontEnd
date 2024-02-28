@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 export default {
     'menu.welcome': '欢迎',
@@ -14,6 +19,9 @@ export default {
     'menu.info.step-form.result': '分步表单（完成）',
     'menu.info.advanced-form': '高级表单',
     'menu.info.infoSubmission': '数据报送',
+    'menu.info.infoSubmission.edit': '碳排放数据报送',
+    'menu.info.infoSubmission.detail': '报送结果查看',
+
     'menu.info.reportGuide': '填报指南',
     'menu.trade': '碳币交易',
     'menu.trade.table-list': '查询表格',

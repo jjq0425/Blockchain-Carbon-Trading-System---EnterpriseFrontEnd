@@ -157,7 +157,7 @@ export default {
       this.tableData = this.classdata.children
       this.columns = ConstructColumns(this.tableData).Columns
       this.colkey = ConstructColumns(this.tableData).ColKey
-      console.log(this.colkey, this.columns)
+      // console.log(this.colkey, this.columns)
     },
     reconstructClassData(tableData = this.tableData) {
       this.classdata.children = tableData
