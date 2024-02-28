@@ -4,16 +4,27 @@
  * 
 -->
 <template>
-  <a-drawer :visible="visible" :title="title" placement="bottom" :height="490" :zIndex="100">
+  <a-drawer
+    :visible="visible"
+    :title="title"
+    placement="bottom"
+    :height="490"
+    :zIndex="100"
+    :closable="false"
+    destroyOnClose
+  >
     <!-- <template slot="footer">
       
     </template> -->
     <div>
       <div style="width: 100%; max-height: 450px; overflow-y: scroll">
         <a-form-model
-          ref="dynamicValidateForm"
+          ref="emissionForm"
           :model="emissionForm"
           style="display: flex; width: 100%; justify-content: space-around"
+          :rule="{
+            className: [{ required: true, message: '请输入排放源名', trigger: 'blur' }],
+          }"
         >
           <div style="width: 15%; align-self: center">
             <a-form-model-item
@@ -31,7 +42,13 @@
             </a-form-model-item>
 
             <a-form-model-item v-bind="formItemLayoutLeft" label="该项排放总额" labelAlign="left">
-              {{ emissionForm.activityFactorNum * emissionForm.EmissionFactorNum }}
+              <!-- {{ emissionForm.activityFactorNum * emissionForm.EmissionFactorNum }} -->
+              <a-statistic
+                title=""
+                :precision="6"
+                :value="emissionForm.classDataSum"
+                :valueStyle="{ fontWeight: 'bold', fontSize: '36px' }"
+              />
             </a-form-model-item>
           </div>
           <div style="align-self: center; width: 2%">
@@ -55,39 +72,53 @@
             </div>
             <template v-for="(activityFac, index) in emissionForm.activityFactor">
               <template v-if="!activityFac.isConst">
-                <a-form-model-item
-                  :key="activityFac.dataSort"
-                  v-bind="formItemLayout"
-                  :label="`${activityFac.dataName}数量`"
-                  :prop="'activityFactor.' + index + '.dataNum'"
-                  :rules="{
-                    required: true,
-                    message: 'domain can not be null',
-                    trigger: 'blur',
-                  }"
-                >
-                  <a-input
-                    v-model="activityFac.dataNum"
-                    placeholder="please input domain"
-                    :disabled="activityFac.dataSource == 'DEFAULT'"
-                    style="width: 120px"
-                  />
-                  <span style="font-size: 9px; padding-left: 5px">{{ activityFac.dataUnit }}</span>
-                </a-form-model-item>
+                <div :key="`activityFac_${activityFac.dataSort}`">
+                  <a-form-model-item
+                    :key="activityFac.dataSort"
+                    v-bind="formItemLayout"
+                    :label="`${activityFac.dataName}数值`"
+                    :prop="'activityFactor.' + index + '.dataNum'"
+                    :rules="ruleCompute(activityFac.dataUnit)"
+                  >
+                    <a-input-number
+                      v-model="activityFac.dataNum"
+                      :min="0"
+                      :max="activityFac.dataUnit == '%' ? 1 : 99999999999999999999999999999999999999999999999"
+                      placeholder="请输入数值"
+                      :disabled="activityFac.dataSource == 'DEFAULT'"
+                      style="width: 120px"
+                      @change="reConclude"
+                    />
+                    <span style="font-size: 9px; padding-left: 5px" v-if="activityFac.dataUnit != '%'">{{
+                      activityFac.dataUnit
+                    }}</span>
+                    <span style="font-size: 9px; padding-left: 5px; color: #ffa94d" v-else
+                      >请输入原始数值而非百分比</span
+                    >
+                  </a-form-model-item>
 
-                <a-form-model-item
-                  :key="activityFac.dataSort"
-                  v-bind="formItemLayout"
-                  :label="`来源`"
-                  :prop="'activityFactor.' + index + '.dataSource'"
-                  :rules="{
-                    required: true,
-                    message: 'domain can not be null',
-                    trigger: 'blur',
-                  }"
-                >
-                  <a-input v-model="activityFac.dataSource" placeholder="please input domain" />
-                </a-form-model-item>
+                  <a-form-model-item
+                    :key="activityFac.dataSort"
+                    v-bind="formItemLayout"
+                    :label="`来源`"
+                    :prop="'activityFactor.' + index + '.dataSource'"
+                    :rules="{
+                      required: true,
+                      message: '请选择数据来源',
+                      trigger: 'blur',
+                    }"
+                  >
+                    <a-cascader
+                      :options="cascaderOptionCreate(activityFac)"
+                      placeholder="请选择数据来源"
+                      :popupStyle="{ height: '220px' }"
+                      expandTrigger="hover"
+                      @change="cascadeChange($event, activityFac)"
+                      :defaultValue="cascaderDefualtValChoose(activityFac)"
+                      :allowClear="false"
+                    />
+                  </a-form-model-item>
+                </div>
               </template>
             </template>
           </div>
@@ -97,7 +128,7 @@
               style="
                 display: flex;
                 width: 100%;
-                background-color: #e7f5ff;
+                background-color: #e6fcf5;
                 padding: 5px 25px;
                 border-radius: 999px;
                 text-align: center;
@@ -105,46 +136,53 @@
                 margin-bottom: 20px;
               "
             >
-              <div style="font-weight: bold">活动水平</div>
-              <div style="font-size: 12px">小计: {{ emissionForm.activityFactorNum }}</div>
+              <div style="font-weight: bold">排放因子</div>
+              <div style="font-size: 12px">小计: {{ emissionForm.EmissionFactorNum }}</div>
             </div>
-            <template v-for="(activityFac, index) in emissionForm.activityFactor">
-              <template v-if="!activityFac.isConst">
-                <div :key="'activityFac' + activityFac.dataSort">
+            <template v-for="(EmissionFac, index) in emissionForm.EmissionFactor">
+              <template v-if="!EmissionFac.isConst">
+                <div :key="`EmissionFac_${EmissionFac.dataSort}`">
                   <a-form-model-item
                     v-bind="formItemLayout"
-                    :label="`${activityFac.dataName}数量`"
-                    :prop="'activityFactor.' + index + '.dataNum'"
-                    :rules="{
-                      required: true,
-                      message: 'domain can not be null',
-                      trigger: 'blur',
-                    }"
+                    :label="`${EmissionFac.dataName}数值`"
+                    :prop="'EmissionFactor.' + index + '.dataNum'"
+                    :rules="ruleCompute(EmissionFac.dataUnit)"
                   >
-                    <a-input
-                      v-model="activityFac.dataNum"
-                      placeholder="please input domain"
-                      :disabled="activityFac.dataSource == 'DEFAULT'"
+                    <a-input-number
+                      v-model="EmissionFac.dataNum"
+                      :min="0"
+                      :max="EmissionFac.dataUnit == '%' ? 1 : 99999999999999999999999999999999999999999999999"
+                      placeholder="请输入数据"
+                      :disabled="EmissionFac.dataSource == 'DEFAULT'"
                       style="width: 120px"
+                      @change="reConclude"
                     />
-                    <span style="font-size: 9px; padding-left: 5px">{{ activityFac.dataUnit }}</span>
+                    <span style="font-size: 9px; padding-left: 5px" v-if="EmissionFac.dataUnit != '%'">{{
+                      EmissionFac.dataUnit
+                    }}</span>
+                    <span style="font-size: 9px; padding-left: 5px; color: #ffa94d" v-else
+                      >请输入原始数值而非百分比</span
+                    >
                   </a-form-model-item>
 
                   <a-form-model-item
                     v-bind="formItemLayout"
                     :label="`来源`"
-                    :prop="'activityFactor.' + index + '.dataSource'"
+                    :prop="'EmissionFactor.' + index + '.dataSource'"
                     :rules="{
                       required: true,
-                      message: 'domain can not be null',
+                      message: '请选择数据来源',
                       trigger: 'blur',
                     }"
                   >
                     <a-cascader
-                      :options="cascaderOptionCreate(activityFac)"
-                      placeholder="Please select"
-                      @change="onChange"
+                      :options="cascaderOptionCreate(EmissionFac)"
+                      placeholder="请选择数据来源"
                       :popupStyle="{ height: '220px' }"
+                      expandTrigger="hover"
+                      @change="cascadeChange($event, EmissionFac)"
+                      :defaultValue="cascaderDefualtValChoose(EmissionFac)"
+                      :allowClear="false"
                     />
                   </a-form-model-item>
                 </div>
@@ -174,6 +212,7 @@ export default {
   data() {
     return {
       visible: false,
+      type: '',
       title: '',
       record: {},
       //   labelCol: { lg: { span: 5 }, sm: { span: 5 } },
@@ -193,18 +232,18 @@ export default {
       },
       formItemLayout: {
         labelCol: {
-          span: 6,
+          span: 10,
         },
         wrapperCol: {
-          span: 15,
+          span: 12,
         },
       },
-      formItemLayoutWithOutLabel: {
-        wrapperCol: {
-          xs: { span: 24, offset: 0 },
-          sm: { span: 20, offset: 4 },
-        },
-      },
+      //   formItemLayoutWithOutLabel: {
+      //     wrapperCol: {
+      //       xs: { span: 24, offset: 0 },
+      //       sm: { span: 20, offset: 4 },
+      //     },
+      //   },
       infoSubmitTableDataSourceClass_CN: infoSubmitTableDataSourceClass_CN,
       infoSubmitTableDataSourceClass_EN: infoSubmitTableDataSourceClass_EN,
     }
@@ -217,21 +256,128 @@ export default {
   methods: {
     open(editType, record) {
       this.visible = true
+      this.type = editType
       if (editType == 'edit') {
         this.title = '编辑项目'
-        this.record = record
-        this.emissionForm = record
-        console.log(this.record)
+        this.record = JSON.parse(JSON.stringify(record))
+        this.emissionForm = JSON.parse(JSON.stringify(record))
       } else {
         this.title = '新增项目'
+        this.record = JSON.parse(JSON.stringify(record))
+        this.emissionForm = JSON.parse(JSON.stringify(record))
+        console.log(this.record)
       }
     },
     close() {
+      this.record = {}
+      this.emissionForm = {}
       this.visible = false
     },
+
     handleOk() {
-      window.alert('大哥你还没做')
+      //   window.alert('大哥你还没做')
+      this.$refs['emissionForm'].validate((valid) => {
+        if (valid) {
+          this.$emit('dataUpdateFinish', this.type, this.emissionForm)
+          if (this.type == 'edit') {
+            this.$message.success('编辑成功')
+          } else {
+            this.$message.success('新增成功')
+          }
+          this.close()
+          return
+        } else {
+          this.$message.error('请填写完整信息')
+
+          return
+        }
+      })
     },
+    /**
+     * 计算
+     */
+    reConclude(type, factor) {
+      //   console.log(this.emissionForm.activityFactor)
+
+      // 计算emissionForm.activityFactorNum
+      let res = 1
+      for (let i = 0; i < this.emissionForm.activityFactor.length; i++) {
+        res = res * this.emissionForm.activityFactor[i].dataNum
+        // console.log(res, this.emissionForm.activityFactor)
+      }
+      // console.log(res)
+      this.emissionForm.activityFactorNum = res.toFixed(6)
+
+      // 计算emissionForm.EmissionFactorNum
+      let res_2 = 1
+      for (let i = 0; i < this.emissionForm.EmissionFactor.length; i++) {
+        res_2 = res_2 * this.emissionForm.EmissionFactor[i].dataNum
+      }
+      this.emissionForm.EmissionFactorNum = res_2.toFixed(6)
+
+      this.emissionForm.classDataSum = (
+        this.emissionForm.EmissionFactorNum * this.emissionForm.activityFactorNum
+      ).toFixed(6)
+    },
+
+    ruleCompute(factorUnit) {
+      let validateNormalNum = (rule, value, callback) => {
+        // console.log(rule, value, '111111')
+        // console.log(rule, value, '1111112')
+        if (value >= 0) {
+          callback()
+        } else if (value < 0) {
+          callback(new Error('请输入正数'))
+        } else {
+          callback()
+        }
+      }
+      let validatePercentNum = (rule, value, callback) => {
+        // console.log(rule, value, '1111112')
+        if (value <= 1 && value >= 0) {
+          callback()
+        } else if (value > 1 || value < 0) {
+          callback(new Error('请输入原始数值。范围在0-1之间'))
+        } else {
+          callback()
+        }
+      }
+      if (factorUnit == '%') {
+        return [
+          {
+            required: true,
+            message: '请输入数据',
+            trigger: 'blur',
+          },
+          //   {
+          //     min: 0,
+          //     max: 1,
+          //     message: '请输入原始数值。范围在0-1之间',
+          //     trigger: 'blur',
+          //   },
+          { validator: validatePercentNum, trigger: 'blur' },
+        ]
+      } else {
+        return [
+          {
+            required: true,
+            message: '请输入数据',
+            trigger: 'blur',
+          },
+          //   {
+          //     min: 0,
+          //     message: '请输入准确的数字。',
+          //     trigger: 'blur',
+          //   },
+          { validator: validateNormalNum, trigger: 'blur' },
+        ]
+      }
+    },
+    /**
+     *
+     * @param {*} singleRecord
+     * 级联选择器选项生成
+     */
     cascaderOptionCreate(singleRecord) {
       //   console.log('cascaderOptionCreate', record)
       let option = []
@@ -287,8 +433,43 @@ export default {
           })
         }
       }
-      console.log(option)
+      //   console.log(option)
       return option
+    },
+    cascaderDefualtValChoose(singleRecord) {
+      let res = []
+      res.push(singleRecord.dataSource)
+      if (
+        singleRecord.dataSource == 'DEFAULT' &&
+        singleRecord.defaultVal.length > 0 &&
+        singleRecord.defaultValChooseIdx != -1
+      ) {
+        res.push(`DEFAULT_${singleRecord.defaultValChooseIdx}`)
+        this.SetDefaultVal(singleRecord)
+      }
+      return res
+    },
+    SetDefaultVal(factor) {
+      if (factor.dataSource == 'DEFAULT') {
+        factor.dataNum = factor.defaultVal[factor.defaultValChooseIdx].val
+        this.reConclude()
+      }
+    },
+    cascadeChange(val, factor) {
+      //   console.log(val, factor)
+      if (val[0] != 'DEFAULT') {
+        factor.defaultValChooseIdx = -1
+        factor.dataSource = val[0]
+      } else {
+        if (val[1] != '') {
+          factor.dataSource = val[0]
+          factor.defaultValChooseIdx = parseInt(val[1].split('_')[1])
+          this.SetDefaultVal(factor)
+        } else {
+          factor.defaultValChooseIdx = -1
+          factor.dataSource = 'MEASURE'
+        }
+      }
     },
   },
 }

@@ -113,7 +113,7 @@ export function ConstructColumns(template_children) {
         // dataIndex: 'sum',
         scopedSlots: { customRender: 'sum' },
         fixed: 'right',
-        width: 100,
+        width: 130,
         customHeaderCell: () => ({
             style: {
                 textAlign: 'center',  //头部单元格水平居中

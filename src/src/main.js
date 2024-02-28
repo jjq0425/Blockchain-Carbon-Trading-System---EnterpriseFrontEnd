@@ -8,6 +8,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 // with polyfills
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
@@ -35,7 +40,12 @@ import './utils/filter' // global filter
 import './global.less' // global style
 import VueClipboard from 'vue-clipboard2'
 
+
 Vue.config.productionTip = false
+
+
+
+
 
 // mount axios to `Vue.$http` and `this.$http`
 Vue.use(VueAxios)

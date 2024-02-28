@@ -177,7 +177,7 @@ export const template_1 = {
                             "isConst": true,
                             "dataName": "常数",
                             "dataUnit": "",
-                            "dataNum": 0.00,
+                            "dataNum": 0.000001,
                             "defaultValChooseIdx": 0,
                             "defaultVal": [
                                 {
@@ -216,7 +216,7 @@ export const template_1 = {
                             "isConst": true,
                             "dataName": "常数",
                             "dataUnit": "",
-                            "dataNum": 0.00,
+                            "dataNum": 3.666666666667,
                             "defaultValChooseIdx": 0,
                             "defaultVal": [
                                 {
@@ -269,7 +269,7 @@ export const template_1 = {
                             "isConst": true,
                             "dataName": "常数",
                             "dataUnit": "",
-                            "dataNum": 0.00,
+                            "dataNum": 0.000001,
                             "defaultValChooseIdx": 0,
                             "defaultVal": [
                                 {
@@ -317,7 +317,7 @@ export const template_1 = {
                             "isConst": true,
                             "dataName": "常数",
                             "dataUnit": "",
-                            "dataNum": 0.00,
+                            "dataNum": 3.666666666667,
                             "defaultValChooseIdx": 0,
                             "defaultVal": [
                                 {
@@ -353,6 +353,10 @@ export const template_1 = {
                                 {
                                     "val": 10.00,
                                     "description": "默认值"
+                                },
+                                {
+                                    "val": 12.00,
+                                    "description": "默认值2"
                                 }
                             ],
                             //因为核算购电时，缺省值还需要分为东北、华北、华东、华中、西北、南方进行选择，故选用数组。核算购电排放因子时，即数组中需要六个元素
@@ -378,7 +382,7 @@ export const template_1 = {
                             "isConst": true,
                             "dataName": "常数",
                             "dataUnit": "",
-                            "dataNum": 0.00,
+                            "dataNum": 0.000001,
                             "defaultValChooseIdx": 0,
                             "defaultVal": [
                                 {
@@ -417,7 +421,7 @@ export const template_1 = {
                             "isConst": true,
                             "dataName": "常数",
                             "dataUnit": "",
-                            "dataNum": 0.00,
+                            "dataNum": 3.666666666667,
                             "defaultValChooseIdx": 0,
                             "defaultVal": [
                                 {
@@ -470,7 +474,7 @@ export const template_1 = {
                             "isConst": true,
                             "dataName": "常数",
                             "dataUnit": "",
-                            "dataNum": 0.00,
+                            "dataNum": 0.000001,
                             "defaultValChooseIdx": 0,
                             "defaultVal": [
                                 {
@@ -518,7 +522,7 @@ export const template_1 = {
                             "isConst": true,
                             "dataName": "常数",
                             "dataUnit": "",
-                            "dataNum": 0.00,
+                            "dataNum": 3.666666666667,
                             "defaultValChooseIdx": 0,
                             "defaultVal": [
                                 {
