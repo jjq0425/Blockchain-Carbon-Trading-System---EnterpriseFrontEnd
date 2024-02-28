@@ -72,6 +72,26 @@
         </a-tab-pane>
       </a-tabs>
     </div>
+    <a-divider />
+    <div class="step-form-style-desc">
+      <h3>说明</h3>
+      <h4>如何切换模块？</h4>
+      <p>
+        点击左侧Tab栏可以切换到不同的填报模块。您所属行业为：{{ enterpriseClassName }}，因此一共需要填报{{
+          MainClassName.length
+        }}个模块，分别是{{ MainClassName.join('，') }}。
+      </p>
+      <h4>如何编辑、修改、新增排放项目？</h4>
+      <p>
+        在右侧表格中点击【删除】可以删除当前排放源，点击【编辑】可以对排放源信息（包括排放源名称以及活动水平、排放因子、数据来源）进行编辑，点击下方【新增项目】可以新增排放源
+      </p>
+      <h4>数据来源有哪些分类？</h4>
+      <p>
+        系统对数据源进行了统一分类。关于数据源分类的问题，您可以点击<a @click="openDataSourceQuestionModal()">这里</a
+        >查看
+      </p>
+      <dataSourceQuestionModal ref="dataSourceQuestionModal"></dataSourceQuestionModal>
+    </div>
   </div>
 </template>
 
@@ -81,6 +101,7 @@ import { template_1 } from '@/views/info/infoSubmission/infoSubmissionStep/emiss
 import emissionSubmitTable from './emissionSubmitCompnent/emissionSubmitTable.vue'
 import { ScrollNumber } from 'vue2-scroll-number'
 import store from '@/store'
+import dataSourceQuestionModal from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/dataSourceQuestionModal'
 export default {
   name: 'emissionSubmit',
   data() {
@@ -106,6 +127,7 @@ export default {
   components: {
     emissionSubmitTable,
     ScrollNumber,
+    dataSourceQuestionModal,
   },
   mounted() {
     this.initTable()
@@ -113,6 +135,9 @@ export default {
   computed: {
     enterpriseRemainEmission() {
       return this.$store.state.user.info.remainEmission
+    },
+    enterpriseClassName() {
+      return this.$store.state.user.info.enterpriseClassName_CN
     },
   },
 
@@ -158,67 +183,73 @@ export default {
       // console.log('checked = ', checkedValues);
       // console.log('value = ', this.tableSetOptionsChecked)
     },
-
+    /**
+     * 打开数据源问题弹窗
+     */
+    openDataSourceQuestionModal() {
+      // console.log(this.$refs.dataSourceQuestionModal)
+      this.$refs.dataSourceQuestionModal.open()
+    },
     // OLD
-    newMember() {
-      const length = this.data.length
-      this.data.push({
-        key: length === 0 ? '1' : (parseInt(this.data[length - 1].key) + 1).toString(),
-        name: '',
-        workId: '',
-        department: '',
-        editable: true,
-        isNew: true,
-      })
-    },
-    remove(key) {
-      const newData = this.data.filter((item) => item.key !== key)
-      this.data = newData
-    },
-    saveRow(record) {
-      this.memberLoading = true
-      const { key, name, workId, department } = record
-      if (!name || !workId || !department) {
-        this.memberLoading = false
-        this.$message.error('请填写完整成员信息。')
-        return
-      }
-      // 模拟网络请求、卡顿 800ms
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({ loop: false })
-        }, 800)
-      }).then(() => {
-        const target = this.data.find((item) => item.key === key)
-        target.editable = false
-        target.isNew = false
-        this.memberLoading = false
-      })
-    },
-    toggle(key) {
-      const target = this.data.find((item) => item.key === key)
-      target._originalData = { ...target }
-      target.editable = !target.editable
-    },
-    getRowByKey(key, newData) {
-      const data = this.data
-      return (newData || data).find((item) => item.key === key)
-    },
-    cancel(key) {
-      const target = this.data.find((item) => item.key === key)
-      Object.keys(target).forEach((key) => {
-        target[key] = target._originalData[key]
-      })
-      target._originalData = undefined
-    },
-    handleChange(value, key, column) {
-      const newData = [...this.data]
-      const target = newData.find((item) => key === item.key)
-      if (target) {
-        target[column] = value
-        this.data = newData
-      }
-    },
+    // newMember() {
+    //   const length = this.data.length
+    //   this.data.push({
+    //     key: length === 0 ? '1' : (parseInt(this.data[length - 1].key) + 1).toString(),
+    //     name: '',
+    //     workId: '',
+    //     department: '',
+    //     editable: true,
+    //     isNew: true,
+    //   })
+    // },
+    // remove(key) {
+    //   const newData = this.data.filter((item) => item.key !== key)
+    //   this.data = newData
+    // },
+    // saveRow(record) {
+    //   this.memberLoading = true
+    //   const { key, name, workId, department } = record
+    //   if (!name || !workId || !department) {
+    //     this.memberLoading = false
+    //     this.$message.error('请填写完整成员信息。')
+    //     return
+    //   }
+    //   // 模拟网络请求、卡顿 800ms
+    //   new Promise((resolve) => {
+    //     setTimeout(() => {
+    //       resolve({ loop: false })
+    //     }, 800)
+    //   }).then(() => {
+    //     const target = this.data.find((item) => item.key === key)
+    //     target.editable = false
+    //     target.isNew = false
+    //     this.memberLoading = false
+    //   })
+    // },
+    // toggle(key) {
+    //   const target = this.data.find((item) => item.key === key)
+    //   target._originalData = { ...target }
+    //   target.editable = !target.editable
+    // },
+    // getRowByKey(key, newData) {
+    //   const data = this.data
+    //   return (newData || data).find((item) => item.key === key)
+    // },
+    // cancel(key) {
+    //   const target = this.data.find((item) => item.key === key)
+    //   Object.keys(target).forEach((key) => {
+    //     target[key] = target._originalData[key]
+    //   })
+    //   target._originalData = undefined
+    // },
+    // handleChange(value, key, column) {
+    //   const newData = [...this.data]
+    //   const target = newData.find((item) => key === item.key)
+    //   if (target) {
+    //     target[column] = value
+    //     this.data = newData
+    //   }
+    // },
   },
 }
 </script>
@@ -240,6 +271,31 @@ export default {
     -webkit-box-shadow: 0;
     border-radius: 0;
     background: #f6f8ff;
+  }
+}
+
+.step-form-style-desc {
+  padding: 0 56px;
+  color: rgba(0, 0, 0, 0.45);
+
+  h3 {
+    margin: 0 0 12px;
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 16px;
+    line-height: 32px;
+  }
+
+  h4 {
+    margin: 0 0 4px;
+    color: rgba(0, 0, 0, 0.45);
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  p {
+    margin-top: 0;
+    margin-bottom: 12px;
+    line-height: 22px;
   }
 }
 </style>

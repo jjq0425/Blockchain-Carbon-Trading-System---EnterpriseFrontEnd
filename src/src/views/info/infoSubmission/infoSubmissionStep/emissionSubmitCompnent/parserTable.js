@@ -54,27 +54,59 @@ export function ConstructColumns(template_children) {
     // console.log(template_children)
     let activityFactorColArr = []
     // 以第0个小类为基准
-
-    for (let i = 0; i < template_children[0].activityFactor.length; i++) {
-        if (template_children[0].activityFactor[i].isConst) {
-            continue
+    let activityNOCONSTFactorNum = 0
+    for (let j = 0; j < template_children[0].activityFactor.length; j++) {
+        if (!template_children[0].activityFactor[j].isConst) {
+            activityNOCONSTFactorNum++
         }
-        activityFactorColArr.push({
+    }
+    for (let i = 0; i < template_children[0].activityFactor.length; i++) {
+        // 寻找activityFactor中isConst为真的数量
 
-            title: template_children[0].activityFactor[i].dataName,
-            // dataIndex: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
-            key: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
-            scopedSlots: { customRender: `activityFactor_${template_children[0].activityFactor[i].dataSort}` },
-            width: 230,
-            customHeaderCell: () => ({
-                style: {
-                    textAlign: 'center',  //头部单元格水平居中
-                },
-            }),
-            align: 'center',
+        if (activityNOCONSTFactorNum == 1) {
+            if (template_children[0].activityFactor[i].isConst) {
+                continue
+            }
+            activityFactorColArr.push({
 
-        })
-        ColKey.push(`activityFactor_${template_children[0].activityFactor[i].dataSort}`)
+                title: template_children[0].activityFactor[i].dataName,
+                // dataIndex: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
+                key: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
+                scopedSlots: { customRender: `activityFactor_${template_children[0].activityFactor[i].dataSort}` },
+                width: 220,
+                customHeaderCell: () => ({
+                    style: {
+                        textAlign: 'center',  //头部单元格水平居中
+                    },
+                }),
+                align: 'center',
+
+            })
+            ColKey.push(`activityFactor_${template_children[0].activityFactor[i].dataSort}`)
+
+        } else {
+            if (template_children[0].activityFactor[i].isConst) {
+                continue
+            }
+            activityFactorColArr.push({
+
+                title: template_children[0].activityFactor[i].dataName,
+                // dataIndex: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
+                key: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
+                scopedSlots: { customRender: `activityFactor_${template_children[0].activityFactor[i].dataSort}` },
+                width: 230,
+                customHeaderCell: () => ({
+                    style: {
+                        textAlign: 'center',  //头部单元格水平居中
+                    },
+                }),
+                align: 'center',
+
+            })
+            ColKey.push(`activityFactor_${template_children[0].activityFactor[i].dataSort}`)
+        }
+
+
     }
     let activityFactorCol = {
         title: '活动水平',
@@ -83,59 +115,118 @@ export function ConstructColumns(template_children) {
     Columns.push(activityFactorCol)
 
     let EmissionFactorColArr = []
-    for (let i = 0; i < template_children[0].EmissionFactor.length; i++) {
-        if (template_children[0].EmissionFactor[i].isConst) {
-            continue
+    let EmissionNOCONSTFactorNum = 0
+    for (let j = 0; j < template_children[0].EmissionFactor.length; j++) {
+        if (!template_children[0].EmissionFactor[j].isConst) {
+            EmissionNOCONSTFactorNum++
         }
-        EmissionFactorColArr.push({
+    }
+    for (let i = 0; i < template_children[0].EmissionFactor.length; i++) {
+        if (EmissionNOCONSTFactorNum == 1) {
+            if (template_children[0].EmissionFactor[i].isConst) {
+                continue
+            }
+            EmissionFactorColArr.push({
 
-            title: template_children[0].EmissionFactor[i].dataName,
-            // dataIndex: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
-            key: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
-            scopedSlots: { customRender: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}` },
-            width: 230,
-            customHeaderCell: () => ({
-                style: {
-                    textAlign: 'center',  //头部单元格水平居中
-                },
-            }),
-            align: 'center',
+                title: template_children[0].EmissionFactor[i].dataName,
+                // dataIndex: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
+                key: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
+                scopedSlots: { customRender: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}` },
+                width: 220,
+                customHeaderCell: () => ({
+                    style: {
+                        textAlign: 'center',  //头部单元格水平居中
+                    },
+                }),
+                align: 'center',
 
-        })
-        ColKey.push(`EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`)
+            })
+            ColKey.push(`EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`)
+        } else {
+            if (template_children[0].EmissionFactor[i].isConst) {
+                continue
+            }
+            EmissionFactorColArr.push({
+
+                title: template_children[0].EmissionFactor[i].dataName,
+                // dataIndex: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
+                key: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
+                scopedSlots: { customRender: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}` },
+                width: 230,
+                customHeaderCell: () => ({
+                    style: {
+                        textAlign: 'center',  //头部单元格水平居中
+                    },
+                }),
+                align: 'center',
+
+            })
+            ColKey.push(`EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`)
+        }
     }
     let EmissionFactorCol = {
         title: '排放因子',
         children: EmissionFactorColArr
     }
     Columns.push(EmissionFactorCol)
-    Columns.push({
-        title: '总排放量(tCO₂)',
-        key: 'sum',
-        // dataIndex: 'sum',
-        scopedSlots: { customRender: 'sum' },
-        fixed: 'right',
-        width: 130,
-        customHeaderCell: () => ({
-            style: {
-                textAlign: 'center',  //头部单元格水平居中
-            },
-        }),
-        align: 'center',
-    },)
-    Columns.push({
-        title: '操作',
-        key: 'action',
-        scopedSlots: { customRender: 'action' },
-        fixed: 'right',
-        width: 120,
-        customHeaderCell: () => ({
-            style: {
-                textAlign: 'center',  //头部单元格水平居中
-            },
-        }),
+    if (activityNOCONSTFactorNum == 1 && EmissionNOCONSTFactorNum == 1) {
+        Columns.push({
+            title: '总排放量(tCO₂)',
+            key: 'sum',
+            // dataIndex: 'sum',
+            scopedSlots: { customRender: 'sum' },
 
-    },)
+            width: 135,
+            customHeaderCell: () => ({
+                style: {
+                    textAlign: 'center',  //头部单元格水平居中
+                },
+            }),
+            align: 'center',
+        },)
+        Columns.push({
+            title: '操作',
+            key: 'action',
+            scopedSlots: { customRender: 'action' },
+
+            // width: 100,
+            customHeaderCell: () => ({
+                style: {
+                    textAlign: 'center',  //头部单元格水平居中
+                },
+            }),
+
+        },)
+    } else {
+        Columns.push({
+            title: '总排放量(tCO₂)',
+            key: 'sum',
+            // dataIndex: 'sum',
+            scopedSlots: { customRender: 'sum' },
+            fixed: 'right',
+            width: 130,
+            customHeaderCell: () => ({
+                style: {
+                    textAlign: 'center',  //头部单元格水平居中
+                },
+            }),
+            align: 'center',
+        },)
+        Columns.push({
+            title: '操作',
+            key: 'action',
+            scopedSlots: { customRender: 'action' },
+            fixed: 'right',
+            width: 120,
+            customHeaderCell: () => ({
+                style: {
+                    textAlign: 'center',  //头部单元格水平居中
+                },
+            }),
+
+        },)
+    }
+
 
     return { Columns: Columns, ColKey: ColKey }
 

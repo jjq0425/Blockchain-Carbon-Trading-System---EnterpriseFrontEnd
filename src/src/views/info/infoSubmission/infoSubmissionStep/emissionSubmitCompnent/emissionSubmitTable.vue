@@ -2,7 +2,7 @@
 <template>
   <!-- table -->
   <div>
-    <a-table :columns="columns" :dataSource="tableData" :pagination="false" bordered :scroll="{ x: 200, y: 400 }">
+    <a-table :columns="columns" :dataSource="tableData" :pagination="false" bordered :scroll="{ x: true, y: 400 }">
       <template slot="index" slot-scope="text, record, index">
         {{ index + 1 }}
       </template>
@@ -174,6 +174,7 @@ export default {
       })
       // console.log(newtableData)
       this.tableData = newtableData
+      this.$message.success('删除成功')
       this.reConcludeClassTotal()
       this.reconstructClassData()
     },

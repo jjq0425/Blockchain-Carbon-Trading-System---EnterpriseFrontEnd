@@ -13,6 +13,7 @@
     :closable="false"
     destroyOnClose
   >
+    <dataSourceQuestionModal ref="dataSourceQuestionModal"></dataSourceQuestionModal>
     <!-- <template slot="footer">
       
     </template> -->
@@ -32,7 +33,7 @@
               label="排放源名"
               :rules="{
                 required: true,
-                message: '排放原名不能为空',
+                message: '排放源名不能为空',
                 trigger: 'blur',
               }"
               prop="className"
@@ -116,7 +117,9 @@
                       @change="cascadeChange($event, activityFac)"
                       :defaultValue="cascaderDefualtValChoose(activityFac)"
                       :allowClear="false"
+                      style="width: 90%; margin-right: 10px"
                     />
+                    <a-icon type="question-circle" style="cursor: pointer" @click="openDataSourceQuestionModal" />
                   </a-form-model-item>
                 </div>
               </template>
@@ -183,7 +186,9 @@
                       @change="cascadeChange($event, EmissionFac)"
                       :defaultValue="cascaderDefualtValChoose(EmissionFac)"
                       :allowClear="false"
+                      style="width: 90%; margin-right: 10px"
                     />
+                    <a-icon type="question-circle" style="cursor: pointer" @click="openDataSourceQuestionModal" />
                   </a-form-model-item>
                 </div>
               </template>
@@ -206,9 +211,14 @@ import {
   infoSubmitTableDataSourceClass_CN,
   infoSubmitTableDataSourceClass_EN,
 } from '@/config/class/infoSubmitTableDataSourceClass.js'
+
+import dataSourceQuestionModal from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/dataSourceQuestionModal'
 export default {
   name: 'emissionSubmitFormModal',
   prop: [],
+  components: {
+    dataSourceQuestionModal,
+  },
   data() {
     return {
       visible: false,
@@ -372,6 +382,13 @@ export default {
           { validator: validateNormalNum, trigger: 'blur' },
         ]
       }
+    },
+    /**
+     * 打开数据源问题弹窗
+     */
+    openDataSourceQuestionModal() {
+      // console.log(this.$refs.dataSourceQuestionModal)
+      this.$refs.dataSourceQuestionModal.open()
     },
     /**
      *
