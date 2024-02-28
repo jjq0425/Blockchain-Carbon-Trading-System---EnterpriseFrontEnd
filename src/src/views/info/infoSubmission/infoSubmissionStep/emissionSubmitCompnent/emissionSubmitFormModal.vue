@@ -40,6 +40,21 @@
               labelAlign="left"
             >
               <a-input v-model="emissionForm.className" placeholder="请输入排放源名" />
+              <div style="font-size: 9px; color: #868e96">
+                点击添加化学式角标：
+                <span class="chemicalSup" @click="() => (emissionForm.className = emissionForm.className + '₂')"
+                  >₂
+                </span>
+                <span class="chemicalSup" @click="() => (emissionForm.className = emissionForm.className + '₃')"
+                  >₃
+                </span>
+                <span
+                  class="chemicalSup"
+                  style=""
+                  @click="() => (emissionForm.className = emissionForm.className + '₄')"
+                  >₄&nbsp;
+                </span>
+              </div>
             </a-form-model-item>
 
             <a-form-model-item v-bind="formItemLayoutLeft" label="该项排放总额" labelAlign="left">
@@ -492,4 +507,28 @@ export default {
 }
 </script>
 
+<style scoped>
+.chemicalSup {
+  padding: 2px;
+  margin: 2px;
+  width: 3px;
+  border: 1px solid #dee2e6;
+  color: #74c0fc;
+  border-radius: 4px;
+  background: #f1f3f5;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.chemicalSup:hover {
+  padding: 2px;
+  margin: 2px;
+  width: 3px;
+  border: 1px solid #dee2e6;
+  color: white;
+  border-radius: 4px;
+  background: #4dabf7;
+  cursor: pointer;
+}
+</style>
 
