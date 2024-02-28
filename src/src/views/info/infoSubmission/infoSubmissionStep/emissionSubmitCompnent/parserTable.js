@@ -23,6 +23,7 @@ export function GetMainClassName(template) {
  * @param {Array} template_children 传入的是每个小类的信息,即第一个children数组.
  */
 export function ConstructColumns(template_children) {
+
     let Columns = [];
     let ColKey = []
     Columns.push({
@@ -53,6 +54,7 @@ export function ConstructColumns(template_children) {
     // console.log(template_children)
     let activityFactorColArr = []
     // 以第0个小类为基准
+
     for (let i = 0; i < template_children[0].activityFactor.length; i++) {
         if (template_children[0].activityFactor[i].isConst) {
             continue

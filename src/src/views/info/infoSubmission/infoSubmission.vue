@@ -247,6 +247,8 @@ export default {
             const tmp = { ...errors }
             this.errorList(tmp)
           })
+      } else if (this.NowStep == 1) {
+        this.goTonextPage()
       }
 
       // const {
