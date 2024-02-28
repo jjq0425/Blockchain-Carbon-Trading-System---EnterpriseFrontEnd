@@ -355,6 +355,10 @@ export default {
   background: #e0ebf033 !important;
 }
 
+.ant-table-tbody tr.ant-table-row-hover:not(.ant- table-expanded-row):not(.ant-table-row-selected) > td {
+  background: #e0ebf033 !important;
+}
+
 .ant-table-thead > tr > th {
   background: #f1f5f9 !important;
   font-weight: bold !important;

@@ -1,156 +1,96 @@
-<!--
- * @Author: jjq
- * @Description: 
- * 
--->
+
 <template>
   <!-- table -->
   <div>
-    <a-table :columns="columns" :dataSource="data" :pagination="false" bordered :scroll="{ x: 200, y: 400 }">
-      <template slot="index" slot-scope="text">
-        {{ text.index }}
-      </template>
-      <template v-for="(col, i) in ['name', 'workId', 'department']" :slot="col" slot-scope="text, record">
-        <a-input
-          :key="col"
-          v-if="record.editable"
-          style="margin: -5px 0"
-          :value="text"
-          :placeholder="columns[i].title"
-          @change="(e) => handleChange(e.target.value, record.key, col)"
-        />
-
-        <template v-else> /></template>
-      </template>
-      <!-- 
-      <template slot="operation" slot-scope="text, record">
-        <template v-if="record.editable">
-          <span v-if="record.isNew">
-            <a @click="saveRow(record)">添加</a>
-            <a-divider type="vertical" />
-            <a-popconfirm title="是否要删除此行？" @confirm="remove(record.key)">
-              <a>删除</a>
-            </a-popconfirm>
-          </span>
-          <span v-else>
-            <a @click="saveRow(record)">保存</a>
-            <a-divider type="vertical" />
-            <a @click="cancel(record.key)">取消</a>
-          </span>
-        </template>
-        <span v-else>
-          <a @click="toggle(record.key)">编辑</a>
-          <a-divider type="vertical" />
-          <a-popconfirm title="是否要删除此行？" @confirm="remove(record.key)">
-            <a>删除</a>
-          </a-popconfirm>
-        </span>
-      </template> -->
-      <template slot="operation" slot-scope="text, record">
-        <template v-if="record.editable">
-          <span v-if="record.isNew">
-            <a @click="saveRow(record)">添加</a>
-            <a-divider type="vertical" />
-            <a-popconfirm title="是否要删除此行？" @confirm="remove(record.key)">
-              <a>删除</a>
-            </a-popconfirm>
-          </span>
-          <span v-else>
-            <a @click="saveRow(record)">保存</a>
-            <a-divider type="vertical" />
-            <a @click="cancel(record.key)">取消</a>
-          </span>
-        </template>
-        <span v-else>
-          <a @click="toggle(record.key)">编辑</a>
-          <a-divider type="vertical" />
-          <a-popconfirm title="是否要删除此行？" @confirm="remove(record.key)">
-            <a>删除</a>
-          </a-popconfirm>
-        </span>
-      </template>
-      <template slot="sum" slot-scope="record"> 1 </template>
-    </a-table>
-    <a-button style="width: 100%; margin-top: 16px; margin-bottom: 8px" type="dashed" icon="plus" @click="newMember"
-      >新增成员</a-button
-    >
+    <div>
+      <div class="tabelSetOptions" style="width: 100%; text-align: right">
+        表格设置：
+        <a-checkbox-group
+          v-if="MainClassName.length > 0"
+          :options="tableSetOptions"
+          v-model="tableSetOptionsChecked"
+          :default-value="['ShowUnit', 'ShowDataSource']"
+          @change="ontableSetOptionsChange"
+          style="margin-bottom: 20px"
+        >
+          <span slot="label" slot-scope="{ value }">{{ value }}</span>
+        </a-checkbox-group>
+      </div>
+      <a-tabs tab-position="left" default-active-key="0">
+        <a-tab-pane v-for="(name, idx) in MainClassName.length" :key="idx" :tab="MainClassName[idx]">
+          <emission-submit-table
+            :tableIdx="idx"
+            :classdata="dataSource.detail[idx]"
+            :tableSetOptionsChecked="tableSetOptionsChecked"
+            @dataUpdate="dataUpdate"
+          ></emission-submit-table>
+        </a-tab-pane>
+      </a-tabs>
+    </div>
   </div>
 </template>
 
 <script>
-import {
-  GetMainClassName,
-  ConstructColumns,
-} from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/parserTable.js'
+import { GetMainClassName } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/parserTable.js'
 import { template_1 } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/template.js'
+import emissionSubmitTable from './emissionSubmitCompnent/emissionSubmitTable.vue'
 export default {
   name: 'emissionSubmit',
   data() {
     return {
       // table
-      columns: [
-        // {
-        //   title: '成员姓名',
-        //   dataIndex: 'activityFactor_1',
-        //   key: 'activityFactor_1',
-        //   scopedSlots: { customRender: 'activityFactor_1' },
-        // },
-        // {
-        //   title: '净消耗量',
-        //   dataIndex: 'activityFactor_2',
-        //   key: 'activityFactor_2',
-        //   scopedSlots: { customRender: 'activityFactor_2' },
-        // },
-        // {
-        //   title: '单位热值含碳量',
-        //   dataIndex: 'EmissionFactor_1',
-        //   key: 'EmissionFactor_1',
-        //   scopedSlots: { customRender: 'EmissionFactor_1' },
-        // },
-        // {
-        //   title: '碳氧化率',
-        //   dataIndex: 'EmissionFactor_2',
-        //   key: 'EmissionFactor_2',
-        //   scopedSlots: { customRender: 'EmissionFactor_2' },
-        // },
-        // {
-        //   title: '碳氧化率',
-        //   key: 'action',
-        //   scopedSlots: { customRender: 'operation' },
-        // },
+      // columns: [], // 用于存储列的配置
+      // colkey: [], // 用于存储列的key
+      // activeKey: 0,
+      dataSource: null, // 用于存储数据源
+      dataTemplate: null, // 用于存储数据模板
+      MainClassName: [],
+
+      // 配置项
+      tableSetOptions: [
+        { label: '展示单位', value: 'ShowUnit' },
+        { label: '展示来源', value: 'ShowDataSource' },
       ],
-      data: [
-        {
-          index: 1,
-          activityFactor_1: 100.1,
-          activityFactor_2: 100.1,
-          EmissionFactor_1: 100.1,
-          EmissionFactor_2: 100.2,
-          sum: 100,
-        },
-        // {
-        //   key: '2',
-        //   name: '李莉',
-        //   workId: '002',
-        //   editable: false,
-        //   department: 'IT部',
-        // },
-        // {
-        //   key: '3',
-        //   name: '王小帅',
-        //   workId: '003',
-        //   editable: false,
-        //   department: '财务部',
-        // },
-      ],
+      tableSetOptionsChecked: ['ShowUnit', 'ShowDataSource'],
     }
   },
+  components: {
+    emissionSubmitTable,
+  },
   mounted() {
-    console.log('11', GetMainClassName(template_1))
-    console.log(22, ConstructColumns(template_1.detail[0].children))
-    this.columns = ConstructColumns(template_1.detail[0].children)
+    this.initTable()
   },
   methods: {
+    chooseTemplate() {
+      // console.log('t1', template_1.detail[0].children.length)
+      // this.$forceUpdate()
+
+      let template = JSON.stringify(template_1)
+
+      this.dataSource = JSON.parse(template)
+      this.dataTemplate = JSON.parse(template)
+
+      // console.log('88template', template)
+    },
+    initTable() {
+      this.chooseTemplate()
+      this.MainClassName = GetMainClassName(this.dataTemplate)
+
+      this.createTable()
+    },
+    createTable() {},
+
+    // 数据被修改
+    dataUpdate(idx, updatedData) {
+      this.dataSource.detail[idx] = updatedData
+    },
+
+    // 表格配置项
+    ontableSetOptionsChange() {
+      // console.log('checked = ', checkedValues);
+      // console.log('value = ', this.tableSetOptionsChecked)
+    },
+
     // OLD
     newMember() {
       const length = this.data.length
