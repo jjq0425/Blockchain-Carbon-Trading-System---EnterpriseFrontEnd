@@ -92,10 +92,12 @@
                   <a-form-model-item
                     :key="activityFac.dataSort"
                     v-bind="formItemLayout"
-                    :label="`${activityFac.dataName}数值`"
                     :prop="'activityFactor.' + index + '.dataNum'"
                     :rules="ruleCompute(activityFac.dataUnit)"
                   >
+                    <span slot="label" :class="activityFac.dataName.length >= 11 ? 'label-box' : ''">{{
+                      `${activityFac.dataName}数值`
+                    }}</span>
                     <a-input-number
                       v-model="activityFac.dataNum"
                       :min="0"
@@ -162,10 +164,12 @@
                 <div :key="`EmissionFac_${EmissionFac.dataSort}`">
                   <a-form-model-item
                     v-bind="formItemLayout"
-                    :label="`${EmissionFac.dataName}数值`"
                     :prop="'EmissionFactor.' + index + '.dataNum'"
                     :rules="ruleCompute(EmissionFac.dataUnit)"
                   >
+                    <span slot="label" :class="EmissionFac.dataName.length >= 11 ? 'label-box' : ''">{{
+                      `${EmissionFac.dataName}数值`
+                    }}</span>
                     <a-input-number
                       v-model="EmissionFac.dataNum"
                       :min="0"
@@ -529,6 +533,16 @@ export default {
   border-radius: 4px;
   background: #4dabf7;
   cursor: pointer;
+}
+
+.label-box {
+  width: 80%;
+  display: inline-block;
+  height: auto;
+  white-space: break-spaces;
+  line-height: 18px;
+  text-align: left;
+  vertical-align: bottom;
 }
 </style>
 
