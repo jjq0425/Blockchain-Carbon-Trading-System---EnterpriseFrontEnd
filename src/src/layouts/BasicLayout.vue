@@ -306,6 +306,22 @@ export default {
   animation: ERRORINPUTbackgroundColorChange 1s ease-in-out forwards !important;
 }
 
+.ant-cascader-picker {
+  background: #f2f3f5 !important;
+  border: 1px solid #f2f3f5 !important;
+}
+
+.ant-cascader-picker :focus {
+  background: #fff !important;
+  border: 1px solid #134089 !important;
+}
+
+.has-error .ant-cascader-picker {
+  background: rgba(255, 227, 227, 0.3) !important;
+  border: 1px solid red !important;
+  animation: ERRORINPUTbackgroundColorChange 1s ease-in-out forwards !important;
+}
+
 .ant-time-picker-input {
   background: #f2f3f5 !important;
   border: 1px solid #f2f3f5 !important;
@@ -483,5 +499,9 @@ export default {
   100% {
     background-position: -100% 0;
   }
+}
+
+.ant-cascader-menu {
+  min-height: 220px !important;
 }
 </style>

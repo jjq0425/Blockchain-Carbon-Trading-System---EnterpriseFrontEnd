@@ -62,7 +62,7 @@
       <!-- <template slot="action"> 按钮 </template> -->
       <template slot="action" slot-scope="text, record">
         <span>
-          <a @click="toggle(record.key)">编辑</a>
+          <a @click="editRow(record)">编辑</a>
           <a-divider type="vertical" />
           <a-popconfirm title="是否要删除此行？" @confirm="removeRow(record)">
             <a style="color: #fa5252" v-if="tableData.length > 1">删除</a>
@@ -79,11 +79,13 @@
     <a-button style="width: 100%; margin-top: 16px; margin-bottom: 8px" type="dashed" icon="plus" @click="newMember"
       >新增项目</a-button
     >
+    <emissionSubmitFormModal ref="emissionSubmitFormModal"></emissionSubmitFormModal>
   </div>
 </template>
 
 <script>
 import { ConstructColumns } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/parserTable.js'
+import emissionSubmitFormModal from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/emissionSubmitFormModal.vue'
 // import { template_1 } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/template.js'
 import {
   infoSubmitTableDataSourceClass_CN,
@@ -91,6 +93,9 @@ import {
 } from '@/config/class/infoSubmitTableDataSourceClass.js'
 export default {
   name: 'emissionSubmitTable',
+  components: {
+    emissionSubmitFormModal,
+  },
   props: {
     classdata: {
       type: Object,
@@ -157,6 +162,10 @@ export default {
       // console.log(newtableData)
       this.tableData = newtableData
       this.reconstructClassData()
+    },
+    editRow(record) {
+      console.log(record)
+      this.$refs.emissionSubmitFormModal.open('edit', record)
     },
 
     // OLD
