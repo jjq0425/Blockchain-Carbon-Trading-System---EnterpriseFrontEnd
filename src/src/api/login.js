@@ -12,8 +12,10 @@
 import request from '@/utils/request'
 
 import storage from 'store'
+
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-const token = storage.get(ACCESS_TOKEN)
+let token = storage.get(ACCESS_TOKEN)
+// let token = store.state.user.token
 // if (token == null) {
 //   token = storage.state.user.token
 // }
@@ -56,18 +58,15 @@ export function login(parameter) {
     data: parameter
   })
 }
-export function getInfo() {
+export function getInfo(tokens) {
 
-  // if (token == null) {
-  //   token = storage.get(ACCESS_TOKEN)
-  //   // console.log(token)
-  // }
+
 
   return request({
     url: userApi.UserInfo,
     method: 'post',
     data: {
-      token: token
+      token: localStorage.getItem('ACCESS_TOKEN')
     }
   })
 }

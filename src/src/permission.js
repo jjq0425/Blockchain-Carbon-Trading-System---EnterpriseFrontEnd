@@ -29,14 +29,16 @@ router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
   /* has token */
-  let token = storage.get(ACCESS_TOKEN)
+  // const token = storage.get(ACCESS_TOKEN)
+  let token = localStorage.getItem('ACCESS_TOKEN')
   // if (token == null) {
   //   token = storage.state.user.token
   // }
 
   if (token) {
     if (to.path === loginRoutePath) {
-      next({ path: defaultRoutePath })
+
+      next()
       NProgress.done()
     } else {
       // check login user.roles is null
@@ -79,6 +81,7 @@ router.beforeEach((to, from, next) => {
             })
           })
       } else {
+
         next()
       }
     }

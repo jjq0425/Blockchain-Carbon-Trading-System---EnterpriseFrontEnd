@@ -62,9 +62,9 @@ request.interceptors.request.use(config => {
   // 如果 token 存在
   // 让每个请求携带自定义 token 请根据实际情况自行修改
   console.log(">>request", config)
-  if (token) {
-    config.headers[ACCESS_TOKEN] = token
-  }
+  // if (token) {
+  //   config.headers[ACCESS_TOKEN] = token
+  // }
 
   // 在服务器测试时候不带baseUrl，在NetworkSetting已经带了
   if (config.NetworkSetting == null || !config.NetworkSetting) {

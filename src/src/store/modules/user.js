@@ -47,6 +47,7 @@ const user = {
             result.token = '111'
           }
           storage.set(ACCESS_TOKEN, result.token, new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
+          localStorage.setItem('ACCESS_TOKEN', result.token)
           commit('SET_TOKEN', result.token)
           resolve()
         }).catch(error => {
@@ -60,7 +61,7 @@ const user = {
 
       return new Promise((resolve, reject) => {
         // 请求后端获取用户信息 /api/user/info
-        getInfo().then(response => {
+        getInfo(user.state.token).then(response => {
 
           // const { result } = response
           const result = response.data || response.result
@@ -142,6 +143,7 @@ const user = {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         storage.remove(ACCESS_TOKEN)
+        localStorage.removeItem('ACCESS_TOKEN')
         resolve()
 
       })
