@@ -29,8 +29,8 @@
         >
           Mock服务地址</a-button
         >
-        <a-button @click="SetNewServerDefault('http://8.137.108.102:8080/')" style="margin-right: 20px">
-          测试环境（http://8.137.108.102:8080/）</a-button
+        <a-button @click="SetNewServerDefault('http://8.137.108.102:8080')" style="margin-right: 20px">
+          测试环境（http://8.137.108.102:8080）</a-button
         >
         <div style="font-size: 10px; color: grey">服务器地址必须以http://或者https://开头！并且结尾不能包含/</div>
       </a-form-item>
