@@ -5,75 +5,101 @@
 -->
 <template>
   <div>
-    <a-form :form="form" style="min-width: 400px; max-width: 800px; margin: 40px auto 0">
-      <!-- <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol">
-        <a-checkbox
-          style="font-size: 16px; color: #1890ff"
-          :checked="form.checkComfirm"
-          v-decorator="[
-            'checkComfirm',
-            {
-              valuePropName: 'checked',
-              rules: [
-                { required: true, message: '请确认' },
-                { type: 'enum', enum: [true], message: '请确认' },
-              ],
-            },
-          ]"
-        >
-          我已确认上述信息
-        </a-checkbox>
-      </a-form-item> -->
-      <a-form-item>
-        <a-upload-dragger
-          name="file"
-          accept=".pdf,"
-          :multiple="false"
-          :remove="handleFileRemove"
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-          :customRequest="fileUpload"
-          :fileList="fileListPDF"
-          ref="uploadRef"
-          v-decorator="[
-            'fileListsTmp',
-            {
-              getValueFromEvent: normFile,
-              rules: [{ validator: this.fileValidator }],
-            },
-          ]"
-        >
-          <p class="ant-upload-drag-icon">
-            <a-icon type="inbox" style="color: #1677ff" />
-          </p>
-          <p class="ant-upload-text">
-            点击或者拖拽<span style="font-weight: bold; font-size: 18px">数据来源证明</span>文件以上传
-          </p>
-          <p class="ant-upload-hint">请将所有相关证明材料合并到一个PDF中</p>
-        </a-upload-dragger>
-      </a-form-item>
+    <a-form :form="form" style="min-width: 400px; max-width: 1000px; margin: 0px auto">
+      <div style="display: flex; justify-content: space-between">
+        <div style="margin-right: 50px; width: 45%">
+          <div style="margin-bottom: 20px; font-weight: bold">
+            <span style="font-size: 32px; color: #1677ff; font-weight: bold">1.</span> 下载并预览您的碳核算报告
+          </div>
+          <a-form-item>
+            <div style="background-color: #fafafa; text-align: center; border-radius: 9px" class="downloadDIV">
+              <p class="ant-upload-drag-icon">
+                <img
+                  src="@/assets/pages/info/infoSubmissionCenter/reportPreviewAndUpload/downloadReport.png"
+                  alt=""
+                  style="width: 50%"
+                />
+              </p>
+              <p class="ant-upload-hint">点击下载并预览您的碳排放报告</p>
+              <a-button
+                type="primary"
+                shape="round"
+                icon="download"
+                size="large"
+                :block="true"
+                style="
+                  width: 60%;
+                  background: linear-gradient(135deg, #3776e1, #65affb);
+                  border: 0px;
+                  margin-top: -10px;
+                  margin-bottom: 20px;
+                "
+                @click="downloadPDF"
+                >下载</a-button
+              >
+            </div>
+          </a-form-item>
+        </div>
+        <div style="width: 45%">
+          <div style="margin-bottom: 20px; font-weight: bold">
+            <span style="font-size: 32px; color: #1677ff; font-weight: bold">2.</span> 上传碳核算报告签字盖章版扫描件
+          </div>
+          <a-form-item>
+            <a-alert
+              message="请先下载碳排放报告，随后再上传签字版。"
+              banner
+              v-if="!hasDownload"
+              style="margin-bottom: 10px"
+            />
+            <a-upload-dragger
+              :disabled="!hasDownload"
+              name="file"
+              accept=".pdf,"
+              :multiple="false"
+              :remove="handleFileRemove"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              :customRequest="fileUpload"
+              :fileList="fileListPDF"
+              ref="uploadRef"
+              v-decorator="[
+                'fileListsTmp',
+                {
+                  getValueFromEvent: normFile,
+                  rules: [{ validator: this.fileValidator }],
+                },
+              ]"
+            >
+              <p class="ant-upload-drag-icon">
+                <img
+                  src="@/assets/pages/info/infoSubmissionCenter/reportPreviewAndUpload/uploadReport.png"
+                  alt=""
+                  style="width: 50%"
+                />
+              </p>
+              <p class="ant-upload-text">
+                点击或者拖拽<span style="font-weight: bold; font-size: 18px">签字盖章后的核算报告</span>文件以上传
+              </p>
+              <p class="ant-upload-hint">请将报告文件（不含数据来源）通过扫描器按顺序放置在一个PDF中</p>
+            </a-upload-dragger>
+          </a-form-item>
+        </div>
+      </div>
     </a-form>
     <a-divider />
     <div class="step-form-style-desc">
       <h3>说明</h3>
-      <h4>我需要上传什么文件？</h4>
-      <p>
-        在上一步骤中，除非您选择的为“缺省值”类型，否则您需要上传相关证明文件。各类型所需的证明文件可以点击<a
-          @click="openDataSourceQuestionModal()"
-          >这里</a
-        >查看
-      </p>
+      <h4>我是否可以用以前生成的报告？</h4>
+      <p>不可以，您必须在本页面重新下载报告进行生成。</p>
       <h4>我可以上传多个文件吗？</h4>
-      <p>不可以，为了方便审核人员审核，您至多上传一个文件。请将所有证明材料合并到同一个PDF中。</p>
+      <p>不可以，您只能上传一份碳排放核算报告。</p>
       <h4>如何命名文件？</h4>
-      <p>
-        文件名将在后台会被自动地重命名为【组织机构代码-企业名-年份-碳排放报告-数据来源证明-时间戳】。您无需手工设置。
-      </p>
+      <p>文件名将在后台会被自动地重命名为【组织机构代码-企业名-年份-碳排放报告-核算报告-时间戳】。您无需手工设置。</p>
       <dataSourceQuestionModal ref="dataSourceQuestionModal"></dataSourceQuestionModal>
     </div>
   </div>
 </template>
-    
-    <script>
+      
+      <script>
 import dayjs from 'dayjs'
 import dataSourceQuestionModal from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/dataSourceQuestionModal'
 import { UploadFileAPI } from '@/api/public'
@@ -83,6 +109,7 @@ export default {
   data() {
     return {
       form: this.$form.createForm(this),
+      hasDownload: false,
 
       fileListPDF: [],
     }
@@ -95,17 +122,16 @@ export default {
       date = parseInt(date) * 1000
       return dayjs(date).format(format)
     },
-    getdataSourcePDFUrl() {
+    getreportPDFUrl() {
       return this.fileListPDF[0].url
     },
-
     fileUpload(file) {
       const isPDF = file.file.type === 'application/pdf'
 
       //   console.log(this.fileList.length, file, 'isPDF', isPDF)
       let fileNameAuto = `${this.enterpriseInfo.enterpriseID}-${this.enterpriseInfo.enterpriseName}-${
         this.taskInfo.taskYear
-      }年度-碳排放报告-数据来源证明-${dayjs().unix()}.pdf`
+      }年度-碳排放报告-核算报告-${dayjs().unix()}.pdf`
 
       //初始化文件信息
       const fileInfo = {
@@ -135,7 +161,6 @@ export default {
         let token = UploadFileAPI().MYtoken
 
         formData.append('token', token)
-        // formData.append('type', 'SOURCE')
         let this_ = this
 
         axios
@@ -171,41 +196,7 @@ export default {
               this.$message.error('上传失败,请确认网络环境后重新上传')
             }
           })
-        // UploadFileAPI(formData['file'], config).then((res) => {
-        //   if (res.success) {
-        //     fileInfo.status = 'done'
-        //     fileInfo.id = fileInfo.uid
-        //     fileInfo.url = 'api/fileInfo/preview?id=' + res.data.url
-        //     fileInfo.name = fileNameAuto
-        //     file.onSuccess(res.data, file)
-
-        //     this.$message.success('上传成功')
-        //   } else {
-        //     fileInfo.status = 'error'
-        //     fileInfo.response = res.msg
-        //     file.onError()
-        //     this.$message.error('上传失败,请确认网络环境后重新上传')
-        //   }
-        // })
       }
-
-      //调用上传文件接口
-      //   fileInfoUpload(formData).then((res) => {
-      //     this.uploading = false
-      //     if (res.success) {
-      //       fileInfo.status = 'done'
-      //       fileInfo.id = fileInfo.uid = res.data
-      //       fileInfo.url = 'api/fileInfo/preview?id=' + res.data
-      //       fileInfo.name = file.file.name
-      //       file.onSuccess(res.data, file)
-      //       this.$message.success('上传成功')
-      //     } else {
-      //       fileInfo.status = 'error'
-      //       fileInfo.response = res.msg
-      //       file.onError()
-      //       this.$message.info('上传失败：' + res.message)
-      //     }
-      //   })
     },
 
     handleFileChange() {
@@ -257,6 +248,9 @@ export default {
       // console.log(this.$refs.dataSourceQuestionModal)
       this.$refs.dataSourceQuestionModal.open()
     },
+    downloadPDF() {
+      this.hasDownload = true
+    },
   },
   mounted() {
     this.enterpriseInfo = this.$store.state.user.info
@@ -265,8 +259,8 @@ export default {
   },
 }
 </script>
-    
-    <style lang="less" scoped>
+      
+<style lang="less" scoped>
 .step-form-style-desc {
   padding: 0 56px;
   color: rgba(0, 0, 0, 0.45);
@@ -291,5 +285,12 @@ export default {
     line-height: 22px;
   }
 }
+.downloadDIV {
+  border: 1px dashed #d9d9d9;
+  transition: all 0.3s ease-in-out;
+}
+.downloadDIV:hover {
+  border: 1px dashed #1890ff;
+}
 </style>
-    
+      

@@ -2,7 +2,13 @@
 <template>
   <!-- table -->
   <div>
-    <a-table :columns="columns" :dataSource="tableData" :pagination="false" bordered :scroll="{ x: true, y: 400 }">
+    <a-table
+      :columns="columns"
+      :dataSource="tableData"
+      :pagination="false"
+      bordered
+      :scroll="{ x: 'max-content', y: 400 }"
+    >
       <template slot="index" slot-scope="text, record, index">
         {{ index + 1 }}
       </template>
@@ -158,6 +164,11 @@ export default {
       this.columns = ConstructColumns(this.tableData).Columns
       this.colkey = ConstructColumns(this.tableData).ColKey
       // console.log(this.colkey, this.columns)
+      this.$forceUpdate()
+      setInterval(() => {
+        // console.log('update')
+        this.$forceUpdate()
+      }, 1000)
     },
     reconstructClassData(tableData = this.tableData) {
       this.classdata.children = tableData

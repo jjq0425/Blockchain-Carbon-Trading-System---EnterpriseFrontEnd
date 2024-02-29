@@ -87,6 +87,14 @@
       <data-source-upload ref="dataSourceUpload"></data-source-upload>
     </a-card>
 
+    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 3">
+      <report-preview-and-upload ref="reportPreviewAndUpload"></report-preview-and-upload>
+    </a-card>
+
+    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 4">
+      <wait-for-superviser ref="WaitForSuperviser"></wait-for-superviser>
+    </a-card>
+
     <!-- fixed footer toolbar -->
     <footer-tool-bar
       :is-mobile="isMobile"
@@ -124,11 +132,22 @@
         </a-popover>
       </span>
 
-      <a-button style="margin-right: 20px" @click="closeAndBack" icon="close" v-if="NowStep == 0" type="danger">
+      <a-button
+        style="margin-right: 20px"
+        @click="closeAndBack"
+        icon="close"
+        v-if="NowStep == 0 || NowStep == 4"
+        type="danger"
+      >
         {{ $t('modal.btn.close') }}</a-button
       >
 
-      <a-button style="margin-right: 20px" @click="backTolastPage" icon="vertical-right" v-if="NowStep != 0">
+      <a-button
+        style="margin-right: 20px"
+        @click="backTolastPage"
+        icon="vertical-right"
+        v-if="NowStep != 0 && NowStep != 4"
+      >
         {{ $t('modal.btn.lastPage') }}</a-button
       >
 
@@ -137,12 +156,12 @@
         type="primary"
         @click="ValidateGoToNextStep"
         icon="vertical-left"
-        v-if="NowStep != 4"
+        v-if="NowStep != 3 && NowStep != 4"
       >
         {{ $t('modal.btn.nextPage') }}</a-button
       >
 
-      <a-button type="primary" @click="validate" icon="upload" v-if="NowStep == 4">
+      <a-button type="primary" @click="validate" icon="upload" v-if="NowStep == 3">
         {{ $t('modal.btn.submit') }}</a-button
       >
     </footer-tool-bar>
@@ -159,6 +178,8 @@ import ChangeBgCSS from '../../../utils/ChangeBgCSS'
 import taskComfirm from '@/views/info/infoSubmission/infoSubmissionStep/taskComfirm'
 import emissionSubmit from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmit'
 import dataSourceUpload from '@/views/info/infoSubmission/infoSubmissionStep/dataSourceUpload'
+import reportPreviewAndUpload from '@/views/info/infoSubmission/infoSubmissionStep/reportPreviewAndUpload'
+import WaitForSuperviser from '@/views/info/infoSubmission/infoSubmissionStep/WaitForSuperviser'
 
 // const fieldLabels = {
 //   name: '仓库名',
@@ -182,6 +203,9 @@ const fieldLabels = [
   {
     fileListsTmp: '数据来源文件上传框',
   },
+  {
+    fileListsTmp: '核算报告文件上传框',
+  },
 ]
 
 export default {
@@ -195,10 +219,12 @@ export default {
     taskComfirm,
     emissionSubmit,
     dataSourceUpload,
+    reportPreviewAndUpload,
+    WaitForSuperviser,
   },
   data() {
     return {
-      NowStep: 1,
+      NowStep: 0,
       taskInfo: {},
       submitData: {},
 
@@ -259,7 +285,7 @@ export default {
             this.errorList(tmp)
           })
       } else if (this.NowStep == 1) {
-        console.log('submitDataINP2', this.$refs.emissionSubmit.getSourceData())
+        // console.log('submitDataINP2', this.$refs.emissionSubmit.getSourceData())
         this.submitData = JSON.parse(JSON.stringify(this.$refs.emissionSubmit.getSourceData()))
         this.goTonextPage()
       } else if (this.NowStep == 2) {
@@ -276,6 +302,7 @@ export default {
         })
         Promise.all([dataSourceUploadForm])
           .then((values) => {
+            this.submitData.dataSourePDF = this.$refs.dataSourceUpload.getdataSourcePDFUrl()
             this.errors = []
             this.goTonextPage()
           })
@@ -284,44 +311,31 @@ export default {
             const tmp = { ...errors }
             this.errorList(tmp)
           })
+      } else if (this.NowStep == 3) {
+        const reportPreviewAndUpload = this.$refs.reportPreviewAndUpload
+        const reportPreviewAndUploadForm = new Promise((resolve, reject) => {
+          reportPreviewAndUpload.form.validateFields((err, values) => {
+            // console.log(err, values)
+            if (err) {
+              reject(err)
+              return
+            }
+            resolve(values)
+          })
+        })
+        Promise.all([reportPreviewAndUploadForm])
+          .then((values) => {
+            this.submitData.reportPDF = this.$refs.reportPreviewAndUpload.getreportPDFUrl()
+            this.errors = []
+            this.$refs.WaitForSuperviser.passTaskInfo(this.taskInfo)
+            this.goTonextPage()
+          })
+          .catch(() => {
+            const errors = Object.assign({}, reportPreviewAndUpload.form.getFieldsError())
+            const tmp = { ...errors }
+            this.errorList(tmp)
+          })
       }
-
-      // const {
-      //   $refs: { repository, task },
-      //   $notification,
-      // } = this
-      // const repositoryForm = new Promise((resolve, reject) => {
-      //   repository.form.validateFields((err, values) => {
-      //     if (err) {
-      //       reject(err)
-      //       return
-      //     }
-      //     resolve(values)
-      //   })
-      // })
-      // const taskForm = new Promise((resolve, reject) => {
-      //   task.form.validateFields((err, values) => {
-      //     if (err) {
-      //       reject(err)
-      //       return
-      //     }
-      //     resolve(values)
-      //   })
-      // })
-      // // clean this.errors
-      // this.errors = []
-      // Promise.all([repositoryForm, taskForm])
-      //   .then((values) => {
-      //     $notification['error']({
-      //       message: 'Received values of form:',
-      //       description: JSON.stringify(values),
-      //     })
-      //   })
-      //   .catch(() => {
-      //     const errors = Object.assign({}, repository.form.getFieldsError(), task.form.getFieldsError())
-      //     const tmp = { ...errors }
-      //     this.errorList(tmp)
-      //   })
     },
     closeAndBack() {
       // TODO: 加一个退出提醒！

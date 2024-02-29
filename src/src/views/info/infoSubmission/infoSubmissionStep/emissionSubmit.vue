@@ -156,6 +156,7 @@ export default {
     initTable() {
       this.chooseTemplate()
       this.MainClassName = GetMainClassName(this.dataTemplate)
+      this.$forceUpdate()
     },
 
     reconcludeSum() {
