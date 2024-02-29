@@ -88,7 +88,12 @@
         </span>
       </template>
     </a-table>
-    <a-button style="width: 100%; margin-top: 16px; margin-bottom: 8px" type="dashed" icon="plus" @click="newRow()"
+    <a-button
+      style="width: 100%; margin-top: 16px; margin-bottom: 8px"
+      type="dashed"
+      icon="plus"
+      @click="newRow()"
+      v-if="classdata.canAdd == null ? true : classdata.canAdd"
       >新增项目</a-button
     >
     <emissionSubmitFormModal

@@ -96,14 +96,16 @@
       <p>文件名将在后台会被自动地重命名为【组织机构代码-企业名-年份-碳排放报告-核算报告-时间戳】。您无需手工设置。</p>
       <dataSourceQuestionModal ref="dataSourceQuestionModal"></dataSourceQuestionModal>
     </div>
+    <pdfDownload ref="pdfDownloadRef"></pdfDownload>
   </div>
 </template>
       
-      <script>
+<script>
 import dayjs from 'dayjs'
 import dataSourceQuestionModal from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/dataSourceQuestionModal'
 import { UploadFileAPI } from '@/api/public'
 import axios from 'axios'
+import pdfDownload from '@/components/PDFgenerate/pdfDownload.vue'
 export default {
   name: 'dataSourceUpload',
   data() {
@@ -112,12 +114,19 @@ export default {
       hasDownload: false,
 
       fileListPDF: [],
+      submitData: {},
+      taskInfo: {},
     }
   },
   components: {
     dataSourceQuestionModal,
+    pdfDownload,
   },
   methods: {
+    passSubdata(submitData, taskInfo) {
+      this.submitData = JSON.parse(JSON.stringify(submitData))
+      this.taskInfo = JSON.parse(JSON.stringify(taskInfo))
+    },
     momentFormat(date, format = 'YYYY-MM-DD') {
       date = parseInt(date) * 1000
       return dayjs(date).format(format)
@@ -196,6 +205,12 @@ export default {
               this.$message.error('上传失败,请确认网络环境后重新上传')
             }
           })
+          .catch(() => {
+            fileInfo.status = 'error'
+
+            file.onError()
+            this.$message.error('上传失败,请确认网络环境后重新上传')
+          })
       }
     },
 
@@ -228,7 +243,7 @@ export default {
     },
     fileValidator(rule, value, callback) {
       value = this.fileListPDF
-      console.log('fileValidator', rule, value)
+      // console.log('fileValidator', rule, value)
       if (value.length === 0) {
         callback(new Error('请上传签字盖章后碳排放报告'))
         // this.$message.error('请上传数据来源证明文件')
@@ -250,6 +265,7 @@ export default {
     },
     downloadPDF() {
       this.hasDownload = true
+      this.$refs.pdfDownloadRef.open(this.submitData, this.taskInfo)
     },
   },
   mounted() {

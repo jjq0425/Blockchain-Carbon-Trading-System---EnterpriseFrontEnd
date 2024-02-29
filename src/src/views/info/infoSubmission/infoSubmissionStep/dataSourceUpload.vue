@@ -171,6 +171,11 @@ export default {
               this.$message.error('上传失败,请确认网络环境后重新上传')
             }
           })
+          .catch(() => {
+            fileInfo.status = 'error'
+            file.onError()
+            this.$message.error('上传失败,请确认网络环境后重新上传')
+          })
         // UploadFileAPI(formData['file'], config).then((res) => {
         //   if (res.success) {
         //     fileInfo.status = 'done'
@@ -237,7 +242,7 @@ export default {
     },
     fileValidator(rule, value, callback) {
       value = this.fileListPDF
-      console.log('fileValidator', rule, value)
+      // console.log('fileValidator', rule, value)
       if (value.length === 0) {
         callback(new Error('请上传数据来源证明文件'))
         // this.$message.error('请上传数据来源证明文件')

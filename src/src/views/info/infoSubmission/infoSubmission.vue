@@ -161,9 +161,14 @@
         {{ $t('modal.btn.nextPage') }}</a-button
       >
 
-      <a-button type="primary" @click="validate" icon="upload" v-if="NowStep == 3">
-        {{ $t('modal.btn.submit') }}</a-button
+      <a-popconfirm
+        title="确认提交数据？提交后将暂时无法修改"
+        :ok-text="$t('modal.btn.confirm')"
+        :cancel-text="$t('modal.btn.cancel')"
+        @confirm="validate"
       >
+        <a-button type="primary" icon="upload" v-if="NowStep == 3"> {{ $t('modal.btn.submit') }}</a-button>
+      </a-popconfirm>
     </footer-tool-bar>
   </page-header-wrapper>
 </template>
@@ -180,6 +185,8 @@ import emissionSubmit from '@/views/info/infoSubmission/infoSubmissionStep/emiss
 import dataSourceUpload from '@/views/info/infoSubmission/infoSubmissionStep/dataSourceUpload'
 import reportPreviewAndUpload from '@/views/info/infoSubmission/infoSubmissionStep/reportPreviewAndUpload'
 import WaitForSuperviser from '@/views/info/infoSubmission/infoSubmissionStep/WaitForSuperviser'
+
+import { Submit } from '@/api/info'
 
 // const fieldLabels = {
 //   name: '仓库名',
@@ -237,6 +244,11 @@ export default {
     this.taskInfo = this.$route.params.task
     // console.log(this.$route.params.task)
   },
+  computed: {
+    enterpriseInfo() {
+      return this.$store.state.user.info
+    },
+  },
   methods: {
     // 最终全页面提交
     errorList(errors) {
@@ -285,8 +297,32 @@ export default {
             this.errorList(tmp)
           })
       } else if (this.NowStep == 1) {
-        // console.log('submitDataINP2', this.$refs.emissionSubmit.getSourceData())
         this.submitData = JSON.parse(JSON.stringify(this.$refs.emissionSubmit.getSourceData()))
+        this.submitData.taskYear = this.taskInfo.taskYear
+        this.submitData.erterpriseID = this.enterpriseInfo.enterpriseID
+        this.submitData.enterpriseClass = this.enterpriseInfo.enterpriseClass
+
+        /**
+         * 将this.submitData涉及的数据进行格式转换
+         * 例如：将字符串转换为数字
+         */
+        this.submitData.sumEmission = parseFloat(this.submitData.sumEmission)
+        for (let i = 0; i < this.submitData.detail.length; i++) {
+          this.submitData.detail[i].classDataSum = parseFloat(this.submitData.detail[i].classDataSum)
+          for (let j = 0; j < this.submitData.detail[i].children.length; j++) {
+            this.submitData.detail[i].children[j].EmissionFactorNum = parseFloat(
+              this.submitData.detail[i].children[j].EmissionFactorNum
+            )
+            this.submitData.detail[i].children[j].activityFactorNum = parseFloat(
+              this.submitData.detail[i].children[j].activityFactorNum
+            )
+            this.submitData.detail[i].children[j].classDataSum = parseFloat(
+              this.submitData.detail[i].children[j].classDataSum
+            )
+          }
+        }
+
+        console.log('submitDataINP2', this.submitData)
         this.goTonextPage()
       } else if (this.NowStep == 2) {
         const dataSourceUpload = this.$refs.dataSourceUpload
@@ -302,7 +338,7 @@ export default {
         })
         Promise.all([dataSourceUploadForm])
           .then((values) => {
-            this.submitData.dataSourePDF = this.$refs.dataSourceUpload.getdataSourcePDFUrl()
+            this.submitData.dataSourcePDF = this.$refs.dataSourceUpload.getdataSourcePDFUrl()
             this.errors = []
             this.goTonextPage()
           })
@@ -311,6 +347,7 @@ export default {
             const tmp = { ...errors }
             this.errorList(tmp)
           })
+        this.$refs.reportPreviewAndUpload.passSubdata(this.submitData, this.taskInfo)
       } else if (this.NowStep == 3) {
         const reportPreviewAndUpload = this.$refs.reportPreviewAndUpload
         const reportPreviewAndUploadForm = new Promise((resolve, reject) => {
@@ -328,7 +365,7 @@ export default {
             this.submitData.reportPDF = this.$refs.reportPreviewAndUpload.getreportPDFUrl()
             this.errors = []
             this.$refs.WaitForSuperviser.passTaskInfo(this.taskInfo)
-            this.goTonextPage()
+            this.SubmitDataNow()
           })
           .catch(() => {
             const errors = Object.assign({}, reportPreviewAndUpload.form.getFieldsError())
@@ -336,6 +373,16 @@ export default {
             this.errorList(tmp)
           })
       }
+    },
+    SubmitDataNow() {
+      Submit(this.submitData).then((res) => {
+        if ((res.success = true)) {
+          this.$message.success('提交成功！')
+          this.goTonextPage()
+        } else {
+          this.$message.error('提交失败！请重新提交')
+        }
+      })
     },
     closeAndBack() {
       // TODO: 加一个退出提醒！

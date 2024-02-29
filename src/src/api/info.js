@@ -40,7 +40,7 @@ export function GetTaskList() {
 
 export function Submit(parameter) {
     return request({
-        url: infoApi.TaskList,
+        url: infoApi.TaskSubmit,
         method: 'post',
         data: {
             token: token,

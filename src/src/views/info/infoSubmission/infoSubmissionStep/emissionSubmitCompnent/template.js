@@ -1011,6 +1011,7 @@ export const template_1 = {
             "className": "化石燃料燃烧", //大类名
             "classSort": 1, //大类排序，1为最先。数字越大越靠后，不写0
             "classDataSum": 0.00, //大类累计值，企业前端计算出来，=各个小类classDataSum求和
+            "canAdd": true,//该大类能否新增
             "children": [
                 {
                     "className": "燃煤", //小类名
@@ -1043,7 +1044,7 @@ export const template_1 = {
                             "defaultValChooseIdx": 0,
                             "defaultVal": [
                                 {
-                                    "val": 29271.20,
+                                    "val": 29271.20,//该值来源
                                     "description": "默认值"
                                 }
                             ],
@@ -2005,6 +2006,7 @@ export const template_1 = {
             "className": "脱硫过程排放", //大类名
             "classSort": 2, //大类排序，1为最先。数字越大越靠后，不写0
             "classDataSum": 0.00, //大类累计值，企业前端计算出来，=各个小类classDataSum求和
+            "canAdd": true,
             "children": [
                 {
                     "className": "CaCO₃", //小类名
@@ -2651,6 +2653,7 @@ export const template_1 = {
             "className": "净购入使用电力产生的排放", //大类名
             "classSort": 3, //大类排序，1为最先。数字越大越靠后，不写0
             "classDataSum": 0.00, //大类累计值，企业前端计算出来，=各个小类classDataSum求和
+            "canAdd": false,
             "children": [
                 {
                     "className": "电力产生的排放", //小类名，电力只有一个小类
@@ -2674,7 +2677,7 @@ export const template_1 = {
                             "dataSource": "DEFAULT"
                         }
                     ],
-                    "EmissionFactorNum": 0.00, //供电排放因子，根据企业地区选择下面数组中六个对象之一
+                    "EmissionFactorNum": 0.00, //供电排放因子，根据企业地区选择下面数组中六个对象之一，各地区排放因子的相应报告
                     "EmissionFactor": [ //排放因子，按1东北、2华北、3华东、4华中、5西北、6南方电网划分
                         {
                             "dataSort": 1,
