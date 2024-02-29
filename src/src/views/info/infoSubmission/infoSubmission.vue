@@ -299,7 +299,7 @@ export default {
       } else if (this.NowStep == 1) {
         this.submitData = JSON.parse(JSON.stringify(this.$refs.emissionSubmit.getSourceData()))
         this.submitData.taskYear = this.taskInfo.taskYear
-        this.submitData.erterpriseID = this.enterpriseInfo.enterpriseID
+        this.submitData.enterpriseID = this.enterpriseInfo.enterpriseID
         this.submitData.enterpriseClass = this.enterpriseInfo.enterpriseClass
 
         /**

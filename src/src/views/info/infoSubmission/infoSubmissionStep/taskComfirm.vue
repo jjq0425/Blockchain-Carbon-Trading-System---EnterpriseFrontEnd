@@ -32,7 +32,7 @@
       <a-descriptions-item label="填报截止">
         {{ momentFormat(taskInfo.taskEndTime) + ' 23:59:59' }}
       </a-descriptions-item>
-      <a-descriptions-item label="填报状态"> {{ taskInfo.auditStatus }} </a-descriptions-item>
+      <a-descriptions-item label="填报状态"> {{ this.audtiStatusStr(taskInfo.auditStatus) }} </a-descriptions-item>
 
       <a-descriptions-item label="填报描述" :span="3">
         {{ taskInfo.taskDescription }}
@@ -74,6 +74,7 @@
   
   <script>
 import dayjs from 'dayjs'
+import { infoSubmitAuditClass_CN, infoSubmitAuditClass_EN } from '@/config/class/infoSubmitAduitClass'
 export default {
   name: 'Step1',
   data() {
@@ -84,6 +85,10 @@ export default {
 
       enterpriseInfo: {},
       taskInfo: {},
+
+      // peizhi
+      infoSubmitAuditClass_CN: infoSubmitAuditClass_CN,
+      infoSubmitAuditClass_EN: infoSubmitAuditClass_EN,
     }
   },
   methods: {
@@ -91,11 +96,23 @@ export default {
       date = parseInt(date) * 1000
       return dayjs(date).format(format)
     },
+    audtiStatusStr(taskInfoauditStatus) {
+      if (this.lang.includes('zh')) {
+        return this.infoSubmitAuditClass_CN[taskInfoauditStatus]
+      } else {
+        return this.infoSubmitAuditClass_EN[taskInfoauditStatus]
+      }
+    },
+  },
+  computed: {
+    lang() {
+      return this.$store.state.app.lang
+    },
   },
   mounted() {
     this.enterpriseInfo = this.$store.state.user.info
     this.taskInfo = this.$route.params.task
-    console.log(this.taskInfo)
+    // console.log(this.taskInfo)
   },
 }
 </script>

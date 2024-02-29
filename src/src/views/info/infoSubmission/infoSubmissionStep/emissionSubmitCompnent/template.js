@@ -3,11 +3,10 @@
 
 
 export const template_Test = {
-    "reportPDF": "", //碳核算报告url（不含数据来源），与10各参考文档一致
-    "dataSourcePDF": "", //数据来源报告的PDFurl（即各种贴图，如电费发票等）
-    "taskYear": 2023,
-    "erterpriseID": "", //企业ID
-    "enterpriseClass": 1, //企业类别1（代表发电）
+
+
+
+
     "sumEmission": 0.00, //各个大类的classDataSum的和。企业本年度碳排放量
     "detail": [ //后端请完整存储detail的json
         {
@@ -1000,11 +999,7 @@ export const template_Test = {
 }
 
 export const template_1 = {
-    "reportPDF": "", //碳核算报告url（不含数据来源），与10各参考文档一致
-    "dataSourcePDF": "", //数据来源报告的PDFurl（即各种贴图，如电费发票等）
-    "taskYear": 2023,
-    "erterpriseID": "", //企业ID
-    "enterpriseClass": 1, //企业类别1（代表发电）
+
     "sumEmission": 0.00, //各个大类的classDataSum的和。企业本年度碳排放量
     "detail": [ //后端请完整存储detail的json
         {
