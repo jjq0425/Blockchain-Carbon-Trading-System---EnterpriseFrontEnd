@@ -57,10 +57,12 @@ export function login(parameter) {
   })
 }
 export function getInfo() {
-  if (token == null) {
-    token = storage.get(ACCESS_TOKEN)
-    // console.log(token)
-  }
+
+  // if (token == null) {
+  //   token = storage.get(ACCESS_TOKEN)
+  //   // console.log(token)
+  // }
+
   return request({
     url: userApi.UserInfo,
     method: 'post',

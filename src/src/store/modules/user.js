@@ -57,9 +57,11 @@ const user = {
 
     // 获取用户信息
     GetInfo({ commit }) {
+
       return new Promise((resolve, reject) => {
         // 请求后端获取用户信息 /api/user/info
         getInfo().then(response => {
+
           // const { result } = response
           const result = response.data || response.result
           //TODO:如果审核未通过或初次绑定未绑定信息需要处理
@@ -75,7 +77,7 @@ const user = {
             }
 
           }
-          console.log(result.role.permissions)
+
           if (result.role && result.role.permissions.length > 0) {
 
             const role = { ...result.role }
@@ -117,6 +119,7 @@ const user = {
           }
         }).catch(error => {
           //TODO:如果审核未通过或初次绑定未绑定信息需要处理，返回404
+
           reject(error)
         })
       })

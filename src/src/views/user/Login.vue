@@ -417,24 +417,26 @@ export default {
         })
       })
       */
-      this.$router.push({ path: '/' })
-      // 延迟 1 秒显示欢迎信息
-      if (this.$store.state.app.lang.includes('zh')) {
-        setTimeout(() => {
-          this.$notification.success({
-            message: '欢迎',
-            description: `${timeFix()}，登录成功`,
-          })
-        }, 50)
-      } else {
-        setTimeout(() => {
-          this.$notification.success({
-            message: 'Welcome',
-            description: `Login Sccess`,
-          })
-        }, 50)
-      }
-      this.isLoginError = false
+      setTimeout(() => {
+        this.$router.push({ path: '/' })
+        // 延迟 1 秒显示欢迎信息
+        if (this.$store.state.app.lang.includes('zh')) {
+          setTimeout(() => {
+            this.$notification.success({
+              message: '欢迎',
+              description: `${timeFix()}，登录成功`,
+            })
+          }, 50)
+        } else {
+          setTimeout(() => {
+            this.$notification.success({
+              message: 'Welcome',
+              description: `Login Sccess`,
+            })
+          }, 50)
+        }
+        this.isLoginError = false
+      }, 50)
     },
     requestFailed(err) {
       // console.log('loginFailed', err)

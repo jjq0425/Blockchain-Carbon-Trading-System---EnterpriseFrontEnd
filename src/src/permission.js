@@ -33,12 +33,14 @@ router.beforeEach((to, from, next) => {
   // if (token == null) {
   //   token = storage.state.user.token
   // }
+
   if (token) {
     if (to.path === loginRoutePath) {
       next({ path: defaultRoutePath })
       NProgress.done()
     } else {
       // check login user.roles is null
+
       if (store.getters.roles.length === 0) {
 
         // request login userInfo

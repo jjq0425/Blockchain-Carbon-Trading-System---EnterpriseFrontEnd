@@ -230,7 +230,7 @@ export default {
       value = this.fileListPDF
       console.log('fileValidator', rule, value)
       if (value.length === 0) {
-        callback(new Error('请上传数据来源证明文件'))
+        callback(new Error('请上传签字盖章后碳排放报告'))
         // this.$message.error('请上传数据来源证明文件')
       } else if (value[0].type != 'application/pdf') {
         callback(new Error('文件类型错误，请上传PDF文件'))
