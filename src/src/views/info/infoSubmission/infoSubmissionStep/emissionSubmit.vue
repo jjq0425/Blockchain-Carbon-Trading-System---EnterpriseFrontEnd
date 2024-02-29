@@ -61,7 +61,7 @@
           <span slot="label" slot-scope="{ value }">{{ value }}</span>
         </a-checkbox-group>
       </div>
-      <a-tabs tab-position="left" default-active-key="0">
+      <a-tabs tab-position="top" default-active-key="0">
         <a-tab-pane v-for="(name, idx) in MainClassName.length" :key="`tab_${idx}`" :tab="MainClassName[idx]">
           <emission-submit-table
             :tableIdx="idx"

@@ -83,6 +83,10 @@
       <emission-submit ref="emissionSubmit"></emission-submit>
     </a-card>
 
+    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 2">
+      <data-source-upload ref="dataSourceUpload"></data-source-upload>
+    </a-card>
+
     <!-- fixed footer toolbar -->
     <footer-tool-bar
       :is-mobile="isMobile"
@@ -154,6 +158,7 @@ import ChangeBgCSS from '../../../utils/ChangeBgCSS'
 
 import taskComfirm from '@/views/info/infoSubmission/infoSubmissionStep/taskComfirm'
 import emissionSubmit from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmit'
+import dataSourceUpload from '@/views/info/infoSubmission/infoSubmissionStep/dataSourceUpload'
 
 // const fieldLabels = {
 //   name: '仓库名',
@@ -173,6 +178,10 @@ const fieldLabels = [
   {
     checkComfirm: '填报任务确认框',
   },
+  {},
+  {
+    fileListsTmp: '数据来源文件上传框',
+  },
 ]
 
 export default {
@@ -185,6 +194,7 @@ export default {
     //
     taskComfirm,
     emissionSubmit,
+    dataSourceUpload,
   },
   data() {
     return {
@@ -252,6 +262,28 @@ export default {
         console.log('submitDataINP2', this.$refs.emissionSubmit.getSourceData())
         this.submitData = JSON.parse(JSON.stringify(this.$refs.emissionSubmit.getSourceData()))
         this.goTonextPage()
+      } else if (this.NowStep == 2) {
+        const dataSourceUpload = this.$refs.dataSourceUpload
+        const dataSourceUploadForm = new Promise((resolve, reject) => {
+          dataSourceUpload.form.validateFields((err, values) => {
+            // console.log(err, values)
+            if (err) {
+              reject(err)
+              return
+            }
+            resolve(values)
+          })
+        })
+        Promise.all([dataSourceUploadForm])
+          .then((values) => {
+            this.errors = []
+            this.goTonextPage()
+          })
+          .catch(() => {
+            const errors = Object.assign({}, dataSourceUpload.form.getFieldsError())
+            const tmp = { ...errors }
+            this.errorList(tmp)
+          })
       }
 
       // const {

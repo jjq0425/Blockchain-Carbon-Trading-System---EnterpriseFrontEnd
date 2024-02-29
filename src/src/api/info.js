@@ -3,7 +3,11 @@ import request from '@/utils/request'
 
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-const token = storage.get(ACCESS_TOKEN)
+// const token = storage.get(ACCESS_TOKEN)
+let token = storage.get(ACCESS_TOKEN)
+// if (token == null) {
+//     token = storage.state.user.token
+// }
 
 const infoApi = {
     TaskList: '/info/enterpriseTaskList',
@@ -17,6 +21,7 @@ const infoApi = {
  * 获取填报任务列表
  */
 export function GetTaskList() {
+
     return request({
         url: infoApi.TaskList,
         method: 'post',

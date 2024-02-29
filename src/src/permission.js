@@ -29,7 +29,10 @@ router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && typeof to.meta.title !== 'undefined' && setDocumentTitle(`${i18nRender(to.meta.title)} - ${domTitle}`)
   /* has token */
-  const token = storage.get(ACCESS_TOKEN)
+  let token = storage.get(ACCESS_TOKEN)
+  // if (token == null) {
+  //   token = storage.state.user.token
+  // }
   if (token) {
     if (to.path === loginRoutePath) {
       next({ path: defaultRoutePath })

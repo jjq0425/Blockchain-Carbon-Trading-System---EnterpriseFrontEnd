@@ -126,7 +126,7 @@ export default {
           _this.$message.success('上传成功')
           _this.$emit('ok', '照片的url')
           _this.visible = false
-          // this.$http.post('https://www.mocky.io/v2/5cc8019d300000980a055e76', formData, { contentType: false, processData: false, headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+          // this.$http.post('https://www.mocky.io/v2/5cc8019d300000980a055e76', formData, { contentType: false, processData: false, hc})
           //   .then((response) => {
           //     console.log('upload response:', response)
           //     // var res = response.data

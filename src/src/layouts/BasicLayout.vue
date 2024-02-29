@@ -453,6 +453,14 @@ export default {
   }
 }
 
+.ant-upload.ant-upload-drag {
+  border-radius: 9px !important;
+}
+
+.ant-upload.ant-upload-drag:hover {
+  border-color: #1890ff !important;
+}
+
 .ant-pro-page-header-search {
   border-radius: 100px;
 }

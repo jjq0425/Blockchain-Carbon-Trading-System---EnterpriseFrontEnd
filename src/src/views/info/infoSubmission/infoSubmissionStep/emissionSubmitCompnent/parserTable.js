@@ -73,7 +73,7 @@ export function ConstructColumns(template_children) {
                 // dataIndex: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
                 key: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
                 scopedSlots: { customRender: `activityFactor_${template_children[0].activityFactor[i].dataSort}` },
-                width: 220,
+                width: 280,
                 customHeaderCell: () => ({
                     style: {
                         textAlign: 'center',  //头部单元格水平居中
@@ -132,7 +132,7 @@ export function ConstructColumns(template_children) {
                 // dataIndex: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
                 key: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
                 scopedSlots: { customRender: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}` },
-                width: 220,
+                width: 280,
                 customHeaderCell: () => ({
                     style: {
                         textAlign: 'center',  //头部单元格水平居中
@@ -176,7 +176,7 @@ export function ConstructColumns(template_children) {
             // dataIndex: 'sum',
             scopedSlots: { customRender: 'sum' },
 
-            width: 135,
+            width: 215,
             customHeaderCell: () => ({
                 style: {
                     textAlign: 'center',  //头部单元格水平居中

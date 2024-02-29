@@ -219,12 +219,12 @@
     <template>
       <div style="width: 100%; text-align: center">
         <a-popconfirm
-          title="确认将非缺省值参数全置为0?"
+          title="确认将数值来源不是缺省值的参数全置为0?"
           :ok-text="$t('modal.btn.confirm')"
           :cancel-text="$t('modal.btn.cancel')"
           @confirm="setZero"
         >
-          <a-button style="margin-right: 20px"> 非缺省值参数置0 </a-button>
+          <a-button style="margin-right: 20px"> 非缺省值赋0 </a-button>
         </a-popconfirm>
         <a-button key="back" @click="close" style="margin-right: 20px" type="danger"> 不保存关闭 </a-button>
         <a-button key="submit" type="primary" @click="handleOk"> 保存并提交 </a-button>

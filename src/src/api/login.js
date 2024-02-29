@@ -3,12 +3,20 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 import request from '@/utils/request'
 
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 const token = storage.get(ACCESS_TOKEN)
+// if (token == null) {
+//   token = storage.state.user.token
+// }
 
 const userApi = {
   Login: '/auth/enterpriseLogin',
@@ -49,6 +57,10 @@ export function login(parameter) {
   })
 }
 export function getInfo() {
+  if (token == null) {
+    token = storage.get(ACCESS_TOKEN)
+    // console.log(token)
+  }
   return request({
     url: userApi.UserInfo,
     method: 'post',

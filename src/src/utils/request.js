@@ -28,7 +28,11 @@ const errorHandler = (error) => {
   if (error.response) {
     const data = error.response.data
     // 从 localstorage 获取 token
-    const token = storage.get(ACCESS_TOKEN)
+    let token = storage.get(ACCESS_TOKEN)
+    // if (token == null) {
+    //   token = storage.state.user.token
+    // }
+
     if (error.response.status === 403) {
       notification.error({
         message: 'Forbidden',
@@ -61,6 +65,7 @@ request.interceptors.request.use(config => {
   if (token) {
     config.headers[ACCESS_TOKEN] = token
   }
+
   // 在服务器测试时候不带baseUrl，在NetworkSetting已经带了
   if (config.NetworkSetting == null || !config.NetworkSetting) {
     config.url = store.state.app.baseUrl + config.url

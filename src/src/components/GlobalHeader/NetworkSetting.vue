@@ -35,6 +35,9 @@
         <div>{{ TestRes }}</div>
         <div style="font-size: 10px; color: grey">不填新服务器地址则按旧地址测试</div>
       </a-form-item>
+      <a-form-item label="您的token">
+        {{ token }}
+      </a-form-item>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button @click="TestNewServer" style="margin-right: 20px"> 测试</a-button>
@@ -47,6 +50,9 @@
   <script>
 import { SET_NETWORK_BASEURL } from '@/store/mutation-types'
 import request from '@/utils/request'
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
+
 export default {
   name: 'NetworkSetting',
   data() {
@@ -59,6 +65,11 @@ export default {
     }
   },
   props: {},
+  computed: {
+    token() {
+      return storage.get(ACCESS_TOKEN)
+    },
+  },
   methods: {
     open() {
       this.visible = true
