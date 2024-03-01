@@ -151,6 +151,10 @@ export default {
         url: '',
         type: file.file.type,
       }
+      Object.defineProperty(file.file, 'name', {
+        writable: true, //设置属性为可写
+      })
+      file.file.name = fileNameAuto
       //放入上传列表中，以便于显示上传进度
       this.fileListPDF.push(fileInfo)
       this.setFileListPDF()

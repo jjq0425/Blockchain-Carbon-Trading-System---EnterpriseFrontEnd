@@ -322,7 +322,7 @@ export default {
           }
         }
 
-        console.log('submitDataINP2', this.submitData)
+        // console.log('submitDataINP2', this.submitData)
         this.goTonextPage()
       } else if (this.NowStep == 2) {
         const dataSourceUpload = this.$refs.dataSourceUpload
