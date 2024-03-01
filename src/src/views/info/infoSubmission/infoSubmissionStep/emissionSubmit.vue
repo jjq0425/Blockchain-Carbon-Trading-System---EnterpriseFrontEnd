@@ -116,6 +116,8 @@ export default {
       dataTemplate: null, // 用于存储数据模板
       MainClassName: [],
 
+      submitType: 'creat',
+
       // 配置项
       tableSetOptions: [
         { label: '展示单位', value: 'ShowUnit' },
@@ -154,8 +156,11 @@ export default {
       // console.log('88template', template)
     },
     initTable() {
-      this.chooseTemplate()
-      this.MainClassName = GetMainClassName(this.dataTemplate)
+      if (this.submitType == 'create') {
+        this.chooseTemplate()
+      } else if (this.submitType == 'modify') {
+      }
+      this.MainClassName = GetMainClassName(this.dataSource)
       this.$forceUpdate()
     },
 
@@ -196,6 +201,11 @@ export default {
      */
     getSourceData() {
       return this.dataSource
+    },
+    passSourceData(submitData, type = 'modify') {
+      this.dataSource = JSON.parse(JSON.stringify(submitData))
+      this.submitType = type
+      this.initTable()
     },
     // OLD
     // newMember() {

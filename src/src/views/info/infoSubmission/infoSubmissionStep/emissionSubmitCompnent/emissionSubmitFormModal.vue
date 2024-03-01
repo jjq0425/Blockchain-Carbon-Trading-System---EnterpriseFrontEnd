@@ -298,7 +298,7 @@ export default {
         this.title = '编辑项目'
         this.record = JSON.parse(JSON.stringify(record))
         this.emissionForm = JSON.parse(JSON.stringify(record))
-      } else {
+      } else if (editType == 'add') {
         this.title = '新增项目'
         let tempREC = JSON.parse(JSON.stringify(record))
         // tempREC.activityFactor的每个元素,defaultVal置为空，defaultValChooseIdx置为-1,dataSource置为'SOURCE'

@@ -74,26 +74,30 @@
       </a-steps>
     </a-card>
 
-    <!-- 开始卡片 -->
-    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 0">
-      <task-comfirm ref="taskComfirm"></task-comfirm>
-    </a-card>
+    <template>
+      <!-- 开始卡片 -->
 
-    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 1">
-      <emission-submit ref="emissionSubmit"></emission-submit>
-    </a-card>
+      <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 0">
+        <a-skeleton active :paragraph="{ rows: 8 }" v-show="dataLoading"> </a-skeleton>
+        <task-comfirm ref="taskComfirm" v-show="!dataLoading"></task-comfirm>
+      </a-card>
 
-    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 2">
-      <data-source-upload ref="dataSourceUpload"></data-source-upload>
-    </a-card>
+      <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 1">
+        <emission-submit ref="emissionSubmit"></emission-submit>
+      </a-card>
 
-    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 3">
-      <report-preview-and-upload ref="reportPreviewAndUpload"></report-preview-and-upload>
-    </a-card>
+      <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 2">
+        <data-source-upload ref="dataSourceUpload"></data-source-upload>
+      </a-card>
 
-    <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 4">
-      <wait-for-superviser ref="WaitForSuperviser"></wait-for-superviser>
-    </a-card>
+      <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 3">
+        <report-preview-and-upload ref="reportPreviewAndUpload"></report-preview-and-upload>
+      </a-card>
+
+      <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 4">
+        <wait-for-superviser ref="WaitForSuperviser"></wait-for-superviser>
+      </a-card>
+    </template>
 
     <!-- fixed footer toolbar -->
     <footer-tool-bar
@@ -156,6 +160,7 @@
         type="primary"
         @click="ValidateGoToNextStep"
         icon="vertical-left"
+        :disabled="dataLoading"
         v-if="NowStep != 3 && NowStep != 4"
       >
         {{ $t('modal.btn.nextPage') }}</a-button
@@ -186,7 +191,7 @@ import dataSourceUpload from '@/views/info/infoSubmission/infoSubmissionStep/dat
 import reportPreviewAndUpload from '@/views/info/infoSubmission/infoSubmissionStep/reportPreviewAndUpload'
 import WaitForSuperviser from '@/views/info/infoSubmission/infoSubmissionStep/WaitForSuperviser'
 
-import { Submit } from '@/api/info'
+import { Submit, GetReport } from '@/api/info'
 
 // const fieldLabels = {
 //   name: '仓库名',
@@ -236,12 +241,37 @@ export default {
       submitData: {},
 
       errors: [],
+
+      //
+      dataLoading: true,
     }
   },
   mounted() {
     ChangeBgCSS('INFO')
 
     this.taskInfo = this.$route.params.task
+    if (this.taskInfo.auditStatus === 'REFUSE') {
+      // 如果被驳货需要修改，修改的时候先获取信息
+      let params = {
+        enterpriseID: this.enterpriseInfo.enterpriseID,
+        taskYear: this.taskInfo.taskYear,
+      }
+      GetReport(params).then((res) => {
+        // console.log(res)
+        let result = JSON.parse(JSON.stringify(res))
+        // console.log('res', result)
+        this.submitData = result['data']['report']
+
+        setTimeout(() => {
+          this.$nextTick(() => {
+            this.dataLoading = false
+          })
+          this.$message.success('获取历史数据成功')
+        }, 900)
+      })
+    } else {
+      this.dataLoading = false
+    }
     // console.log(this.$route.params.task)
   },
   computed: {
@@ -296,6 +326,10 @@ export default {
             const tmp = { ...errors }
             this.errorList(tmp)
           })
+        if (this.taskInfo.auditStatus === 'REFUSE') {
+          // 如果是审核被拒绝了，获取原始数据重新提交
+          this.$refs.emissionSubmit.passSourceData(this.submitData, 'modify')
+        }
       } else if (this.NowStep == 1) {
         this.submitData = JSON.parse(JSON.stringify(this.$refs.emissionSubmit.getSourceData()))
         this.submitData.taskYear = this.taskInfo.taskYear
@@ -323,6 +357,10 @@ export default {
         }
 
         // console.log('submitDataINP2', this.submitData)
+        if (this.taskInfo.auditStatus === 'REFUSE') {
+          // 如果是审核被拒绝了，获取原始数据重新提交
+          this.$refs.dataSourceUpload.passSourceData(this.submitData, 'modify')
+        }
         this.goTonextPage()
       } else if (this.NowStep == 2) {
         const dataSourceUpload = this.$refs.dataSourceUpload
@@ -340,6 +378,10 @@ export default {
           .then((values) => {
             this.submitData.dataSourcePDF = this.$refs.dataSourceUpload.getdataSourcePDFUrl()
             this.errors = []
+            if (this.taskInfo.auditStatus === 'REFUSE') {
+              // 如果是审核被拒绝了，获取原始数据重新提交
+              this.$refs.reportPreviewAndUpload.passSourceData(this.submitData, 'modify')
+            }
             this.goTonextPage()
           })
           .catch(() => {

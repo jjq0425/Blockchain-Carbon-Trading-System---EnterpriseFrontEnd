@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 import request from '@/utils/request'
 
@@ -45,6 +50,18 @@ export function Submit(parameter) {
         data: {
             token: token,
             ...parameter
+        }
+    })
+}
+
+export function GetReport(parameter) {
+    return request({
+        url: infoApi.GetReport,
+        method: 'post',
+        data: {
+            enterpriseID: parameter.enterpriseID,
+            taskYear: parameter.taskYear,
+
         }
     })
 }

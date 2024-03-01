@@ -5,10 +5,18 @@
 -->
 <template>
   <div>
+    <a-alert
+      message="您的本次填报任务被审核驳回，请根据审核要求认真重新填写提交信息，感谢您的配合"
+      type="info"
+      show-icon
+      banner
+      style="margin: 0px auto; width: 90%; margin-bottom: 20px"
+      v-if="taskInfo.auditStatus === 'REFUSE'"
+    />
+
     <a-descriptions title="企业信息" style="margin: 20px auto; width: 90%">
       <a-descriptions-item label="企业名"> {{ enterpriseInfo.enterpriseName }} </a-descriptions-item>
       <a-descriptions-item label="企业组织机构代码"> {{ enterpriseInfo.enterpriseID }} </a-descriptions-item>
-
       <a-descriptions-item label="企业类型"> {{ enterpriseInfo.enterpriseCharacter }} </a-descriptions-item>
       <a-descriptions-item label="企业所属行业">
         {{ enterpriseInfo.enterpriseClassName_CN }}

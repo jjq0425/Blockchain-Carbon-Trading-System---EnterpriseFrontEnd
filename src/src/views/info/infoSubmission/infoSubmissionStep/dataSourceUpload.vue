@@ -84,6 +84,8 @@ export default {
     return {
       form: this.$form.createForm(this),
 
+      submitType: 'create',
+
       fileListPDF: [],
     }
   },
@@ -97,6 +99,22 @@ export default {
     },
     getdataSourcePDFUrl() {
       return this.fileListPDF[0].url
+    },
+    passSourceData(submitData, submitType) {
+      let data_url = submitData.dataSourcePDF
+      // 提取最后一个/后面的所有字符串
+      data_name = data_url.substring(data_url.lastIndexOf('/') + 1, data_url.length)
+      let data_name
+      const fileInfo = {
+        uid: '-1',
+        name: data_name,
+        status: 'done',
+        response: '',
+        url: data_url,
+        type: 'application/pdf',
+      }
+      this.fileListPDF.push(fileInfo)
+      this.submitType = submitType
     },
 
     fileUpload(file) {
