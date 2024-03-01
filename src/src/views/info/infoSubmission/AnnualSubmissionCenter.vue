@@ -56,7 +56,7 @@
                   {{ $t('info.submissionCenter.taskBeginTime') }}：{{ momentFormat(task.taskBeginTime, 'YYYY-MM-DD') }}
                 </div>
                 <div>
-                  {{ $t('info.submissionCenter.taskEndTime') }}：{{ momentFormat(task.taskBeginTime, 'YYYY-MM-DD') }}
+                  {{ $t('info.submissionCenter.taskEndTime') }}：{{ momentFormat(task.taskEndTime, 'YYYY-MM-DD') }}
                 </div>
 
                 <!-- <div v-if="lang.includes('zh-CN')">
