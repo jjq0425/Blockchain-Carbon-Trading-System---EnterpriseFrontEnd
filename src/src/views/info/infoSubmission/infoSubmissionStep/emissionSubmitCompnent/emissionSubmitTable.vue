@@ -73,7 +73,7 @@
       </template>
       <!-- <template slot="action"> 按钮 </template> -->
       <template slot="action" slot-scope="text, record">
-        <span>
+        <span v-if="submitType != 'detail'">
           <a @click="editRow(record)">编辑</a>
           <a-divider type="vertical" />
           <a-popconfirm title="是否要删除此行？" @confirm="removeRow(record)">
@@ -86,6 +86,9 @@
             <a style="color: #adb5bd" v-if="tableData.length == 1">删除</a>
           </a-popover>
         </span>
+        <span v-else>
+          <a @click="detailRow(record)">详情</a>
+        </span>
       </template>
     </a-table>
     <a-button
@@ -93,7 +96,7 @@
       type="dashed"
       icon="plus"
       @click="newRow()"
-      v-if="classdata.canAdd == null ? true : classdata.canAdd"
+      v-if="(classdata.canAdd == null ? true : classdata.canAdd) && submitType != 'detail'"
       >新增项目</a-button
     >
     <emissionSubmitFormModal
@@ -128,6 +131,10 @@ export default {
     tableIdx: {
       type: Number,
       default: 0,
+    },
+    submitType: {
+      type: String,
+      default: 'create',
     },
   },
   data() {
@@ -197,6 +204,9 @@ export default {
     editRow(record) {
       // console.log(record)
       this.$refs.emissionSubmitFormModal.open('edit', record)
+    },
+    detailRow(record) {
+      this.$refs.emissionSubmitFormModal.open('detail', record)
     },
     newRow() {
       let New_Template = JSON.parse(JSON.stringify(this.tableData[this.tableData.length - 1]))

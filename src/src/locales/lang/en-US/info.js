@@ -25,4 +25,10 @@ export default {
     'info.infoSubmission.step.No5.title': 'Submit for auditor',
     'info.infoSubmission.step.No5.describe': 'Waiting for regulatory personnel to review the information you submitted',
 
+
+    'info.infoSubmission.detailstep.header': 'Report data detail',
+    'info.infoSubmission.detailstep.No1.title': 'Basic information',
+    'info.infoSubmission.detailstep.No2.title': 'Data Table',
+    'info.infoSubmission.detailstep.No3.title': 'Report Download',
+
 }

@@ -19,57 +19,37 @@
       <div style="height: 30px"></div>
     </template>
 
-    <a-card :bordered="false" :title="$t('info.infoSubmission.step.header')">
+    <a-card :bordered="false" :title="$t('info.infoSubmission.detailstep.header')">
       <a-steps :direction="(isMobile && 'vertical') || 'horizontal'" :current="NowStep" progressDot>
         <a-step>
           <template v-slot:title>
-            <span>{{ $t('info.infoSubmission.step.No1.title') }}</span>
+            <span>{{ $t('info.infoSubmission.detailstep.No1.title') }}</span>
           </template>
-          <template v-slot:description>
+          <!-- <template v-slot:description>
             <div class="antd-pro-pages-profile-advanced-style-stepDescription">
               {{ $t('info.infoSubmission.step.No1.describe') }}
             </div>
-          </template>
+          </template> -->
         </a-step>
         <a-step>
           <template v-slot:title>
-            <span>{{ $t('info.infoSubmission.step.No2.title') }}</span>
+            <span>{{ $t('info.infoSubmission.detailstep.No2.title') }}</span>
           </template>
-          <template v-slot:description>
+          <!-- <template v-slot:description>
             <div class="antd-pro-pages-profile-advanced-style-stepDescription">
               {{ $t('info.infoSubmission.step.No2.describe') }}
             </div>
-          </template>
+          </template> -->
         </a-step>
         <a-step>
           <template v-slot:title>
-            <span>{{ $t('info.infoSubmission.step.No3.title') }}</span>
+            <span>{{ $t('info.infoSubmission.detailstep.No3.title') }}</span>
           </template>
-          <template v-slot:description>
+          <!-- <template v-slot:description>
             <div class="antd-pro-pages-profile-advanced-style-stepDescription">
               {{ $t('info.infoSubmission.step.No3.describe') }}
             </div>
-          </template>
-        </a-step>
-        <a-step>
-          <template v-slot:title>
-            <span>{{ $t('info.infoSubmission.step.No4.title') }}</span>
-          </template>
-          <template v-slot:description>
-            <div class="antd-pro-pages-profile-advanced-style-stepDescription">
-              {{ $t('info.infoSubmission.step.No4.describe') }}
-            </div>
-          </template>
-        </a-step>
-        <a-step>
-          <template v-slot:title>
-            <span>{{ $t('info.infoSubmission.step.No5.title') }}</span>
-          </template>
-          <template v-slot:description>
-            <div class="antd-pro-pages-profile-advanced-style-stepDescription">
-              {{ $t('info.infoSubmission.step.No5.describe') }}
-            </div>
-          </template>
+          </template> -->
         </a-step>
       </a-steps>
     </a-card>
@@ -79,7 +59,7 @@
 
       <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 0">
         <a-skeleton active :paragraph="{ rows: 8 }" v-show="dataLoading"> </a-skeleton>
-        <task-comfirm ref="taskComfirm" v-show="!dataLoading"></task-comfirm>
+        <task-comfirm ref="taskComfirm" v-show="!dataLoading" submitType="detail"></task-comfirm>
       </a-card>
 
       <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 1">
@@ -87,15 +67,7 @@
       </a-card>
 
       <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 2">
-        <data-source-upload ref="dataSourceUpload"></data-source-upload>
-      </a-card>
-
-      <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 3">
-        <report-preview-and-upload ref="reportPreviewAndUpload"></report-preview-and-upload>
-      </a-card>
-
-      <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 4">
-        <wait-for-superviser ref="WaitForSuperviser"></wait-for-superviser>
+        <reportANDsourceDownload ref="reportANDsourceDownload"></reportANDsourceDownload>
       </a-card>
     </template>
 
@@ -136,22 +108,11 @@
         </a-popover>
       </span>
 
-      <a-button
-        style="margin-right: 20px"
-        @click="closeAndBack"
-        icon="close"
-        v-if="NowStep == 0 || NowStep == 4"
-        type="danger"
-      >
+      <a-button style="margin-right: 20px" @click="closeAndBack" icon="close" v-if="NowStep == 0" type="danger">
         {{ $t('modal.btn.close') }}</a-button
       >
 
-      <a-button
-        style="margin-right: 20px"
-        @click="backTolastPage"
-        icon="vertical-right"
-        v-if="NowStep != 0 && NowStep != 4"
-      >
+      <a-button style="margin-right: 20px" @click="backTolastPage" icon="vertical-right" v-if="NowStep != 0">
         {{ $t('modal.btn.lastPage') }}</a-button
       >
 
@@ -161,19 +122,14 @@
         @click="ValidateGoToNextStep"
         icon="vertical-left"
         :disabled="dataLoading"
-        v-if="NowStep != 3 && NowStep != 4"
+        v-if="NowStep != 2"
       >
         {{ $t('modal.btn.nextPage') }}</a-button
       >
 
-      <a-popconfirm
-        title="确认提交数据？提交后将暂时无法修改"
-        :ok-text="$t('modal.btn.confirm')"
-        :cancel-text="$t('modal.btn.cancel')"
-        @confirm="validate"
+      <a-button style="margin-right: 20px" @click="closeAndBack" icon="close" v-if="NowStep == 2" type="danger">
+        {{ $t('modal.btn.close') }}</a-button
       >
-        <a-button type="primary" icon="upload" v-if="NowStep == 3"> {{ $t('modal.btn.submit') }}</a-button>
-      </a-popconfirm>
     </footer-tool-bar>
   </page-header-wrapper>
 </template>
@@ -190,6 +146,7 @@ import emissionSubmit from '@/views/info/infoSubmission/infoSubmissionStep/emiss
 import dataSourceUpload from '@/views/info/infoSubmission/infoSubmissionStep/dataSourceUpload'
 import reportPreviewAndUpload from '@/views/info/infoSubmission/infoSubmissionStep/reportPreviewAndUpload'
 import WaitForSuperviser from '@/views/info/infoSubmission/infoSubmissionStep/WaitForSuperviser'
+import reportANDsourceDownload from '@/views/info/infoSubmission/infoSubmissionStep/reportANDsourceDownload'
 
 import { Submit, GetReport } from '@/api/info'
 
@@ -233,6 +190,7 @@ export default {
     dataSourceUpload,
     reportPreviewAndUpload,
     WaitForSuperviser,
+    reportANDsourceDownload,
   },
   data() {
     return {
@@ -250,31 +208,24 @@ export default {
     ChangeBgCSS('INFO')
 
     this.taskInfo = this.$route.params.task
-    if (this.taskInfo.auditStatus === 'REFUSE') {
-      // 如果被驳货需要修改，修改的时候先获取信息
-      let params = {
-        enterpriseID: this.enterpriseInfo.enterpriseID,
-        taskYear: this.taskInfo.taskYear,
-      }
-      GetReport(params).then((res) => {
-        // console.log(res)
-        let result = JSON.parse(JSON.stringify(res))
-        // console.log('res', result)
-        this.submitData = result['data']['report']
-
-        setTimeout(() => {
-          this.$nextTick(() => {
-            this.dataLoading = false
-          })
-          this.$message.success('获取历史数据成功')
-        }, 900)
-        this.$refs.taskComfirm.passSubmitType('edit')
-      })
-    } else {
-      this.dataLoading = false
-      this.$refs.taskComfirm.passSubmitType('create')
+    let params = {
+      enterpriseID: this.enterpriseInfo.enterpriseID,
+      taskYear: this.taskInfo.taskYear,
     }
+    GetReport(params).then((res) => {
+      // console.log(res)
+      let result = JSON.parse(JSON.stringify(res))
+      // console.log('res', result)
+      this.submitData = result['data']['report']
 
+      setTimeout(() => {
+        this.$nextTick(() => {
+          this.dataLoading = false
+        })
+        this.$message.success('获取历史数据成功')
+      }, 900)
+    })
+    this.$refs.taskComfirm.passSubmitType('detail')
     // console.log(this.$route.params.task)
   },
   computed: {
@@ -308,127 +259,14 @@ export default {
     },
     async validate() {
       if (this.NowStep == 0) {
-        const taskComfirm = this.$refs.taskComfirm
-        const taskComfirmForm = new Promise((resolve, reject) => {
-          taskComfirm.form.validateFields((err, values) => {
-            // console.log(err, values)
-            if (err) {
-              reject(err)
-              return
-            }
-            resolve(values)
-          })
-        })
-        Promise.all([taskComfirmForm])
-          .then((values) => {
-            this.errors = []
-            this.goTonextPage()
-          })
-          .catch(() => {
-            const errors = Object.assign({}, taskComfirm.form.getFieldsError())
-            const tmp = { ...errors }
-            this.errorList(tmp)
-          })
-        if (this.taskInfo.auditStatus === 'REFUSE') {
-          // 如果是审核被拒绝了，获取原始数据重新提交
-          this.$refs.emissionSubmit.passSourceData(this.submitData, 'modify')
-        }
-      } else if (this.NowStep == 1) {
-        this.submitData = JSON.parse(JSON.stringify(this.$refs.emissionSubmit.getSourceData()))
-        this.submitData.taskYear = this.taskInfo.taskYear
-        this.submitData.enterpriseID = this.enterpriseInfo.enterpriseID
-        this.submitData.enterpriseClass = this.enterpriseInfo.enterpriseClass
-
-        /**
-         * 将this.submitData涉及的数据进行格式转换
-         * 例如：将字符串转换为数字
-         */
-        this.submitData.sumEmission = parseFloat(this.submitData.sumEmission)
-        for (let i = 0; i < this.submitData.detail.length; i++) {
-          this.submitData.detail[i].classDataSum = parseFloat(this.submitData.detail[i].classDataSum)
-          for (let j = 0; j < this.submitData.detail[i].children.length; j++) {
-            this.submitData.detail[i].children[j].EmissionFactorNum = parseFloat(
-              this.submitData.detail[i].children[j].EmissionFactorNum
-            )
-            this.submitData.detail[i].children[j].activityFactorNum = parseFloat(
-              this.submitData.detail[i].children[j].activityFactorNum
-            )
-            this.submitData.detail[i].children[j].classDataSum = parseFloat(
-              this.submitData.detail[i].children[j].classDataSum
-            )
-          }
-        }
-
-        // console.log('submitDataINP2', this.submitData)
-        if (this.taskInfo.auditStatus === 'REFUSE') {
-          // 如果是审核被拒绝了，获取原始数据重新提交
-          this.$refs.dataSourceUpload.passSourceData(this.submitData, 'modify')
-        }
+        this.$refs.emissionSubmit.passSourceData(this.submitData, 'detail')
         this.goTonextPage()
-      } else if (this.NowStep == 2) {
-        const dataSourceUpload = this.$refs.dataSourceUpload
-        const dataSourceUploadForm = new Promise((resolve, reject) => {
-          dataSourceUpload.form.validateFields((err, values) => {
-            // console.log(err, values)
-            if (err) {
-              reject(err)
-              return
-            }
-            resolve(values)
-          })
-        })
-        Promise.all([dataSourceUploadForm])
-          .then((values) => {
-            this.submitData.dataSourcePDF = this.$refs.dataSourceUpload.getdataSourcePDFUrl()
-            this.errors = []
-            if (this.taskInfo.auditStatus === 'REFUSE') {
-              // 如果是审核被拒绝了，获取原始数据重新提交
-              this.$refs.reportPreviewAndUpload.passSourceData(this.submitData, 'modify')
-            }
-            this.goTonextPage()
-          })
-          .catch(() => {
-            const errors = Object.assign({}, dataSourceUpload.form.getFieldsError())
-            const tmp = { ...errors }
-            this.errorList(tmp)
-          })
-        this.$refs.reportPreviewAndUpload.passSubdata(this.submitData, this.taskInfo)
-      } else if (this.NowStep == 3) {
-        const reportPreviewAndUpload = this.$refs.reportPreviewAndUpload
-        const reportPreviewAndUploadForm = new Promise((resolve, reject) => {
-          reportPreviewAndUpload.form.validateFields((err, values) => {
-            // console.log(err, values)
-            if (err) {
-              reject(err)
-              return
-            }
-            resolve(values)
-          })
-        })
-        Promise.all([reportPreviewAndUploadForm])
-          .then((values) => {
-            this.submitData.reportPDF = this.$refs.reportPreviewAndUpload.getreportPDFUrl()
-            this.errors = []
-            this.$refs.WaitForSuperviser.passTaskInfo(this.taskInfo)
-            this.SubmitDataNow()
-          })
-          .catch(() => {
-            const errors = Object.assign({}, reportPreviewAndUpload.form.getFieldsError())
-            const tmp = { ...errors }
-            this.errorList(tmp)
-          })
+      } else if (this.NowStep == 1) {
+        this.$refs.reportANDsourceDownload.passSourceData(this.submitData, this.taskInfo, 'detail')
+        this.goTonextPage()
       }
     },
-    SubmitDataNow() {
-      Submit(this.submitData).then((res) => {
-        if ((res.success = true)) {
-          this.$message.success('提交成功！')
-          this.goTonextPage()
-        } else {
-          this.$message.error('提交失败！请重新提交')
-        }
-      })
-    },
+
     closeAndBack() {
       // TODO: 加一个退出提醒！
       this.$router.push({ name: 'AnnualSubmissionCenter' })

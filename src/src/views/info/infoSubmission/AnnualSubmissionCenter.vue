@@ -269,12 +269,21 @@ export default {
     },
     RouteToSubmit(task) {
       if (task.isBegin) {
-        this.$router.push({
-          name: 'InfoSubmission',
-          params: {
-            task: task,
-          },
-        })
+        if (task.auditStatus == 'PASS' || task.auditStatus == 'AUDIT') {
+          this.$router.push({
+            name: 'InfoSubmissionDetail',
+            params: {
+              task: task,
+            },
+          })
+        } else {
+          this.$router.push({
+            name: 'InfoSubmission',
+            params: {
+              task: task,
+            },
+          })
+        }
       } else {
         this.NotBeginMoal.visible = true
       }

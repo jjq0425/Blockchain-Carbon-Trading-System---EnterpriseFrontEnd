@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 export default {
     // 填报任务中心
@@ -25,4 +30,10 @@ export default {
     'info.infoSubmission.step.No4.describe': '预览您的碳排放报告，并上传签字扫描件',
     'info.infoSubmission.step.No5.title': '等待监管审核',
     'info.infoSubmission.step.No5.describe': '等待监管人员审核您提交的信息',
+
+    'info.infoSubmission.detailstep.header': '填报数据查询',
+    'info.infoSubmission.detailstep.No1.title': '基本信息',
+    'info.infoSubmission.detailstep.No2.title': '数据列表',
+    'info.infoSubmission.detailstep.No3.title': '报告下载',
+
 }

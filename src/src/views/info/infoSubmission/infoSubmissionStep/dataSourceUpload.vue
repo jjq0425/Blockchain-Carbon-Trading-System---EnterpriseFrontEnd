@@ -6,24 +6,6 @@
 <template>
   <div>
     <a-form :form="form" style="min-width: 400px; max-width: 800px; margin: 40px auto 0">
-      <!-- <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol">
-        <a-checkbox
-          style="font-size: 16px; color: #1890ff"
-          :checked="form.checkComfirm"
-          v-decorator="[
-            'checkComfirm',
-            {
-              valuePropName: 'checked',
-              rules: [
-                { required: true, message: '请确认' },
-                { type: 'enum', enum: [true], message: '请确认' },
-              ],
-            },
-          ]"
-        >
-          我已确认上述信息
-        </a-checkbox>
-      </a-form-item> -->
       <a-form-item>
         <a-upload-dragger
           name="file"
@@ -101,9 +83,11 @@ export default {
       return this.fileListPDF[0].url
     },
     passSourceData(submitData, submitType) {
+      this.fileListPDF = []
       let data_url = submitData.dataSourcePDF
       // 提取最后一个/后面的所有字符串
-      data_name = data_url.substring(data_url.lastIndexOf('/') + 1, data_url.length)
+      data_name =
+        '（已上传文件，文件名加密保护中）  ' + data_url.substring(data_url.lastIndexOf('/') + 1, data_url.length)
       let data_name
       const fileInfo = {
         uid: '-1',

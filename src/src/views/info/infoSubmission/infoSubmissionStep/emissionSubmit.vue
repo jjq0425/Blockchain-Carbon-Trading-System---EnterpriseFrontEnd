@@ -64,6 +64,7 @@
       <a-tabs tab-position="top" default-active-key="0">
         <a-tab-pane v-for="(name, idx) in MainClassName.length" :key="`tab_${idx}`" :tab="MainClassName[idx]">
           <emission-submit-table
+            :submitType="submitType"
             :tableIdx="idx"
             :classdata="dataSource.detail[idx]"
             :tableSetOptionsChecked="tableSetOptionsChecked"
@@ -77,12 +78,12 @@
       <h3>说明</h3>
       <h4>如何切换模块？</h4>
       <p>
-        点击左侧Tab栏可以切换到不同的填报模块。您所属行业为：{{ enterpriseClassName }}，因此一共需要填报{{
+        点击上方Tab栏可以切换到不同的填报模块。您所属行业为：{{ enterpriseClassName }}，因此一共需要填报{{
           MainClassName.length
         }}个模块，分别是{{ MainClassName.join('，') }}。
       </p>
-      <h4>如何编辑、修改、新增排放项目？</h4>
-      <p>
+      <h4 v-if="submitType != 'detail'">如何编辑、修改、新增排放项目？</h4>
+      <p v-if="submitType != 'detail'">
         在右侧表格中点击【删除】可以删除当前排放源，点击【编辑】可以对排放源信息（包括排放源名称以及活动水平、排放因子、数据来源）进行编辑，点击下方【新增项目】可以新增排放源
       </p>
       <h4>数据来源有哪些分类？</h4>

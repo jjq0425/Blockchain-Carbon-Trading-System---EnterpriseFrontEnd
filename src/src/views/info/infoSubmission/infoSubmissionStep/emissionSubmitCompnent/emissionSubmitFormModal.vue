@@ -39,8 +39,8 @@
               prop="className"
               labelAlign="left"
             >
-              <a-input v-model="emissionForm.className" placeholder="请输入排放源名" />
-              <div style="font-size: 9px; color: #868e96">
+              <a-input v-model="emissionForm.className" placeholder="请输入排放源名" :disabled="type == 'detail'" />
+              <div style="font-size: 9px; color: #868e96" v-show="type != 'detail'">
                 点击添加化学式角标：
                 <span class="chemicalSup" @click="() => (emissionForm.className = emissionForm.className + '₂')"
                   >₂
@@ -103,7 +103,7 @@
                       :min="0"
                       :max="activityFac.dataUnit == '%' ? 1 : 99999999999999999999999999999999999999999999999"
                       placeholder="请输入数值"
-                      :disabled="activityFac.dataSource == 'DEFAULT'"
+                      :disabled="activityFac.dataSource == 'DEFAULT' || type == 'detail'"
                       style="width: 120px"
                       @change="reConclude"
                     />
@@ -135,6 +135,7 @@
                       :defaultValue="cascaderDefualtValChoose(activityFac)"
                       :allowClear="false"
                       style="width: 90%; margin-right: 10px"
+                      :disabled="type == 'detail'"
                     />
                     <a-icon type="question-circle" style="cursor: pointer" @click="openDataSourceQuestionModal" />
                   </a-form-model-item>
@@ -175,7 +176,7 @@
                       :min="0"
                       :max="EmissionFac.dataUnit == '%' ? 1 : 99999999999999999999999999999999999999999999999"
                       placeholder="请输入数据"
-                      :disabled="EmissionFac.dataSource == 'DEFAULT'"
+                      :disabled="EmissionFac.dataSource == 'DEFAULT' && type != 'detail'"
                       style="width: 120px"
                       @change="reConclude"
                     />
@@ -206,6 +207,7 @@
                       :defaultValue="cascaderDefualtValChoose(EmissionFac)"
                       :allowClear="false"
                       style="width: 90%; margin-right: 10px"
+                      :disabled="type == 'detail'"
                     />
                     <a-icon type="question-circle" style="cursor: pointer" @click="openDataSourceQuestionModal" />
                   </a-form-model-item>
@@ -217,7 +219,7 @@
       </div>
     </div>
     <template>
-      <div style="width: 100%; text-align: center">
+      <div style="width: 100%; text-align: center" v-if="type != 'detail'">
         <a-popconfirm
           title="确认将数值来源不是缺省值的参数全置为0?"
           :ok-text="$t('modal.btn.confirm')"
@@ -228,6 +230,9 @@
         </a-popconfirm>
         <a-button key="back" @click="close" style="margin-right: 20px" type="danger"> 不保存关闭 </a-button>
         <a-button key="submit" type="primary" @click="handleOk"> 保存并提交 </a-button>
+      </div>
+      <div style="width: 100%; text-align: center" v-else>
+        <a-button key="back" @click="close" style="margin-right: 20px" type="danger"> 关闭 </a-button>
       </div>
     </template>
   </a-drawer>
@@ -315,6 +320,10 @@ export default {
         this.record = JSON.parse(JSON.stringify(tempREC))
         this.emissionForm = JSON.parse(JSON.stringify(tempREC))
         // console.log(this.record)
+      } else if (editType == 'detail') {
+        this.title = '项目详情'
+        this.record = JSON.parse(JSON.stringify(record))
+        this.emissionForm = JSON.parse(JSON.stringify(record))
       }
     },
     close() {

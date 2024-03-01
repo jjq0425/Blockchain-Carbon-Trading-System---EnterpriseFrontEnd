@@ -47,7 +47,7 @@
       </a-descriptions-item>
     </a-descriptions>
 
-    <a-form :form="form" style="max-width: 500px; margin: 40px auto 0">
+    <a-form :form="form" style="max-width: 500px; margin: 40px auto 0" v-if="submitType != 'detail'">
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol">
         <a-checkbox
           style="font-size: 16px; color: #1890ff"
@@ -85,6 +85,7 @@ import dayjs from 'dayjs'
 import { infoSubmitAuditClass_CN, infoSubmitAuditClass_EN } from '@/config/class/infoSubmitAduitClass'
 export default {
   name: 'Step1',
+  prop: {},
   data() {
     return {
       labelCol: { span: 4 },
@@ -97,6 +98,7 @@ export default {
       // peizhi
       infoSubmitAuditClass_CN: infoSubmitAuditClass_CN,
       infoSubmitAuditClass_EN: infoSubmitAuditClass_EN,
+      submitType: 'create',
     }
   },
   methods: {
@@ -110,6 +112,9 @@ export default {
       } else {
         return this.infoSubmitAuditClass_EN[taskInfoauditStatus]
       }
+    },
+    passSubmitType(submitType) {
+      this.submitType = submitType
     },
   },
   computed: {
