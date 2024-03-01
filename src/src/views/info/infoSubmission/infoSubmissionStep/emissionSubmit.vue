@@ -98,7 +98,7 @@
 
 <script>
 import { GetMainClassName } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/parserTable.js'
-import { template_1 } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/template.js'
+import { template_THS } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/template.js'
 import emissionSubmitTable from './emissionSubmitCompnent/emissionSubmitTable.vue'
 import { ScrollNumber } from 'vue2-scroll-number'
 import store from '@/store'
@@ -117,7 +117,7 @@ export default {
       dataTemplate: null, // 用于存储数据模板
       MainClassName: [],
 
-      submitType: 'creat',
+      submitType: 'create',
 
       // 配置项
       tableSetOptions: [
@@ -142,14 +142,16 @@ export default {
     enterpriseClassName() {
       return this.$store.state.user.info.enterpriseClassName_CN
     },
+    enterpriseClass() {
+      return this.$store.state.user.info.enterpriseClass
+    },
   },
 
   methods: {
     chooseTemplate() {
-      // console.log('t1', template_1.detail[0].children.length)
       // this.$forceUpdate()
 
-      let template = JSON.stringify(template_1)
+      let template = JSON.stringify(template_THS[`template_${this.enterpriseClass}`])
 
       this.dataSource = JSON.parse(template)
       this.dataTemplate = JSON.parse(template)

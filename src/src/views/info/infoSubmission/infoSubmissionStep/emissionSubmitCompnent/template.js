@@ -998,6 +998,8 @@ export const template_Test = {
     ]
 }
 
+
+
 export const template_1 = {
 
     "sumEmission": 0.00, //各个大类的classDataSum的和。企业本年度碳排放量
@@ -2715,3 +2717,13 @@ export const template_1 = {
         }
     ]
 }
+
+
+export const template_THS = {
+    template_1: template_1
+}
+
+
+
+
+

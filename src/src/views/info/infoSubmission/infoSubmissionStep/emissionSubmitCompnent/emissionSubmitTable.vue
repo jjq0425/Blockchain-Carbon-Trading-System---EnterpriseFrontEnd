@@ -109,7 +109,7 @@
 <script>
 import { ConstructColumns } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/parserTable.js'
 import emissionSubmitFormModal from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/emissionSubmitFormModal.vue'
-// import { template_1 } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/template.js'
+
 import {
   infoSubmitTableDataSourceClass_CN,
   infoSubmitTableDataSourceClass_EN,
@@ -165,9 +165,6 @@ export default {
     },
   },
   mounted() {
-    // console.log('11', GetMainClassName(template_1))
-    // console.log(22, ConstructColumns(template_1.detail[0].children))
-    // console.log('33', this.classdata, this.tableSetOptionsChecked)
     this.initTable()
   },
   methods: {
