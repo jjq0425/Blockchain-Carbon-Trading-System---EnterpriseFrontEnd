@@ -44,7 +44,7 @@
             />
           </div>
           <div>
-            企业原剩余碳排放量<span> (tCO₂)</span><span style="font-size: 10px">（未含在本页填报的本年度碳排量）</span>
+            企业原剩余碳排放量<span> (tCO₂)</span><span style="font-size: 10px">（未扣除本页填报的本年度碳排量）</span>
           </div>
         </div>
       </div>

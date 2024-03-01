@@ -300,9 +300,21 @@ export default {
         this.emissionForm = JSON.parse(JSON.stringify(record))
       } else {
         this.title = '新增项目'
-        this.record = JSON.parse(JSON.stringify(record))
-        this.emissionForm = JSON.parse(JSON.stringify(record))
-        console.log(this.record)
+        let tempREC = JSON.parse(JSON.stringify(record))
+        // tempREC.activityFactor的每个元素,defaultVal置为空，defaultValChooseIdx置为-1,dataSource置为'SOURCE'
+        tempREC.activityFactor.forEach((item, index) => {
+          item.defaultVal = ''
+          item.defaultValChooseIdx = -1
+          item.dataSource = 'MEASURE'
+        })
+        tempREC.EmissionFactor.forEach((item, index) => {
+          item.defaultVal = ''
+          item.defaultValChooseIdx = -1
+          item.dataSource = 'MEASURE'
+        })
+        this.record = JSON.parse(JSON.stringify(tempREC))
+        this.emissionForm = JSON.parse(JSON.stringify(tempREC))
+        // console.log(this.record)
       }
     },
     close() {

@@ -20,11 +20,17 @@
         </a-form-model>
       </a-col>
       <a-col :order="1" :md="24" :lg="8" :style="{ minHeight: '180px' }">
-        <div class="ant-upload-preview" @click="$refs.modal.edit(1)">
+        <!-- <div class="ant-upload-preview" @click="$refs.modal.edit(1)">
           <a-icon type="cloud-upload-o" class="upload-icon" />
           <div class="mask">
             <a-icon type="plus" />
           </div>
+          <img :src="option.img" />
+        </div> -->
+
+        <div class="ant-upload-preview">
+          <span class="upload-icon">😀</span>
+
           <img :src="option.img" />
         </div>
       </a-col>
@@ -72,7 +78,7 @@ export default {
     setavatar(url) {
       this.option.img = url
       store.commit('SET_AVATAR', url)
-      console.log('ava', url, store.state.user.avatar)
+      // console.log('ava', url, store.state.user.avatar)
     },
     initForm() {
       this.form.EnterpriseName = store.state.user.name
@@ -102,11 +108,11 @@ export default {
 
   .upload-icon {
     position: absolute;
-    top: 0;
-    right: 10px;
+    top: 125px;
+    right: 0px;
     font-size: 1.4rem;
     padding: 0.5rem;
-    background: rgba(222, 221, 221, 0.7);
+    background: rgba(255, 255, 255, 0.7);
     border-radius: 50%;
     border: 1px solid rgba(0, 0, 0, 0.2);
   }

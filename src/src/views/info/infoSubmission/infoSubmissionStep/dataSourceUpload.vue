@@ -255,6 +255,8 @@ export default {
         callback(new Error('文件类型错误，请上传PDF文件'))
       } else if (value[0].status == 'error') {
         callback(new Error('文件上传失败，请重新上传'))
+      } else if (value[0].status == 'uploading') {
+        callback(new Error(`   `))
       } else {
         callback()
       }
