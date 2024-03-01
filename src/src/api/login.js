@@ -26,6 +26,7 @@ const userApi = {
 
   // get my info
   UserInfo: '/user/info',
+  Register: '/auth/enterpriseRegister',
 
 
 
@@ -34,7 +35,7 @@ const userApi = {
   // 以下无用：
   UserMenu: '/user/nav',
   ForgePassword: '/auth/forge-password',
-  Register: '/auth/register',
+
   twoStepCode: '/auth/2step-code',
   SendSms: '/account/sms',
   SendSmsErr: '/account/sms_err',
@@ -59,15 +60,20 @@ export function login(parameter) {
   })
 }
 export function getInfo(tokens) {
-
-
-
   return request({
     url: userApi.UserInfo,
     method: 'post',
     data: {
       token: localStorage.getItem('ACCESS_TOKEN')
     }
+  })
+}
+
+export function register(parameter) {
+  return request({
+    url: userApi.Register,
+    method: 'post',
+    data: parameter
   })
 }
 

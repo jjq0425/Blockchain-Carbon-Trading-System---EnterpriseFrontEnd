@@ -125,8 +125,8 @@ export default {
       if (downloadType == 'report') {
         window.open(this.submitData.reportPDF)
       } else if (downloadType == 'dataSource') {
-        // window.open(this.submitData.dataSourcePDF)
-        window.open('http://8.137.108.102:8080/download/QmdCk3r2CbeT4F7hqSxoyYE6Hp4xAiu5VL5eqsMt9u6hCQ')
+        window.open(this.submitData.dataSourcePDF)
+        // window.open('http://8.137.108.102:8080/download/QmdCk3r2CbeT4F7hqSxoyYE6Hp4xAiu5VL5eqsMt9u6hCQ')
       }
     },
   },

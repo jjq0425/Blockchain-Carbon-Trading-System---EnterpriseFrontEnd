@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 export default {
   'user.login.userName': '用户名',
@@ -16,8 +21,9 @@ export default {
   'user.login.signup': '注册企业账户',
   'user.login.login': '企业登录',
   'user.login.gotoSuperviser': '前往监管端',
-  'user.register.register': '企业注册',
+  'user.register.register': '企业用户注册',
   'user.register.email.placeholder': '邮箱',
+  'user.register.userName.placeholder': '企业负责人电话',
   'user.register.password.placeholder': '请至少输入 6 个字符。请不要使用简单的密码。',
   'user.register.password.popover-message': '请至少输入 6 个字符。请不要使用简单的密码。',
   'user.register.confirm-password.placeholder': '确认密码',
@@ -30,7 +36,7 @@ export default {
   'user.register-result.view-mailbox': '查看邮箱',
   'user.email.required': '请输入邮箱地址！',
   'user.email.wrong-format': '邮箱地址格式错误！',
-  'user.userName.required': '请输入帐户名',
+  'user.userName.required': '请输入企业账号',
   'user.password.required': '请输入密码！',
   'user.password.twice.msg': '两次输入的密码不匹配!',
   'user.password.strength.msg': '密码强度不够 ',

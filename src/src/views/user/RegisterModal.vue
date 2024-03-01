@@ -1,3 +1,8 @@
+<!--
+ * @Author: jjq
+ * @Description: 
+ * 
+-->
 <template>
   <a-modal class="main user-layout-register" :visible="visible" :footer="null" @cancel="closeModal()">
     <h3>
@@ -8,12 +13,12 @@
         <a-input
           size="large"
           type="text"
-          :placeholder="$t('user.register.email.placeholder')"
+          :placeholder="$t('user.register.userName.placeholder')"
           v-decorator="[
-            'email',
+            'userName',
             {
-              rules: [{ required: true, type: 'email', message: $t('user.email.required') }],
-              validateTrigger: ['change', 'blur'],
+              rules: [{ validator: validateUsername, trigger: ['blur'] }],
+              validateTrigger: ['blur'],
             },
           ]"
         ></a-input>
@@ -70,7 +75,7 @@
         ></a-input-password>
       </a-form-item>
 
-      <a-form-item>
+      <!-- <a-form-item>
         <a-input
           size="large"
           :placeholder="$t('user.login.mobile.placeholder')"
@@ -87,11 +92,11 @@
         >
           <a-select slot="addonBefore" size="large" defaultValue="+86">
             <a-select-option value="+86">+86</a-select-option>
-            <!-- <a-select-option value="+1">+1</a-select-option>
-              <a-select-option value="+44">+44</a-select-option> -->
+            <a-select-option value="+1">+1</a-select-option>
+              <a-select-option value="+44">+44</a-select-option>
           </a-select>
         </a-input>
-      </a-form-item>
+      </a-form-item> -->
       <!--<a-input-group size="large" compact>
               <a-select style="width: 20%" size="large" defaultValue="+86">
                 <a-select-option value="+86">+86</a-select-option>
@@ -100,7 +105,7 @@
               <a-input style="width: 80%" size="large" placeholder="11 位手机号"></a-input>
             </a-input-group>-->
 
-      <a-row :gutter="16">
+      <!-- <a-row :gutter="16">
         <a-col class="gutter-row" :span="16">
           <a-form-item>
             <a-input
@@ -125,7 +130,7 @@
             v-text="(!state.smsSendBtn && $t('user.register.get-verification-code')) || state.time + ' s'"
           ></a-button>
         </a-col>
-      </a-row>
+      </a-row> -->
 
       <a-form-item>
         <a-button
@@ -138,14 +143,16 @@
           :disabled="registerBtn"
           >{{ $t('user.register.register') }}
         </a-button>
-        <router-link class="login" :to="{ name: 'login' }">{{ $t('user.register.sign-in') }}</router-link>
+        <span class="login" @click="() => (visible = false)" style="color: #1890ff; cursor: pointer">{{
+          $t('user.register.sign-in')
+        }}</span>
       </a-form-item>
     </a-form>
   </a-modal>
 </template>
   
   <script>
-import { getSmsCaptcha } from '@/api/login'
+import { register, getSmsCaptcha } from '@/api/login'
 import { deviceMixin } from '@/store/device-mixin'
 import { scorePassword } from '@/utils/util'
 
@@ -175,6 +182,7 @@ export default {
     return {
       form: this.$form.createForm(this),
       visible: false,
+
       state: {
         time: 60,
         level: 0,
@@ -199,6 +207,18 @@ export default {
     },
   },
   methods: {
+    testPhone(value) {
+      return /^1[3456789]\d{9}$/.test(value)
+    },
+    validateUsername(rule, value, callback) {
+      if (!value) {
+        callback(new Error(this.$t('user.userName.required')))
+      } else if (!this.testPhone(value)) {
+        callback(new Error(this.$t('user.phone-number.required')))
+      } else {
+        callback()
+      }
+    },
     /**
      * 打开注册弹窗
      */
@@ -209,6 +229,10 @@ export default {
      * 关闭注册弹窗
      */
     closeModal() {
+      if (this.registerBtn) {
+        return false
+      }
+      this.form.resetFields()
       this.visible = false
     },
     handlePasswordLevel(rule, value, callback) {
@@ -265,6 +289,7 @@ export default {
     },
 
     handleSubmit() {
+      this.registerBtn = true
       const {
         form: { validateFields },
         state,
@@ -273,7 +298,29 @@ export default {
       validateFields({ force: true }, (err, values) => {
         if (!err) {
           state.passwordLevelChecked = false
-          $router.push({ name: 'registerResult', params: { ...values } })
+          //
+          // console.log('haha')
+          let para = {
+            userName: this.form.getFieldsValue().userName,
+            userPwd: this.form.getFieldsValue().password,
+          }
+          console.log()
+          register(para)
+            .then((res) => {
+              this.registerBtn = false
+              if (res.success) {
+                this.$message.success('注册成功:' + this.form.getFieldsValue().userName)
+                this.closeModal()
+              } else {
+                this.$message.error(res.message)
+              }
+            })
+            .catch((res) => {
+              this.$message.error(res.message)
+              this.registerBtn = false
+            })
+        } else {
+          this.registerBtn = false
         }
       })
     },

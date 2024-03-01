@@ -28,6 +28,7 @@ export default {
   'user.login.gotoSuperviser': 'Supervise site',
   'user.register.register': 'Register',
   'user.register.email.placeholder': 'Email',
+  'user.register.userName.placeholder': 'Enterprise account',
   'user.register.password.placeholder': 'Password ',
   'user.register.password.popover-message': 'Please enter at least 6 characters. Please do not use passwords that are easy to guess. ',
   'user.register.confirm-password.placeholder': 'Confirm password',
