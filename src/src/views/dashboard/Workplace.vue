@@ -242,6 +242,7 @@ export default {
     // })
   },
   mounted() {
+    this.checkUserHasBind()
     ChangeBgCSS('')
     this.getProjects()
     this.getActivity()
@@ -249,6 +250,11 @@ export default {
     this.initRadar()
   },
   methods: {
+    checkUserHasBind() {
+      if (this.userInfo.BindStatus != 'PASS') {
+        this.$router.push({ path: '/bind' })
+      }
+    },
     getProjects() {
       // this.$http.get('/list/search/projects').then((res) => {
       //   this.projects = res.data && res.data.data

@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 import request from '@/utils/request'
 
@@ -17,7 +22,8 @@ let token = storage.get(ACCESS_TOKEN)
 const infoApi = {
     TaskList: '/info/enterpriseTaskList',
     TaskSubmit: '/info/submission',
-    GetReport: '/public/enterpriseReport'
+    GetReport: '/public/enterpriseReport',
+    Bind: '/user/enterpriseInfoBind'
 }
 
 /**
@@ -62,6 +68,17 @@ export function GetReport(parameter) {
             enterpriseID: parameter.enterpriseID,
             taskYear: parameter.taskYear,
 
+        }
+    })
+}
+
+export function Bind(parameter) {
+    return request({
+        url: infoApi.Bind,
+        method: 'post',
+        data: {
+            token: token,
+            ...parameter
         }
     })
 }

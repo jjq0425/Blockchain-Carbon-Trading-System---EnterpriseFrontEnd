@@ -304,7 +304,7 @@ export default {
             userName: this.form.getFieldsValue().userName,
             userPwd: this.form.getFieldsValue().password,
           }
-          console.log()
+          // console.log()
           register(para)
             .then((res) => {
               this.registerBtn = false

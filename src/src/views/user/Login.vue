@@ -418,7 +418,7 @@ export default {
       })
       */
       setTimeout(() => {
-        this.$router.push({ path: '/' })
+        this.$router.push({ name: 'index' })
         // 延迟 1 秒显示欢迎信息
         if (this.$store.state.app.lang.includes('zh')) {
           setTimeout(() => {

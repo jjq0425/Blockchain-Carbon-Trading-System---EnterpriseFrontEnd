@@ -4,6 +4,7 @@ import { login, getInfo, logout } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 import { enterpriseClassName_CN, enterpriseClassName_EN } from '@/config/class/enterpriseClass'
+import router from '@/router/index'
 
 storage.addPlugin(expirePlugin)
 const user = {
@@ -61,11 +62,13 @@ const user = {
 
       return new Promise((resolve, reject) => {
         // 请求后端获取用户信息 /api/user/info
+
         getInfo(user.state.token).then(response => {
 
           // const { result } = response
           const result = response.data || response.result
-          //TODO:如果审核未通过或初次绑定未绑定信息需要处理
+
+
 
           if (result.role == null || result.role == undefined) {
             result.role =
@@ -101,10 +104,11 @@ const user = {
             // console.log("User.js>>ROLE", role, result)
             result.enterpriseClassName_CN = enterpriseClassName_CN[result.enterpriseClass]
             result.enterpriseClassName_EN = enterpriseClassName_EN[result.enterpriseClass]
+            result.BindStatus = 'PASS'
 
             commit('SET_ROLES', role)
             commit('SET_INFO', result)
-            console.log(result)
+
             commit('SET_NAME', { name: result.name, welcome: welcome() })
             // commit('SET_AVATAR', result.avatar)
             // 设置头像--关闭
@@ -119,9 +123,61 @@ const user = {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
         }).catch(error => {
-          //TODO:如果审核未通过或初次绑定未绑定信息需要处理，返回404
+          if (error.response && error.response?.data?.success == false) {
 
-          reject(error)
+            let result = error.response.data
+            if (result.role == null || result.role == undefined) {
+              result.role =
+              {
+                permissions: [
+                  {
+                    permissionId: "trade"
+                  }
+                ]
+              }
+
+            }
+
+            if (result.role && result.role.permissions.length > 0) {
+
+              const role = { ...result.role }
+              role.permissions = result.role.permissions.map(permission => {
+                const per = {
+                  ...permission,
+                  actionList: (permission.actionEntitySet == null ? [] : permission.actionEntitySet).map(item => item.action)
+                }
+                return per
+              })
+              role.permissionList = role.permissions.map(permission => { return permission.permissionId })
+              // 覆盖响应体的 role, 供下游使用
+              result.role = role
+              if (result.avatar == null) {
+                result.avatar = 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png'
+              }
+              if (result.name == null) {
+                result.name = ''
+              }
+              // console.log("User.js>>ROLE", role, result)
+              result.enterpriseClassName_CN = enterpriseClassName_CN[result.enterpriseClass]
+              result.enterpriseClassName_EN = enterpriseClassName_EN[result.enterpriseClass]
+              result.BindStatus = error.response?.data?.data?.auditStatus
+
+              commit('SET_ROLES', role)
+              commit('SET_INFO', result)
+
+              commit('SET_NAME', { name: result.name, welcome: welcome() })
+              // commit('SET_AVATAR', result.avatar)
+              // 设置头像--关闭
+              commit('SET_AVATAR', result.avatar)
+
+            }
+            resolve(result)
+          }
+          else {
+            reject(error)
+          }
+
+
         })
       })
     },

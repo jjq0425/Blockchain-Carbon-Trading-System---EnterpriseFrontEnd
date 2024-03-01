@@ -35,12 +35,21 @@ router.beforeEach((to, from, next) => {
   //   token = storage.state.user.token
   // }
 
+
+
   if (token) {
     if (to.path === loginRoutePath) {
 
       next()
       NProgress.done()
-    } else {
+    } else if (to.path === '/bind') {
+      next()
+      NProgress.done()
+
+    }
+    else {
+
+
       // check login user.roles is null
 
       if (store.getters.roles.length === 0) {
@@ -50,6 +59,8 @@ router.beforeEach((to, from, next) => {
           .dispatch('GetInfo')
           .then(res => {
             console.log('res', res)
+
+
             // 根据用户权限信息生成可访问的路由表
             store.dispatch('GenerateRoutes', { token, ...res }).then(() => {
               // 动态添加可访问路由表
@@ -69,7 +80,7 @@ router.beforeEach((to, from, next) => {
               }
             })
           })
-          .catch(() => {
+          .catch((err) => {
             notification.error({
               message: '错误',
               description: '请求用户信息失败，请重试'
@@ -81,8 +92,14 @@ router.beforeEach((to, from, next) => {
             })
           })
       } else {
+        if (store.state.user.info.BindStatus !== 'PASS') {
+          console.log("bind")
+          next({ path: '/bind' })
+        } else {
+          next()
+        }
 
-        next()
+
       }
     }
   } else {
