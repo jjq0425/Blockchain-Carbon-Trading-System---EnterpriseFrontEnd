@@ -58,27 +58,27 @@
                 <div>
                   {{ $t('info.submissionCenter.taskEndTime') }}：{{ momentFormat(task.taskBeginTime, 'YYYY-MM-DD') }}
                 </div>
-                <template v-if="task.isBegin">
-                  <div v-if="lang.includes('zh-CN')">
+
+                <!-- <div v-if="lang.includes('zh-CN')">
                     {{ $t('info.submissionCenter.taskStatus') }}：{{ infoSubmitAuditClass_CN[task.auditStatus] }}
                   </div>
                   <div v-else>
                     {{ $t('info.submissionCenter.taskStatus') }}：{{ infoSubmitAuditClass_EN[task.auditStatus] }}
-                  </div>
-                </template>
-                <template v-else>
-                  <div v-if="lang.includes('zh-CN')">
-                    {{ $t('info.submissionCenter.taskStatus') }}：未到开始填报时间
-                  </div>
-                  <div v-else>{{ $t('info.submissionCenter.taskStatus') }}：Not yet at the start time</div>
-                </template>
+                  </div> -->
+
+                <a-badge
+                  :status="task | auditStatusStatus"
+                  :text="task | auditStatusText"
+                  style="padding: 5px 15px; margin-top: 10px; border-radius: 9999px"
+                  :style="{ background: auditStatusStyle(task) }"
+                />
               </div>
 
               <img
-                v-if="task.isBegin"
+                v-if="!(task.isBegin == false || (task.isEnd == true && task.auditStatus == 'WAIT'))"
                 class="info-submission-task-card-arrow animate__animated"
                 src="@/assets/pages/info/infoSubmissionCenter/dataSubmissionTaskArrow.png"
-                style="position: relative; z-index: 1; transform: scale(0.5); width: 70px"
+                style="position: relative; z-index: 1; transform: scale(0.5); width: 90px"
               />
             </div>
           </div>
@@ -202,6 +202,15 @@
       </template>
       <p>{{ $t('info.submissionCenter.taskNotBegin') }}</p>
     </a-modal>
+
+    <a-modal v-model="HASEndMoal.visible" :title="$t('modal.notice.title')">
+      <template slot="footer">
+        <a-button key="ok" type="primary" @click="() => (HASEndMoal.visible = false)">
+          {{ $t('modal.btn.ok2') }}
+        </a-button>
+      </template>
+      <p>{{ $t('info.submissionCenter.taskHasEnd') }}</p>
+    </a-modal>
   </page-header-wrapper>
 </template>
   
@@ -212,6 +221,7 @@ import ChangeBgCSS from '../../../utils/ChangeBgCSS'
 import store from '@/store'
 import { GetTaskList } from '@/api/info'
 import { infoSubmitAuditClass_CN, infoSubmitAuditClass_EN } from '@/config/class/infoSubmitAduitClass'
+
 import dayjs from 'dayjs'
 
 export default {
@@ -232,11 +242,50 @@ export default {
       NotBeginMoal: {
         visible: false,
       },
+      HASEndMoal: {
+        visible: false,
+      },
     }
   },
   computed: {
     lang() {
       return store.state.app.lang
+    },
+  },
+  filters: {
+    auditStatusStatus(task) {
+      if (task.isBegin == false || (task.isEnd == true && task.auditStatus == 'WAIT')) {
+        return 'default'
+      }
+      if (task.auditStatus == 'WAIT') {
+        return 'processing'
+      } else if (task.auditStatus == 'PASS') {
+        return 'success'
+      } else if (task.auditStatus == 'REFUSE') {
+        return 'error'
+      } else if (task.auditStatus == 'AUDIT') {
+        return 'warning'
+      } else {
+        return 'default'
+      }
+    },
+
+    auditStatusText(task) {
+      if (store.state.app.lang.includes('zh')) {
+        if (task.isBegin == false) {
+          return '未开始'
+        } else if (task.isEnd == true && task.auditStatus == 'WAIT') {
+          return '已结束'
+        }
+        return infoSubmitAuditClass_CN[task.auditStatus]
+      } else {
+        if (task.isBegin == false) {
+          return 'Not Started'
+        } else if (task.isEnd == true && task.auditStatus == 'WAIT') {
+          return 'Has End'
+        }
+        return infoSubmitAuditClass_EN[task.auditStatus]
+      }
     },
   },
   mounted() {
@@ -248,6 +297,7 @@ export default {
           this.momentFormat(this.getTodayTimeStamp()),
           this.momentFormat(item.taskBeginTime)
         )
+        item.isEnd = this.DayAafterB(this.momentFormat(this.getTodayTimeStamp()), this.momentFormat(item.taskEndTime))
         // console.log(item.isBegin, this.momentFormat(this.getTodayTimeStamp()), this.momentFormat(item.taskBeginTime))
       })
       this.taskList = taskList
@@ -255,6 +305,22 @@ export default {
     })
   },
   methods: {
+    auditStatusStyle(task) {
+      if (task.isBegin == false || (task.isEnd == true && task.auditStatus == 'WAIT')) {
+        return 'rgba(217, 217, 217,0.2)'
+      }
+      if (task.auditStatus == 'WAIT') {
+        return 'rgba(24, 144, 255,0.1)'
+      } else if (task.auditStatus == 'PASS') {
+        return 'rgba(82, 196, 26,0.1)'
+      } else if (task.auditStatus == 'REFUSE') {
+        return 'rgba(245, 34, 45,0.1)'
+      } else if (task.auditStatus == 'AUDIT') {
+        return 'rgba(250, 173, 20,0.1)'
+      } else {
+        return 'rgba(217, 217, 217,0.1)'
+      }
+    },
     CardBgCalculate(idx) {
       const bgStr = [
         // `linear-gradient(135deg,#ce9ffc,#7367f0)`,
@@ -276,6 +342,8 @@ export default {
               task: task,
             },
           })
+        } else if (task.isEnd == true && task.auditStatus == 'WAIT') {
+          this.HASEndMoal.visible = true
         } else {
           this.$router.push({
             name: 'InfoSubmission',
@@ -304,6 +372,9 @@ export default {
     },
     DayAafterOrSameB(date1, date2) {
       return dayjs(date1).isAfter(dayjs(date2), 'day') || dayjs(date1).isSame(dayjs(date2), 'day')
+    },
+    DayAafterB(date1, date2) {
+      return dayjs(date1).isAfter(dayjs(date2), 'day')
     },
   },
 }

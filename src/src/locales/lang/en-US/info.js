@@ -9,6 +9,9 @@ export default {
     'info.submissionCenter.notask': 'There are currently no submission tasks',
     'info.submissionCenter.taskLoading': 'Submitting task loading',
     'info.submissionCenter.taskNotBegin': 'The submission task has not yet been initiated, please be patient and wait for further instructions. During this period, it is recommended that you make full use of your time to read and understand the specific requirements in the filling out guide, and prepare the materials well.',
+    'info.submissionCenter.taskHasEnd': 'The submission task has been completed and you have not filled it out. Please contact the administrator to grant access for supplementary filling. Please pay attention to filling out the form in a timely manner. Any losses caused by forgetting to fill out the form will be borne by the company itself!',
+
+
     // infoSubmission
     'info.infoSubmission.title': 'Please prepare the relevant materials according to the filling guidelines, fill out and submit the enterprise\'s carbon emission data. The system will automatically perform data verification to ensure the accuracy and completeness of the submitted data. Please fill in the form carefully according to the requirements and work together to promote carbon neutrality!',
 

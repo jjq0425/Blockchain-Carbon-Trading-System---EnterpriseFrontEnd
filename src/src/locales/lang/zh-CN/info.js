@@ -15,6 +15,7 @@ export default {
     'info.submissionCenter.notask': '暂无报送任务',
     'info.submissionCenter.taskLoading': '报送任务加载中',
     'info.submissionCenter.taskNotBegin': '报送任务目前尚未启动，请耐心等待进一步的指令。在此期间，建议您充分利用时间阅读并理解填报指南中的具体要求，做好材料准备。',
+    'info.submissionCenter.taskHasEnd': '该报送任务已经结束，您未填报。请联系管理员开放权限进行补填报。请您注意及时填报，因忘记填报造成的损失由企业自行承担！',
     // 任务填报
     'info.infoSubmission.title': '请按照填报指南要求，准备好相关材料，填写并提交企业碳排放数据。系统将自动进行数据校验，确保报送数据的准确性和完整性。请用户按照要求认真填写，共同助力碳中和！',
 

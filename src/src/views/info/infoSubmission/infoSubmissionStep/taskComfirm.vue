@@ -40,7 +40,15 @@
       <a-descriptions-item label="填报截止">
         {{ momentFormat(taskInfo.taskEndTime) + ' 23:59:59' }}
       </a-descriptions-item>
-      <a-descriptions-item label="填报状态"> {{ this.audtiStatusStr(taskInfo.auditStatus) }} </a-descriptions-item>
+      <!-- <a-descriptions-item label="填报状态"> {{ this.audtiStatusStr(taskInfo.auditStatus) }} </a-descriptions-item> -->
+      <a-descriptions-item label="填报状态">
+        <a-badge
+          :status="auditStatusStatus(taskInfo.auditStatus)"
+          :text="auditStatusText(taskInfo.auditStatus)"
+          style="padding: 5px 15px; margin-top: 10px; border-radius: 9999px"
+          :style="{ background: auditStatusStyle(taskInfo.auditStatus) }"
+        />
+      </a-descriptions-item>
 
       <a-descriptions-item label="填报描述" :span="3">
         {{ taskInfo.taskDescription }}
@@ -82,6 +90,7 @@
   
   <script>
 import dayjs from 'dayjs'
+import store from '@/store'
 import { infoSubmitAuditClass_CN, infoSubmitAuditClass_EN } from '@/config/class/infoSubmitAduitClass'
 export default {
   name: 'Step1',
@@ -101,7 +110,43 @@ export default {
       submitType: 'create',
     }
   },
+  filters: {},
+
   methods: {
+    auditStatusStatus(task) {
+      if (task == 'WAIT') {
+        return 'processing'
+      } else if (task == 'PASS') {
+        return 'success'
+      } else if (task == 'REFUSE') {
+        return 'error'
+      } else if (task == 'AUDIT') {
+        return 'warning'
+      } else {
+        return 'default'
+      }
+    },
+
+    auditStatusText(task) {
+      if (store.state.app.lang.includes('zh')) {
+        return infoSubmitAuditClass_CN[task]
+      } else {
+        return infoSubmitAuditClass_EN[task]
+      }
+    },
+    auditStatusStyle(task) {
+      if (task == 'WAIT') {
+        return 'rgba(24, 144, 255,0.1)'
+      } else if (task == 'PASS') {
+        return 'rgba(82, 196, 26,0.1)'
+      } else if (task == 'REFUSE') {
+        return 'rgba(245, 34, 45,0.1)'
+      } else if (task == 'AUDIT') {
+        return 'rgba(250, 173, 20,0.1)'
+      } else {
+        return 'rgba(217, 217, 217,0.1)'
+      }
+    },
     momentFormat(date, format = 'YYYY-MM-DD') {
       date = parseInt(date) * 1000
       return dayjs(date).format(format)
