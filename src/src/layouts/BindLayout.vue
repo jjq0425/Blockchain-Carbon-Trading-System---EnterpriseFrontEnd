@@ -39,7 +39,7 @@
                     right: 10px;
                   "
                 >
-                  请绑定企业信息
+                  👋请绑定企业信息
                 </div>
                 <a-alert
                   message="您的绑定信息被审核驳回，请根据审核要求认真重新填写提交信息，感谢您的配合"
@@ -116,8 +116,15 @@
                         placeholder="请选择"
                         style="min-width: 180px"
                       >
-                        <a-select-option value="1"> 发电 </a-select-option>
-                        <a-select-option value="10" disabled> 民航 </a-select-option>
+                        <!-- <a-select-option value="1"> 发电 </a-select-option>
+                        <a-select-option value="10" disabled> 民航 </a-select-option> -->
+                        <template v-for="(item, index) in enterpriseClassNameOptions">
+                          <template v-if="enterpriseClassAllowed.includes(index + 1)"
+                            ><a-select-option :value="(index + 1).toString()" :key="(index + 1).toString()">
+                              {{ item }}
+                            </a-select-option>
+                          </template>
+                        </template>
                       </a-select>
                       <div style="font-size: 10px; font-weight: bold; color: grey">
                         不同行业对应碳排放报告内容不同，请务必选择正确。
@@ -237,7 +244,7 @@
                     right: 10px;
                   "
                 >
-                  绑定信息审核中...
+                  👋绑定信息审核中...
                 </div>
               </div>
             </div>
@@ -264,6 +271,8 @@ import NetworkSetting from '@/components/GlobalHeader/NetworkSetting.vue'
 import store from '@/store'
 import { Bind } from '@/api/login'
 
+import { enterpriseClassName_CN, enterpriseClassName_EN, enterpriseClassAllowed } from '@/config/class/enterpriseClass'
+
 export default {
   name: 'BindLayout',
   components: {
@@ -276,6 +285,12 @@ export default {
       form: this.$form.createForm(this, { name: 'coordinated' }),
       bindloading: false,
       bindAudit: false,
+
+      enterpriseClassNameOptions: [],
+
+      enterpriseClassName_CN: enterpriseClassName_CN,
+      enterpriseClassName_EN: enterpriseClassName_EN,
+      enterpriseClassAllowed: enterpriseClassAllowed,
     }
   },
   mixins: [deviceMixin],
@@ -283,6 +298,17 @@ export default {
     BindStatus() {
       return this.$store.state.user.info.BindStatus
     },
+    lang() {
+      return this.$store.state.app.lang
+    },
+  },
+  created() {
+    if (this.lang.includes('zh')) {
+      this.enterpriseClassNameOptions = Object.entries(this.enterpriseClassName_CN).map((entry) => entry[1])
+    } else {
+      this.enterpriseClassNameOptions = Object.entries(this.enterpriseClassName_EN).map((entry) => entry[1])
+    }
+    console.log(this.enterpriseClassNameOptions)
   },
   methods: {
     backToLogin() {
@@ -367,6 +393,7 @@ export default {
     min-height: 100%;
     background: #f7f9fe url(~@/assets/background.svg) no-repeat 50%;
     background: #4e73df url(~@/assets/background.svg) no-repeat 50%;
+    background: url(~@/assets/bg_bind);
     background-size: 100%;
     //padding: 50px 0 84px;
     position: relative;

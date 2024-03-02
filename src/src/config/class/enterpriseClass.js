@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 const enterpriseClassName_CN = {
     1: '发电',
@@ -23,10 +28,13 @@ const enterpriseClassName_EN = {
     7: "Flat glass",
     8: "Cement",
     9: "Ceramic",
-    10: "aviation",
+    10: "Aviation",
 
 }
+
+const enterpriseClassAllowed = [1, 10]
 export {
     enterpriseClassName_CN,
-    enterpriseClassName_EN
+    enterpriseClassName_EN,
+    enterpriseClassAllowed
 }

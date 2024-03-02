@@ -23,8 +23,13 @@
 
           <a-form-model-item label="企业所在行业" prop="enterpriseClass">
             <a-select placeholder="请选择" style="min-width: 180px" v-model="form.enterpriseClass">
-              <a-select-option value="1" key="1"> 发电 </a-select-option>
-              <a-select-option value="10" key="10" disabled> 民航 </a-select-option>
+              <template v-for="(item, index) in enterpriseClassNameOptions">
+                <template v-if="enterpriseClassAllowed.includes(index + 1)"
+                  ><a-select-option :value="(index + 1).toString()" :key="(index + 1).toString()">
+                    {{ item }}
+                  </a-select-option>
+                </template>
+              </template>
             </a-select>
             <div style="font-size: 10px; font-weight: bold; color: grey">
               不同行业对应碳排放报告内容不同，请务必选择正确。
@@ -96,6 +101,7 @@ import AvatarModal from './AvatarModal'
 import { baseMixin } from '@/store/app-mixin'
 import store from '@/store'
 import { infoSet } from '@/api/login'
+import { enterpriseClassName_CN, enterpriseClassName_EN, enterpriseClassAllowed } from '@/config/class/enterpriseClass'
 
 export default {
   mixins: [baseMixin],
@@ -135,7 +141,26 @@ export default {
         ],
       },
       submitLoading: false,
+
+      enterpriseClassNameOptions: [],
+
+      enterpriseClassName_CN: enterpriseClassName_CN,
+      enterpriseClassName_EN: enterpriseClassName_EN,
+      enterpriseClassAllowed: enterpriseClassAllowed,
     }
+  },
+  computed: {
+    lang() {
+      return this.$store.state.app.lang
+    },
+  },
+  created() {
+    if (this.lang.includes('zh')) {
+      this.enterpriseClassNameOptions = Object.entries(this.enterpriseClassName_CN).map((entry) => entry[1])
+    } else {
+      this.enterpriseClassNameOptions = Object.entries(this.enterpriseClassName_EN).map((entry) => entry[1])
+    }
+    console.log(this.enterpriseClassNameOptions)
   },
   methods: {
     setavatar(url) {
