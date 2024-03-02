@@ -76,7 +76,7 @@ export function Bind(parameter) {
     url: userApi.Bind,
     method: 'post',
     data: {
-      token: token,
+      token: localStorage.getItem('ACCESS_TOKEN'),
       ...parameter
     }
   })
@@ -88,7 +88,7 @@ export function infoSet(parameter) {
     url: userApi.InfoSet,
     method: 'post',
     data: {
-      token: token,
+      token: localStorage.getItem('ACCESS_TOKEN'),
       enterpriseCharacter:
         parameter.enterpriseCharacter,
       enterpriseClass:
