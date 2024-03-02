@@ -962,7 +962,7 @@ export default {
             if (TableHeaerIdx <= TableRowAndColCalcu.A_Column[mainClass]) {
               if (TableHeaerIdx == 0) {
                 TableHeaer.push({
-                  content: `${mainClasData.children[0].activityFactor[TableHeaerIdx].dataName}`,
+                  content: `数据`,
                   styles: { halign: 'center', valign: 'middle' },
                 })
                 if (hasSource) {
@@ -1243,7 +1243,7 @@ export default {
             if (TableHeaerIdx <= TableRowAndColCalcu.E_Column[mainClass]) {
               if (TableHeaerIdx == 0) {
                 TableHeaer.push({
-                  content: `${mainClasData.children[0].EmissionFactor[TableHeaerIdx].dataName} `,
+                  content: `数据`,
                   styles: { halign: 'center', valign: 'middle' },
                 })
                 if (hasSource) {
