@@ -55,7 +55,8 @@
   
 <script>
 import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
+import { autoTable } from 'jspdf-autotable-extra'
+// import  autoTable  from 'jspdf-autotable'
 import dayjs from 'dayjs'
 
 import { enterpriseClassName_CN } from '@/config/class/enterpriseClass.js'
@@ -944,6 +945,7 @@ export default {
               TableHeaer.push({
                 content: '',
                 styles: { halign: 'center', valign: 'middle' },
+                rowSpan: 2,
               })
               // unitRow.push({
               //   content: ``,
@@ -1123,10 +1125,15 @@ export default {
         TableBigBody = [...TableBigBody, ...TableBody]
       }
       // console.log(TableBigBody)
-      let header = JSON.parse(JSON.stringify(TableBigBody[0]))
-      for (let i = 0; i < header.length; i++) {
-        header[i].rowSpan = 1
-      }
+      // let header = JSON.parse(JSON.stringify(TableBigBody[0]))
+      let header = []
+      header.push({
+        content: `活动水平${hasSource ? '及数据来源' : ''}`,
+        styles: { halign: 'center', valign: 'middle' },
+        colSpan: TableBigBody[0].length,
+      })
+      console.log(header, TableBigBody)
+
       autoTable(JSPDF_para.doc, {
         startY: JSPDF_para.yPos + 1,
         head: [
@@ -1148,15 +1155,15 @@ export default {
         },
         headStyles: {
           font: 'HYYunHei-45W', //字体
-          fontStyle: 'normal', //字体样式
-          fontSize: 0.01,
+          //   fontStyle: 'normal', //字体样式
+          fontSize: 12,
 
           valign: 'middle',
-          lineWidth: 0,
+          lineWidth: 0.1,
           fillColor: [255, 255, 255],
-          color: [255, 255, 255],
-          textColor: [255, 255, 255],
-          lineColor: [255, 255, 255],
+          color: [0, 0, 0],
+          textColor: [0, 0, 0],
+          lineColor: [0, 0, 0],
         },
 
         cellStyles: {
@@ -1219,6 +1226,7 @@ export default {
               TableHeaer.push({
                 content: '',
                 styles: { halign: 'center', valign: 'middle' },
+                rowSpan: 2,
               })
               // unitRow.push({
               //   content: ``,
@@ -1398,10 +1406,16 @@ export default {
         TableBigBody = [...TableBigBody, ...TableBody]
       }
       // console.log(TableBigBody)
-      let header = JSON.parse(JSON.stringify(TableBigBody[0]))
-      for (let i = 0; i < header.length; i++) {
-        header[i].rowSpan = 1
-      }
+      // let header = JSON.parse(JSON.stringify(TableBigBody[0]))
+      // for (let i = 0; i < header.length; i++) {
+      //   header[i].rowSpan = 1
+      // }
+      let header = []
+      header.push({
+        content: `排放因子${hasSource ? '及数据来源' : ''}`,
+        styles: { halign: 'center', valign: 'middle' },
+        colSpan: TableBigBody[0].length,
+      })
       autoTable(JSPDF_para.doc, {
         startY: JSPDF_para.yPos + 1,
         head: [
@@ -1423,15 +1437,15 @@ export default {
         },
         headStyles: {
           font: 'HYYunHei-45W', //字体
-          fontStyle: 'normal', //字体样式
-          fontSize: 0.01,
+          //   fontStyle: 'normal', //字体样式
+          fontSize: 12,
 
           valign: 'middle',
-          lineWidth: 0,
+          lineWidth: 0.1,
           fillColor: [255, 255, 255],
-          color: [255, 255, 255],
-          textColor: [255, 255, 255],
-          lineColor: [255, 255, 255],
+          color: [0, 0, 0],
+          textColor: [0, 0, 0],
+          lineColor: [0, 0, 0],
         },
 
         cellStyles: {

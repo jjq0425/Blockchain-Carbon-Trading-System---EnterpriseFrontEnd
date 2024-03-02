@@ -55,7 +55,7 @@
   
 <script>
 import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
+import { autoTable } from 'jspdf-autotable-extra'
 export default {
   components: {},
   data() {

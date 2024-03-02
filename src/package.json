@@ -23,7 +23,7 @@
     "dayjs": "^1.11.10",
     "enquire.js": "^2.1.6",
     "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.8.2",
+    "jspdf-autotable-extra": "https://github.com/trung37/jsPDF-AutoTable.git",
     "lodash.clonedeep": "^4.5.0",
     "lodash.get": "^4.4.2",
     "lodash.pick": "^4.4.0",

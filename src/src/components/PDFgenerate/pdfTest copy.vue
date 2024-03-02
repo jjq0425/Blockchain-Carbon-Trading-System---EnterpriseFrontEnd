@@ -59,7 +59,7 @@
 // require('@/assets/fonts/simheibd-normal')
 // require('@/assets/fonts/HYYunHei-45W-normal')
 import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
+import { autoTable } from 'jspdf-autotable-extra'
 export default {
   components: {},
   data() {
