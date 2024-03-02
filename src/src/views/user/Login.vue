@@ -288,6 +288,8 @@ export default {
         password: 'mxhvuqxlf',
       })
     })
+    // 设置全局禁止滚动
+    document.body.style.overflow = ''
   },
   methods: {
     ChangeLanguage() {

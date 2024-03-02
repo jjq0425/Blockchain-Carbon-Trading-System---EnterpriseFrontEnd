@@ -1,9 +1,17 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 export default {
-  'account.settings.menuMap.basic': '基本设置',
+  'account.settings.header.title': '在此页面，您可以细致配置公司信息，包括企业企业基本资料、详细信息等，以满足您的个性化需求。助您打造一个高效、协同的工作环境，从而提升碳排放企业管理效能。',
+  'account.settings.menuMap.basic': '企业基本信息',
+  'account.settings.menuMap.more': '企业详细信息',
+  'account.settings.menuMap.binding': '账号绑定',
   'account.settings.menuMap.security': '安全设置',
   'account.settings.menuMap.custom': '个性化',
-  'account.settings.menuMap.binding': '账号绑定',
+
   'account.settings.menuMap.notification': '新消息通知',
   'account.settings.basic.avatar': '头像',
   'account.settings.basic.change-avatar': '更换头像',
@@ -11,9 +19,9 @@ export default {
   'account.settings.basic.email-message': '请输入您的邮箱!',
   'account.settings.basic.EnterpriseName': '企业名',
   'account.settings.basic.EnterpriseName-message': '请输入企业名!',
-  'account.settings.basic.profile': '个人简介',
-  'account.settings.basic.profile-message': '请输入个人简介!',
-  'account.settings.basic.profile-placeholder': '个人简介',
+  'account.settings.basic.profile': '企业简介',
+  'account.settings.basic.profile-message': '请输入企业简介!',
+  'account.settings.basic.profile-placeholder': '企业简介',
   'account.settings.basic.country': '国家/地区',
   'account.settings.basic.country-message': '请输入您的国家或地区!',
   'account.settings.basic.geographic': '所在省市',
@@ -22,8 +30,8 @@ export default {
   'account.settings.basic.address-message': '请输入您的街道地址!',
   'account.settings.basic.phone': '联系电话',
   'account.settings.basic.phone-message': '请输入您的联系电话!',
-  'account.settings.basic.update': '更新基本信息',
-  'account.settings.basic.update.success': '更新基本信息成功',
+  'account.settings.enterpriseInfo.update': '更新企业信息',
+  'account.settings.enterpriseInfo.update.success': '更新企业信息成功',
   'account.settings.security.strong': '强',
   'account.settings.security.medium': '中',
   'account.settings.security.weak': '弱',

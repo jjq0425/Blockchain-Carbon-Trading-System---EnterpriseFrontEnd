@@ -1,8 +1,5 @@
 <template>
-  <page-header-wrapper
-    class="page-header-index-wide"
-    content="段落示意：蚂蚁金服务设计平台 ant.design，用最小的工作量，无缝接入蚂蚁金服生态， 提供跨越设计与开发的体验解决方案。"
-  >
+  <page-header-wrapper class="page-header-index-wide" :content="$t('account.settings.header.title')">
     <template v-slot:extraContent>
       <transition-group
         appear
@@ -34,26 +31,30 @@
             <a-menu-item key="/account/basic">
               <router-link :to="{ name: 'BasicSettings' }"> {{ $t('account.settings.menuMap.basic') }} </router-link>
             </a-menu-item>
+            <a-menu-item key="/account/more">
+              <router-link :to="{ name: 'MoreSettings' }"> {{ $t('account.settings.menuMap.more') }} </router-link>
+            </a-menu-item>
+            <a-menu-item key="/account/binding">
+              <router-link :to="{ name: 'BindingSettings' }">
+                {{ $t('account.settings.menuMap.binding') }}
+              </router-link>
+            </a-menu-item>
             <a-menu-item key="/account/security">
               <router-link :to="{ name: 'SecuritySettings' }">
                 {{ $t('account.settings.menuMap.security') }}
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/account/custom">
+            <!-- <a-menu-item key="/account/custom">
               <router-link :to="{ name: 'CustomSettings' }">
                 {{ $t('account.settings.menuMap.custom') }}
               </router-link>
             </a-menu-item>
-            <a-menu-item key="/accounts/binding">
-              <router-link :to="{ name: 'BindingSettings' }">
-                {{ $t('account.settings.menuMap.binding') }}
-              </router-link>
-            </a-menu-item>
+
             <a-menu-item key="/account/notification">
               <router-link :to="{ name: 'NotificationSettings' }">
                 {{ $t('account.settings.menuMap.notification') }}
               </router-link>
-            </a-menu-item>
+            </a-menu-item> -->
           </a-menu>
         </div>
         <div class="account-settings-info-right">

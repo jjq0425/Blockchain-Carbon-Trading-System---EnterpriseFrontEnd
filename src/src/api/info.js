@@ -23,7 +23,7 @@ const infoApi = {
     TaskList: '/info/enterpriseTaskList',
     TaskSubmit: '/info/submission',
     GetReport: '/public/enterpriseReport',
-    Bind: '/user/enterpriseInfoBind'
+
 }
 
 /**
@@ -72,13 +72,3 @@ export function GetReport(parameter) {
     })
 }
 
-export function Bind(parameter) {
-    return request({
-        url: infoApi.Bind,
-        method: 'post',
-        data: {
-            token: token,
-            ...parameter
-        }
-    })
-}

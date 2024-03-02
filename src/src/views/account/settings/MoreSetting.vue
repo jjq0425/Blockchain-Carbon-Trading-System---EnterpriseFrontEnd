@@ -3,25 +3,60 @@
     <a-row :gutter="16" type="flex" justify="center">
       <a-col :order="isMobile ? 2 : 1" :md="24" :lg="16">
         <a-form-model layout="vertical" :model="form" ref="BasicForm" :rules="rules">
-          <a-form-model-item :label="$t('account.settings.basic.EnterpriseName')" prop="enterpriseName">
-            <a-input :placeholder="$t('account.settings.basic.EnterpriseName-message')" v-model="form.enterpriseName" />
+          <div style="font-size: 18px; color: #108ee9; margin: 15px auto; width: 100%; font-weight: bold">
+            企业性质与行业
+          </div>
+
+          <a-form-model-item label="企业性质" prop="enterpriseCharacter">
+            <a-select placeholder="请选择" style="min-width: 180px" v-model="form.enterpriseCharacter">
+              <a-select-option value="国营企业"> 国有企业 </a-select-option>
+              <a-select-option value="集体所有制"> 集体所有制 </a-select-option>
+              <a-select-option value="私营企业"> 私营企业 </a-select-option>
+              <a-select-option value="股份制企业"> 股份制企业 </a-select-option>
+              <a-select-option value="有限合伙企业"> 有限合伙企业 </a-select-option>
+              <a-select-option value="合资企业"> 合资企业 </a-select-option>
+              <a-select-option value="外商投资企业"> 外商投资企业 </a-select-option>
+              <a-select-option value="个人独资企业"> 个人独资企业 </a-select-option>
+              <a-select-option value="股份合作企业"> 股份合作企业 </a-select-option>
+            </a-select>
           </a-form-model-item>
 
-          <a-form-model-item label="企业组织机构代码" prop="enterpriseID">
-            <a-input placeholder="请输入" v-model="form.enterpriseID" disabled />
-            <div style="font-size: 10px; color: grey; font-weight: bold">(企业组织机构代码暂不允许更改)</div>
+          <a-form-model-item label="企业所在行业" prop="enterpriseClass">
+            <a-select placeholder="请选择" style="min-width: 180px" v-model="form.enterpriseClass">
+              <a-select-option value="1" key="1"> 发电 </a-select-option>
+              <a-select-option value="10" key="10" disabled> 民航 </a-select-option>
+            </a-select>
+            <div style="font-size: 10px; font-weight: bold; color: grey">
+              不同行业对应碳排放报告内容不同，请务必选择正确。
+            </div>
           </a-form-model-item>
 
-          <a-form-model-item label="企业地址" prop="enterprisePosition">
-            <a-textarea row="2" placeholder="请输入" v-model="form.enterprisePosition" />
+          <div style="font-size: 18px; color: #108ee9; margin: 15px auto; width: 100%; font-weight: bold">
+            企业联系人信息
+          </div>
+
+          <a-form-model-item label="企业法人姓名" prop="enterpriseLegelPerson">
+            <a-input placeholder="请输入" v-model="form.enterpriseLegelPerson">
+              <template #addonBefore>
+                <a-icon type="user" />
+              </template>
+            </a-input>
           </a-form-model-item>
 
-          <a-form-model-item :label="$t('account.settings.basic.profile')" prop="enterpriseDescription">
-            <a-textarea
-              rows="7"
-              :placeholder="$t('account.settings.basic.profile-message')"
-              v-model="form.enterpriseDescription"
-            />
+          <a-form-model-item label="企业填报负责人姓名" prop="enterpriseResponsiblePerson">
+            <a-input placeholder="请输入" v-model="form.enterpriseResponsiblePerson">
+              <template #addonBefore>
+                <a-icon type="user" />
+              </template>
+            </a-input>
+          </a-form-model-item>
+
+          <a-form-model-item label="企业填报负责人邮箱" prop="enterpriseResponsibleEmail">
+            <a-input placeholder="请输入" v-model="form.enterpriseResponsibleEmail">
+              <template #addonBefore>
+                <a-icon type="mail" />
+              </template>
+            </a-input>
           </a-form-model-item>
 
           <!-- <a-form-model-item :label="$t('account.settings.basic.email')" :required="false">
@@ -87,14 +122,17 @@ export default {
         fixedNumber: [1, 1],
       },
       form: {
-        enterpriseName: '',
-        enterpriseID: '',
+        enterpriseClass: '1',
       },
       rules: {
-        enterpriseName: [{ required: true, message: '请输入企业名称', trigger: 'blur' }],
-        enterprisePosition: [{ required: true, message: '请输入企业地址', trigger: 'blur' }],
-        enterpriseID: [{ required: true, message: '请输入企业组织机构代码', trigger: 'blur' }],
-        enterpriseDescription: [{ required: true, message: '请输入企业简介', trigger: 'blur' }],
+        enterpriseCharacter: [{ required: true, message: '请选择企业性质', trigger: 'blur' }],
+        enterpriseClass: [{ required: true, message: '请选择企业所在行业', trigger: 'blur' }],
+        enterpriseLegelPerson: [{ required: true, message: '请输入企业法人姓名', trigger: 'blur' }],
+        enterpriseResponsiblePerson: [{ required: true, message: '请输入企业填报负责人姓名', trigger: 'blur' }],
+        enterpriseResponsibleEmail: [
+          { required: true, message: '请输入企业填报负责人邮箱', trigger: 'blur' },
+          { type: 'email', message: '请输入正确的邮箱', trigger: 'blur' },
+        ],
       },
       submitLoading: false,
     }
@@ -106,7 +144,9 @@ export default {
       // console.log('ava', url, store.state.user.avatar)
     },
     initForm() {
-      this.form = JSON.parse(JSON.stringify(store.state.user.info))
+      let TME = JSON.parse(JSON.stringify(store.state.user.info))
+      TME.enterpriseClass = TME.enterpriseClass.toString()
+      this.form = TME
       // console.log(store.state.user)
     },
     submitInfo() {

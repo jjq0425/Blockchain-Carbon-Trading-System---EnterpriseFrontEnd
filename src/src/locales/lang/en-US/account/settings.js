@@ -1,6 +1,13 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 export default {
+  'account.settings.header.title': 'On this page, you can configure company information in detail, including basic and detailed information of the enterprise, to meet your personalized needs. To help you create an efficient and collaborative work environment, thereby improving the management efficiency of carbon emission enterprises.',
   'account.settings.menuMap.basic': 'Basic Settings',
+  'account.settings.menuMap.more': 'More Settings',
   'account.settings.menuMap.security': 'Security Settings',
   'account.settings.menuMap.custom': 'Custom Settings',
   'account.settings.menuMap.binding': 'Account Binding',
@@ -12,7 +19,7 @@ export default {
   'account.settings.basic.EnterpriseName': 'Enterprise name',
   'account.settings.basic.EnterpriseName-message': 'Please input the enterprise Name!',
   'account.settings.basic.profile': 'Personal profile',
-  'account.settings.basic.profile-message': 'Please input your personal profile!',
+  'account.settings.basic.profile-message': 'Please input the enterprise profile!',
   'account.settings.basic.profile-placeholder': 'Brief introduction to yourself',
   'account.settings.basic.country': 'Country/Region',
   'account.settings.basic.country-message': 'Please input your country!',
@@ -22,8 +29,8 @@ export default {
   'account.settings.basic.address-message': 'Please input your address!',
   'account.settings.basic.phone': 'Phone Number',
   'account.settings.basic.phone-message': 'Please input your phone!',
-  'account.settings.basic.update': 'Update Information',
-  'account.settings.basic.update.success': 'Update basic information successfully',
+  'account.settings.enterpriseInfo.update': 'Update Information',
+  'account.settings.enterpriseInfo.update.success': 'Update information successfully',
   'account.settings.security.strong': 'Strong',
   'account.settings.security.medium': 'Medium',
   'account.settings.security.weak': 'Weak',

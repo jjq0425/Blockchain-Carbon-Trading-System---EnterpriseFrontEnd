@@ -322,6 +322,12 @@ export const asyncRouterMap = [
             meta: { title: 'account.settings.menuMap.basic', hidden: true, }
           },
           {
+            path: '/account/more',
+            name: 'MoreSettings',
+            component: () => import('@/views/account/settings/MoreSetting'),
+            meta: { title: 'account.settings.menuMap.more', hidden: true, }
+          },
+          {
             path: '/account/security',
             name: 'SecuritySettings',
             component: () => import('@/views/account/settings/Security'),

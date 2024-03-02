@@ -63,7 +63,7 @@
             <div class="FormDiv">
               <a-form :form="form" :label-col="{ span: 6 }" :wrapper-col="{ span: 15 }" style="margin-top: 20px">
                 <a-row type="flex">
-                  <a-col :flex="1"
+                  <a-col :flex="2"
                     ><a-form-item label="企业名">
                       <a-input
                         placeholder="请输入企业名"
@@ -132,7 +132,11 @@
                           'enterpriseLegelPerson',
                           { rules: [{ required: true, message: '请输入企业法人姓名' }] },
                         ]"
-                      />
+                      >
+                        <template #addonBefore>
+                          <a-icon type="user" />
+                        </template>
+                      </a-input>
                     </a-form-item>
                     <a-form-item label="企业填报负责人">
                       <a-input
@@ -141,21 +145,29 @@
                           'enterpriseResponsiblePerson',
                           { rules: [{ required: true, message: '请输入企业填报负责人姓名' }] },
                         ]"
-                      />
+                      >
+                        <template #addonBefore>
+                          <a-icon type="user" />
+                        </template>
+                      </a-input>
                     </a-form-item>
-                    <a-form-item label="企业填报负责人">
+                    <a-form-item label="填报负责人邮箱">
                       <a-input
                         placeholder="请输入企业填报负责人邮箱"
                         v-decorator="[
                           'enterpriseResponsibleEmail',
                           {
                             rules: [
-                              { required: true, message: '请输入企业填报负责人姓名' },
+                              { required: true, message: '请输入企业填报负责人邮箱' },
                               { type: 'email', message: '请输入正确的邮箱格式' },
                             ],
                           },
                         ]"
-                      />
+                      >
+                        <template #addonBefore>
+                          <a-icon type="mail" />
+                        </template>
+                      </a-input>
                     </a-form-item>
                     <a-form-item label="企业简介">
                       <a-textarea
@@ -229,7 +241,7 @@
                 </div>
               </div>
             </div>
-            <a-result title="您的信息仍在审核中">
+            <a-result title="您的信息仍在审核中" sub-title="审核需要一定时间，请您耐心等待！感谢您的理解与支持！">
               <template #icon>
                 <a-icon type="clock-circle" theme="filled" style="color: #108ee9; margin-bottom: 30px" />
               </template>
@@ -250,7 +262,7 @@ import SelectLang from '@/components/SelectLang'
 import { Carousel } from 'ant-design-vue'
 import NetworkSetting from '@/components/GlobalHeader/NetworkSetting.vue'
 import store from '@/store'
-import { Bind } from '@/api/info'
+import { Bind } from '@/api/login'
 
 export default {
   name: 'BindLayout',
@@ -287,7 +299,9 @@ export default {
       validateFields({ force: true }, (err, values) => {
         if (!err) {
           // console.log('Received values of form: ', )
-          Bind(this.form.getFieldsValue())
+          let TMP = JSON.parse(JSON.stringify(this.form.getFieldsValue()))
+          TMP.enterpriseClass = parseInt(TMP.enterpriseClass)
+          Bind(TMP)
             .then((res) => {
               this.bindloading = false
               this.$message.success('绑定信息提交成功，等待审核')
@@ -298,13 +312,15 @@ export default {
               this.$message.error('绑定信息提交失败' + err.response.data.message)
             })
         } else {
+          this.$message.warning('请补全信息')
           this.bindloading = false
         }
       })
     },
   },
   mounted() {
-    document.body.style.cssText = 'overflow-y:hidden'
+    // 设置全局禁止滚动
+    document.body.style.overflow = 'hidden'
     document.body.classList.add('userLayout')
     if (this.BindStatus == 'AUDIT') {
       this.$notification.open({
@@ -328,6 +344,8 @@ export default {
   },
   beforeDestroy() {
     document.body.classList.remove('userLayout')
+    // 设置全局禁止滚动
+    document.body.style.overflow = ''
   },
 }
 </script>
@@ -455,6 +473,9 @@ export default {
 </style>
 
 <style scoped>
+.body {
+  overflow: hidden;
+}
 </style>
 
 

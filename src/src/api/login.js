@@ -27,6 +27,8 @@ const userApi = {
   // get my info
   UserInfo: '/user/info',
   Register: '/auth/enterpriseRegister',
+  Bind: '/user/enterpriseInfoBind',
+  InfoSet: '/user/enterpriseInfoSet',
 
 
 
@@ -65,6 +67,46 @@ export function getInfo(tokens) {
     method: 'post',
     data: {
       token: localStorage.getItem('ACCESS_TOKEN')
+    }
+  })
+}
+
+export function Bind(parameter) {
+  return request({
+    url: userApi.Bind,
+    method: 'post',
+    data: {
+      token: token,
+      ...parameter
+    }
+  })
+}
+
+export function infoSet(parameter) {
+
+  return request({
+    url: userApi.InfoSet,
+    method: 'post',
+    data: {
+      token: token,
+      enterpriseCharacter:
+        parameter.enterpriseCharacter,
+      enterpriseClass:
+        parseInt(parameter.enterpriseClass),
+      enterpriseName: parameter.enterpriseName,
+      enterpriseDescription:
+        parameter.enterpriseDescription,
+      enterpriseID:
+        parameter.enterpriseID,
+      enterpriseLegelPerson:
+        parameter.enterpriseLegelPerson,
+      enterprisePosition:
+        parameter.enterprisePosition,
+      enterpriseResponsibleEmail:
+        parameter.enterpriseResponsibleEmail,
+      enterpriseResponsiblePerson:
+        parameter.enterpriseResponsiblePerson,
+
     }
   })
 }
