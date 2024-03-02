@@ -2378,9 +2378,10 @@ export const template_10 = {
                         {
                             "dataSort": 3, //注意：该值在计算时是使用（1-生物质含量）与其他参数相乘
                             "isConst": false,
-                            "dataName": "1-生物质含量",
+                            "dataName": "生物质含量",
                             "dataUnit": "%",
                             "dataNum": 0.00,
+                            "extraCalcu": "1-X",
                             "defaultValChooseIdx": -1,
                             "defaultVal": [],
                             "dataSource": "DEFAULT" //该值来源
@@ -2486,8 +2487,20 @@ export const template_10 = {
                             "defaultVal": [],
                             "dataSource": "MEASURE" //该值来源
                         },
+
                         {
-                            "dataSort": 3, //常数的dataSort就接着上面的动态值写即可，上一个是2这个就是3
+                            "dataSort": 3, //注意：该值在计算时是使用（1-生物质含量）与其他参数相乘
+                            "isConst": false,
+                            "dataName": "生物质含量",
+                            "dataUnit": "%",
+                            "dataNum": 0.00,
+                            "extraCalcu": "1-X",
+                            "defaultValChooseIdx": -1,
+                            "defaultVal": [],
+                            "dataSource": "DEFAULT" //该值来源
+                        },
+                        {
+                            "dataSort": 4, //常数的dataSort就接着上面的动态值写即可，上一个是2这个就是3
                             "isConst": true,
                             "dataName": "常数",
                             "dataUnit": "",
@@ -2499,16 +2512,6 @@ export const template_10 = {
                                     "description": "默认值"
                                 }
                             ],
-                            "dataSource": "DEFAULT" //该值来源
-                        },
-                        {
-                            "dataSort": 4, //注意：该值在计算时是使用（1-生物质含量）与其他参数相乘
-                            "isConst": false,
-                            "dataName": "生物质含量",
-                            "dataUnit": "%",
-                            "dataNum": 0.00,
-                            "defaultValChooseIdx": -1,
-                            "defaultVal": [],
                             "dataSource": "DEFAULT" //该值来源
                         }
                     ],

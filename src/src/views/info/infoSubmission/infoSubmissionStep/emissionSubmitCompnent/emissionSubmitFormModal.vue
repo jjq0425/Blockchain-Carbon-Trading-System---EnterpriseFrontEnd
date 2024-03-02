@@ -360,7 +360,19 @@ export default {
       // 计算emissionForm.activityFactorNum
       let res = 1
       for (let i = 0; i < this.emissionForm.activityFactor.length; i++) {
-        res = res * this.emissionForm.activityFactor[i].dataNum
+        if (this.emissionForm.activityFactor[i].extraCalcu != null) {
+          let temp_res_extra = 0
+          let temp_extra_str = this.emissionForm.activityFactor[i].extraCalcu.replace(
+            /X/g,
+            this.emissionForm.activityFactor[i].dataNum
+          )
+          temp_res_extra = eval(temp_extra_str)
+          // extraCalcu为一个带X的表达式，需要替换X为dataNum
+          res = res * temp_res_extra
+        } else {
+          res = res * this.emissionForm.activityFactor[i].dataNum
+        }
+
         // console.log(res, this.emissionForm.activityFactor)
       }
       // console.log(res)
@@ -369,7 +381,18 @@ export default {
       // 计算emissionForm.EmissionFactorNum
       let res_2 = 1
       for (let i = 0; i < this.emissionForm.EmissionFactor.length; i++) {
-        res_2 = res_2 * this.emissionForm.EmissionFactor[i].dataNum
+        if (this.emissionForm.EmissionFactor[i].extraCalcu != null) {
+          let temp_res_extra = 0
+          let temp_extra_str = this.emissionForm.EmissionFactor[i].extraCalcu.replace(
+            /X/g,
+            this.emissionForm.EmissionFactor[i].dataNum
+          )
+          temp_res_extra = eval(temp_extra_str)
+          // extraCalcu为一个带X的表达式，需要替换X为dataNum
+          res_2 = res_2 * temp_res_extra
+        } else {
+          res_2 = res_2 * this.emissionForm.EmissionFactor[i].dataNum
+        }
       }
       this.emissionForm.EmissionFactorNum = res_2.toFixed(6)
 

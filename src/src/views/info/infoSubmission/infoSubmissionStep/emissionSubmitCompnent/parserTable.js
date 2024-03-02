@@ -69,7 +69,8 @@ export function ConstructColumns(template_children) {
             }
             activityFactorColArr.push({
 
-                title: template_children[0].activityFactor[i].dataName,
+                // title: template_children[0].activityFactor[i].dataName,
+                title: `数据`,
                 // dataIndex: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
                 key: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
                 scopedSlots: { customRender: `activityFactor_${template_children[0].activityFactor[i].dataSort}` },
@@ -128,7 +129,8 @@ export function ConstructColumns(template_children) {
             }
             EmissionFactorColArr.push({
 
-                title: template_children[0].EmissionFactor[i].dataName,
+                // title: template_children[0].EmissionFactor[i].dataName,
+                title: `数据`,
                 // dataIndex: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
                 key: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
                 scopedSlots: { customRender: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}` },
