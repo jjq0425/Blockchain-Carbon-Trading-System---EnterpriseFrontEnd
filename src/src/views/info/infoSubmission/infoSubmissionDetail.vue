@@ -216,6 +216,10 @@ export default {
       // console.log(res)
       let result = JSON.parse(JSON.stringify(res))
       // console.log('res', result)
+      // 检查result['data']['report']的类型，如果是字符串，说明是pdf文件，需要转换成blob
+      if (typeof result['data']['report'] === 'string') {
+        result['data']['report'] = JSON.parse(result['data']['report'])
+      }
       this.submitData = result['data']['report']
 
       setTimeout(() => {
@@ -268,7 +272,6 @@ export default {
     },
 
     closeAndBack() {
-      // TODO: 加一个退出提醒！
       this.$router.push({ name: 'AnnualSubmissionCenter' })
     },
     backTolastPage() {

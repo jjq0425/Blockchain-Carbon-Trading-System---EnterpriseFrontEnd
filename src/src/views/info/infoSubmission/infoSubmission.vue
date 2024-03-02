@@ -430,7 +430,6 @@ export default {
       })
     },
     closeAndBack() {
-      // TODO: 加一个退出提醒！
       this.$router.push({ name: 'AnnualSubmissionCenter' })
     },
     backTolastPage() {

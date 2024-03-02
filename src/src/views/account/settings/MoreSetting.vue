@@ -182,7 +182,7 @@ export default {
           infoSet(this.form).then((res) => {
             if (res.success) {
               setTimeout(() => {
-                this.$message.success('提交成功')
+                this.$message.success(res.message)
                 store.dispatch('GetInfo').then((res) => {
                   this.submitLoading = false
                   this.initForm()

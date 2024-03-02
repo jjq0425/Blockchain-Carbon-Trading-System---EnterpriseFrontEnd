@@ -214,7 +214,9 @@ export default {
       if (!value) {
         callback(new Error(this.$t('user.userName.required')))
       } else if (!this.testPhone(value)) {
-        callback(new Error(this.$t('user.phone-number.required')))
+        // callback(new Error(this.$t('user.phone-number.required')))
+        callback()
+        // TODO:打开电话校验
       } else {
         callback()
       }

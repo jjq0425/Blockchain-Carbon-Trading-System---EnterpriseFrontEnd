@@ -218,7 +218,7 @@ export default {
               fileInfo.status = 'done'
               fileInfo.id = fileInfo.uid
               fileInfo.url = res.data.url
-              // TODO: 这里需要修改，因为上传的文件数据可能和数据库中的不一致
+
               fileInfo.name = fileNameAuto
               file.onSuccess(res.data, file)
               this.$message.success('上传成功')
