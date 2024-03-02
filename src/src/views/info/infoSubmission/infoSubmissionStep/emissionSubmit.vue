@@ -26,14 +26,34 @@
               title=""
               :precision="6"
               :value="dataSource.sumEmission"
-              :valueStyle="{ fontSize: '42px', color: 'white', fontWeight: 'bold' }"
+              :valueStyle="{ fontSize: '50px', color: 'white', fontWeight: '900' }"
             />
             <!-- <span style="margin-left: 20px">tCO₂</span> -->
           </div>
           <div>本年度碳排放量<span> (tCO₂)</span></div>
         </div>
 
-        <div style="color: white; margin-left: 50px; width: 350px">
+        <div style="color: white; margin-left: 50px; width: 350px" v-if="submitType == 'create'">
+          <div>
+            <!-- <span style="font-size: 42px; color: white; font-weight: bold">{{ enterpriseRemainEmission() }}</span> -->
+            <a-statistic
+              title=""
+              :precision="6"
+              :value="enterpriseRemainEmission - dataSource.sumEmission"
+              :valueStyle="{
+                fontSize: '42px',
+                color: enterpriseRemainEmission - dataSource.sumEmission <= 0 ? 'red' : 'white',
+                fontWeight: 'bold',
+              }"
+            />
+          </div>
+          <div>
+            企业预计剩余碳排放量<span> (tCO₂)</span><br /><span style="font-size: 10px"
+              >（填报的年度碳排放已预扣但未真实扣减，仅供参考，审核通过后实际扣除）</span
+            >
+          </div>
+        </div>
+        <div style="color: white; margin-left: 50px; width: 350px" v-else>
           <div>
             <!-- <span style="font-size: 42px; color: white; font-weight: bold">{{ enterpriseRemainEmission() }}</span> -->
             <a-statistic
@@ -44,7 +64,9 @@
             />
           </div>
           <div>
-            企业原剩余碳排放量<span> (tCO₂)</span><span style="font-size: 10px">（未扣除本页填报的本年度碳排量）</span>
+            企业当前剩余碳排放量<span> (tCO₂)</span><br /><span style="font-size: 10px"
+              >（此时此刻的剩余碳排放量情况）</span
+            >
           </div>
         </div>
       </div>
