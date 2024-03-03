@@ -1,23 +1,5 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
+
 export default {
     'menu.welcome': 'Welcome',
     'menu.home': 'Home',
@@ -37,9 +19,11 @@ export default {
     'menu.info.infoSubmission.detail': 'Submission Result',
     'menu.info.reportGuide': 'Report guide',
     'menu.trade': 'Carbon Trade',
+    'menu.trade.tradeMarket': ' Trade Market',
     'menu.trade.table-list': 'Search Table',
     'menu.trade.basic-list': 'Basic List',
     'menu.trade.card-list': 'Card List',
+
     'menu.trade.search-list': 'Search List',
     'menu.trade.search-list.articles': 'Search List(articles)',
     'menu.trade.search-list.projects': 'Search List(projects)',

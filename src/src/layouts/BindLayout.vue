@@ -393,7 +393,7 @@ export default {
     min-height: 100%;
     background: #f7f9fe url(~@/assets/background.svg) no-repeat 50%;
     background: #4e73df url(~@/assets/background.svg) no-repeat 50%;
-    background: url(~@/assets/bg_bind);
+    background: url(~@/assets/bg_bind.png);
     background-size: 100%;
     //padding: 50px 0 84px;
     position: relative;

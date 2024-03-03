@@ -73,7 +73,7 @@
 // 演示如何使用 this.$dialog 封装 modal 组件
 import TaskForm from './modules/TaskForm'
 import Info from './components/Info'
-import ChangeBgCSS from '../../utils/ChangeBgCSS'
+import ChangeBgCSS from '../../../utils/ChangeBgCSS'
 
 const data = []
 data.push({

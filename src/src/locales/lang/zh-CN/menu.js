@@ -24,6 +24,7 @@ export default {
 
     'menu.info.reportGuide': '填报指南',
     'menu.trade': '碳币交易',
+    'menu.trade.tradeMarket': '交易市场',
     'menu.trade.table-list': '查询表格',
     'menu.trade.basic-list': '标准列表',
     'menu.trade.card-list': '卡片列表',
