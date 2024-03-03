@@ -1,4 +1,4 @@
-export const template_10 = {
+export const template_TEST2 = {
     "reportPDF": "", //碳核算报告url（不含数据来源），与10各参考文档一致
     "dataSourcePDF": "", //数据来源报告的PDFurl（即各种贴图，如电费发票等）
     "taskYear": 2023,
@@ -2600,6 +2600,109 @@ export const template_10 = {
                     ],
                     "EmissionFactorNum": 0.00, //活动水平数值，即EmissionFactor各个子元素相乘
                     "EmissionFactor": [ //排放因子，计算时采用全是是化石燃料时的航空汽油和航空煤油的排放因子
+                        // {
+                        //     "dataSort": 1,
+                        //     "isConst": false,
+                        //     "dataName": "区域电网年平均供电排放因子",
+                        //     "dataUnit": "tCO₂/MWh",
+                        //     "dataNum": 0.00,
+                        //     "defaultValChooseIdx": 0,
+                        //     "defaultVal": [
+                        //         {
+                        //             "val": 0.7769,//东北供电排放因子
+                        //             "description": "东北地区"
+                        //         },
+                        //         {
+                        //             "val": 0.8843,//华北供电排放因子
+                        //             "description": "华北地区"
+                        //         },
+                        //         {
+                        //             "val": 0.7035,//华东区域供电排放因子
+                        //             "description": "华东地区"
+                        //         },
+                        //         {
+                        //             "val": 0.5257,//华中区域供电排放因子
+                        //             "description": "华中地区"
+                        //         },
+                        //         {
+                        //             "val": 0.6671,//西北区域供电排放因子
+                        //             "description": "西北地区"
+                        //         },
+                        //         {
+                        //             "val": 0.5271,//南方区域供电排放因子
+                        //             "description": "南方地区"
+                        //         }
+                        //     ],
+                        //     "dataSource": "DEFAULT" //该值来源
+                        // }
+                    ]
+                },
+
+                {
+                    "className": "热力", //小类名
+                    "classSort": 2, //小类排序。各个大类之间编号独立。
+                    "classDataSum": 0.00, //小类累计值，activityFactorNum*EmissionFactorNum
+                    "activityFactorNum": 0.00, //活动水平数值，即activityFactor各个子元素相乘。若其中有除法请转化为分之一。
+                    "activityFactor": [ //活动水平
+                        {
+                            "dataSort": 1, //活动水平数据排序
+                            "isConst": false, //该值是否常数
+                            "dataName": "净购入热力", //该值的名字
+                            "dataUnit": "GJ", //该值的单位
+                            "dataNum": 0.00, //该值的数据值
+                            "defaultValChooseIdx": 0, //默认选择的缺省值数组的下标，下标从0编号。若defaultVal为空填-1.
+                            "defaultVal": [
+                                {
+                                    "val": 0.00,
+                                    "description": "默认值"
+                                }
+                            ],
+                            "dataSource": "DEFAULT" //该值来源
+                        }
+                    ],
+                    "EmissionFactorNum": 0.00, //活动水平数值，即EmissionFactor各个子元素相乘
+                    "EmissionFactor": [ //排放因子，计算时采用全是是化石燃料时的航空汽油和航空煤油的排放因子
+                        // {
+                        //     "dataSort": 1,
+                        //     "isConst": false,
+                        //     "dataName": "热力供应的二氧化碳排放因子",
+                        //     "dataUnit": "tCO₂/MWh",
+                        //     "dataNum": 0.11,
+                        //     "defaultValChooseIdx": 0,
+                        //     "defaultVal": [
+                        //         {
+                        //             "val": 0.11,//热力供应的二氧化碳排放因子暂按0.11tCO2/GJ计
+                        //             "description": "默认值"
+                        //         }
+                        //     ],
+                        //     "dataSource": "DEFAULT" //该值来源
+                        // }
+                    ]
+                },
+                {
+                    "className": "电力3", //小类名
+                    "classSort": 3, //小类排序。各个大类之间编号独立。
+                    "classDataSum": 0.00, //小类累计值，activityFactorNum*EmissionFactorNum
+                    "activityFactorNum": 1.00, //活动水平数值，即activityFactor各个子元素相乘。若其中有除法请转化为分之一。
+                    "activityFactor": [ //活动水平
+                        // {
+                        //     "dataSort": 1, //活动水平数据排序
+                        //     "isConst": false, //该值是否常数
+                        //     "dataName": "净购入电量", //该值的名字
+                        //     "dataUnit": "MWh", //该值的单位
+                        //     "dataNum": 0.00, //该值的数据值
+                        //     "defaultValChooseIdx": 0, //默认选择的缺省值数组的下标，下标从0编号。若defaultVal为空填-1.
+                        //     "defaultVal": [
+                        //         {
+                        //             "val": 0.00,
+                        //             "description": "默认值"
+                        //         }
+                        //     ],
+                        //     "dataSource": "DEFAULT" //该值来源
+                        // }
+                    ],
+                    "EmissionFactorNum": 0.00, //活动水平数值，即EmissionFactor各个子元素相乘
+                    "EmissionFactor": [ //排放因子，计算时采用全是是化石燃料时的航空汽油和航空煤油的排放因子
                         {
                             "dataSort": 1,
                             "isConst": false,
@@ -2637,48 +2740,9 @@ export const template_10 = {
                         }
                     ]
                 },
-                {
-                    "className": "热力", //小类名
-                    "classSort": 2, //小类排序。各个大类之间编号独立。
-                    "classDataSum": 0.00, //小类累计值，activityFactorNum*EmissionFactorNum
-                    "activityFactorNum": 0.00, //活动水平数值，即activityFactor各个子元素相乘。若其中有除法请转化为分之一。
-                    "activityFactor": [ //活动水平
-                        {
-                            "dataSort": 1, //活动水平数据排序
-                            "isConst": false, //该值是否常数
-                            "dataName": "净购入热力", //该值的名字
-                            "dataUnit": "GJ", //该值的单位
-                            "dataNum": 0.00, //该值的数据值
-                            "defaultValChooseIdx": 0, //默认选择的缺省值数组的下标，下标从0编号。若defaultVal为空填-1.
-                            "defaultVal": [
-                                {
-                                    "val": 0.00,
-                                    "description": "默认值"
-                                }
-                            ],
-                            "dataSource": "DEFAULT" //该值来源
-                        }
-                    ],
-                    "EmissionFactorNum": 0.00, //活动水平数值，即EmissionFactor各个子元素相乘
-                    "EmissionFactor": [ //排放因子，计算时采用全是是化石燃料时的航空汽油和航空煤油的排放因子
-                        {
-                            "dataSort": 1,
-                            "isConst": false,
-                            "dataName": "热力供应的二氧化碳排放因子",
-                            "dataUnit": "tCO₂/MWh",
-                            "dataNum": 0.11,
-                            "defaultValChooseIdx": 0,
-                            "defaultVal": [
-                                {
-                                    "val": 0.11,//热力供应的二氧化碳排放因子暂按0.11tCO2/GJ计
-                                    "description": "默认值"
-                                }
-                            ],
-                            "dataSource": "DEFAULT" //该值来源
-                        }
-                    ]
-                }
             ]
         }//以上为全部的电力、热力排放的子类，共2个子项
     ]
 }
+
+// 有个只有一个子类的子类，即默认值为0的子类

@@ -879,17 +879,27 @@ export default {
       for (let classS = 0; classS < this.submitData.detail.length; classS++) {
         // 寻找每个大类所需要的最大列数
         res.activityFactorLength.push(this.submitData.detail[classS].children.length)
-        for (let i = 0; i < this.submitData.detail[classS].children[0].activityFactor.length; i++) {
-          // 以0号元素为模板
-          if (this.submitData.detail[classS].children[0].activityFactor[i].isConst == false) {
-            res.A_Column[classS]++
+
+        if (this.submitData.detail[classS].children[0].activityFactor.length == 0) {
+          res.A_Column[classS] = 1
+        } else {
+          for (let i = 0; i < this.submitData.detail[classS].children[0].activityFactor.length; i++) {
+            // 以0号元素为模板
+            if (this.submitData.detail[classS].children[0].activityFactor[i].isConst == false) {
+              res.A_Column[classS]++
+            }
           }
         }
+
         res.EmissionFactorLength.push(this.submitData.detail[classS].children.length)
-        for (let i = 0; i < this.submitData.detail[classS].children[0].EmissionFactor.length; i++) {
-          // 以0号元素为模板
-          if (this.submitData.detail[classS].children[0].EmissionFactor[i].isConst == false) {
-            res.E_Column[classS]++
+        if (this.submitData.detail[classS].children[0].EmissionFactor.length == 0) {
+          res.E_Column[classS] = 1
+        } else {
+          for (let i = 0; i < this.submitData.detail[classS].children[0].EmissionFactor.length; i++) {
+            // 以0号元素为模板
+            if (this.submitData.detail[classS].children[0].EmissionFactor[i].isConst == false) {
+              res.E_Column[classS]++
+            }
           }
         }
       }
@@ -919,6 +929,7 @@ export default {
           //   { content: '', styles: { halign: 'center', valign: 'middle' } },
           //   { content: '', styles: { halign: 'center', valign: 'middle' } }
           // )
+
           for (let TableHeaerIdx = 0; TableHeaerIdx < TableRowAndColCalcu.activityFactorMaxCol; TableHeaerIdx++) {
             if (TableHeaerIdx < TableRowAndColCalcu.A_Column[mainClass]) {
               TableHeaer.push({
@@ -931,6 +942,7 @@ export default {
                 styles: { halign: 'center', valign: 'middle', fontSize: 7 },
               })
               if (hasSource) {
+                // console.log('laiyuan')
                 TableHeaer.push({
                   content: `来源`,
                   styles: { halign: 'center', valign: 'middle' },
@@ -947,6 +959,15 @@ export default {
                 styles: { halign: 'center', valign: 'middle' },
                 rowSpan: 2,
               })
+              if (hasSource) {
+                // console.log('laiyuan')
+                TableHeaer.push({
+                  content: ``,
+                  styles: { halign: 'center', valign: 'middle' },
+                  rowSpan: 2,
+                })
+              }
+              // BUGFIX1
               // unitRow.push({
               //   content: ``,
               //   styles: { halign: 'center', valign: 'middle' },
@@ -1043,16 +1064,27 @@ export default {
             }
             TableBody.push(row)
           }
+          if (TableRowAndColCalcu.A_Column[mainClass] != 1) {
+            TableBody.unshift(unitRow)
+          }
+          TableBody.unshift(TableHeaer)
         } else if (TableRowAndColCalcu.A_Column[mainClass] == 1) {
+          let unshiftData = 0
+          let actrualRowCount = 0
           for (let rowIdx = 0; rowIdx < mainClasData.children.length; rowIdx++) {
             let row = []
-            if (rowIdx == 0) {
+            if (mainClasData.children[rowIdx].activityFactor.length == 0) {
+              unshiftData++
+              continue
+            }
+            actrualRowCount++
+            if (actrualRowCount == 0) {
               row = [
-                {
-                  content: `${mainClasData.className} `,
-                  styles: { halign: 'center', valign: 'middle' },
-                  rowSpan: mainClasData.children.length,
-                },
+                // {
+                //   content: `${mainClasData.className} `,
+                //   styles: { halign: 'center', valign: 'middle' },
+                //   rowSpan: mainClasData.children.length,
+                // },
                 {
                   content: `${mainClasData.children[rowIdx].className} `,
                   styles: { halign: 'center', valign: 'middle' },
@@ -1116,11 +1148,29 @@ export default {
             }
             TableBody.push(row)
           }
+
+          if (TableBody.length == 0) {
+            TableBody.push([
+              {
+                content: `${mainClasData.className}`,
+                styles: { halign: 'center', valign: 'middle' },
+              },
+              {
+                content: `无报送项`,
+                styles: { halign: 'center', valign: 'middle' },
+                colSpan: TableBigBody[0].length - 1,
+              },
+            ])
+            // TableBody.shift(TableHeaer)
+          } else {
+            TableBody[0].unshift({
+              content: `${mainClasData.className} `,
+              styles: { halign: 'center', valign: 'middle' },
+              rowSpan: mainClasData.children.length - unshiftData,
+            })
+            TableBody.unshift(TableHeaer)
+          }
         }
-        if (TableRowAndColCalcu.A_Column[mainClass] != 1) {
-          TableBody.unshift(unitRow)
-        }
-        TableBody.unshift(TableHeaer)
 
         TableBigBody = [...TableBigBody, ...TableBody]
       }
@@ -1228,6 +1278,13 @@ export default {
                 styles: { halign: 'center', valign: 'middle' },
                 rowSpan: 2,
               })
+              if (hasSource) {
+                TableHeaer.push({
+                  content: ``,
+                  styles: { halign: 'center', valign: 'middle' },
+                  rowSpan: 2,
+                })
+              }
               // unitRow.push({
               //   content: ``,
               //   styles: { halign: 'center', valign: 'middle' },
@@ -1263,6 +1320,12 @@ export default {
                 content: '',
                 styles: { halign: 'center', valign: 'middle' },
               })
+              if (hasSource) {
+                TableHeaer.push({
+                  content: ``,
+                  styles: { halign: 'center', valign: 'middle' },
+                })
+              }
             }
           }
         }
@@ -1324,9 +1387,22 @@ export default {
             }
             TableBody.push(row)
           }
+          if (TableRowAndColCalcu.E_Column[mainClass] != 1) {
+            TableBody.unshift(unitRow)
+          }
+          TableBody.unshift(TableHeaer)
         } else if (TableRowAndColCalcu.E_Column[mainClass] == 1) {
+          let unshiftData = 0
+          let actrualRowCount = 0
+
           for (let rowIdx = 0; rowIdx < mainClasData.children.length; rowIdx++) {
             let row = []
+            if (mainClasData.children[rowIdx].EmissionFactor.length == 0) {
+              unshiftData++
+              continue
+            }
+            actrualRowCount++
+
             // let row = [
             //   {
             //     content: `${mainClasData.className} `,
@@ -1337,13 +1413,13 @@ export default {
             //     styles: { halign: 'center', valign: 'middle' },
             //   },
             // ]
-            if (rowIdx == 0) {
+            if (actrualRowCount == 0) {
               row = [
-                {
-                  content: `${mainClasData.className} `,
-                  styles: { halign: 'center', valign: 'middle' },
-                  rowSpan: mainClasData.children.length,
-                },
+                // {
+                //   content: `${mainClasData.className} `,
+                //   styles: { halign: 'center', valign: 'middle' },
+                //   rowSpan: mainClasData.children.length,
+                // },
                 {
                   content: `${mainClasData.children[rowIdx].className} `,
                   styles: { halign: 'center', valign: 'middle' },
@@ -1397,11 +1473,33 @@ export default {
             }
             TableBody.push(row)
           }
+          if (TableBody.length == 0) {
+            TableBody.push([
+              {
+                content: `${mainClasData.className}`,
+                styles: { halign: 'center', valign: 'middle' },
+              },
+              {
+                content: `无报送项`,
+                styles: { halign: 'center', valign: 'middle' },
+                colSpan: TableBigBody[0].length - 1,
+              },
+            ])
+            // TableBody.shift(TableHeaer)
+          } else {
+            // TableBody[0][0].rowSpan -= unshiftData
+            TableBody[0].unshift({
+              content: `${mainClasData.className} `,
+              styles: { halign: 'center', valign: 'middle' },
+              rowSpan: mainClasData.children.length - unshiftData,
+            })
+            TableBody.unshift(TableHeaer)
+          }
         }
-        if (TableRowAndColCalcu.E_Column[mainClass] != 1) {
-          TableBody.unshift(unitRow)
-        }
-        TableBody.unshift(TableHeaer)
+        // if (TableRowAndColCalcu.E_Column[mainClass] != 1) {
+        //   TableBody.unshift(unitRow)
+        // }
+        // TableBody.unshift(TableHeaer)
 
         TableBigBody = [...TableBigBody, ...TableBody]
       }

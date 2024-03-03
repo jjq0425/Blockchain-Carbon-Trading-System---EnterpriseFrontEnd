@@ -40,7 +40,7 @@ export function ConstructColumns(template_children) {
 
     });
     Columns.push({
-        title: '排放源',
+        title: '报送项',
         key: 'emissionName',
         scopedSlots: { customRender: 'emissionName' },
         width: 100,
@@ -59,6 +59,25 @@ export function ConstructColumns(template_children) {
         if (!template_children[0].activityFactor[j].isConst) {
             activityNOCONSTFactorNum++
         }
+    }
+    if (activityNOCONSTFactorNum == 0) {
+        activityFactorColArr.push({
+
+            // title: template_children[0].activityFactor[i].dataName,
+            title: `数据`,
+            // dataIndex: `activityFactor_${template_children[0].activityFactor[i].dataSort}`,
+            key: `activityFactor_1`,
+            scopedSlots: { customRender: `activityFactor_1` },
+            width: 280,
+            customHeaderCell: () => ({
+                style: {
+                    textAlign: 'center',  //头部单元格水平居中
+                },
+            }),
+            align: 'center',
+
+        })
+        ColKey.push(`activityFactor_1`)
     }
     for (let i = 0; i < template_children[0].activityFactor.length; i++) {
         // 寻找activityFactor中isConst为真的数量
@@ -122,6 +141,25 @@ export function ConstructColumns(template_children) {
             EmissionNOCONSTFactorNum++
         }
     }
+    if (EmissionNOCONSTFactorNum == 0) {
+        EmissionFactorColArr.push({
+
+            // title: template_children[0].EmissionFactor[i].dataName,
+            title: `数据`,
+            // dataIndex: `EmissionFactor_${template_children[0].EmissionFactor[i].dataSort}`,
+            key: `EmissionFactor_1`,
+            scopedSlots: { customRender: `EmissionFactor_1` },
+            width: 280,
+            customHeaderCell: () => ({
+                style: {
+                    textAlign: 'center',  //头部单元格水平居中
+                },
+            }),
+            align: 'center',
+
+        })
+        ColKey.push(`EmissionFactor_1`)
+    }
     for (let i = 0; i < template_children[0].EmissionFactor.length; i++) {
         if (EmissionNOCONSTFactorNum == 1) {
             if (template_children[0].EmissionFactor[i].isConst) {
@@ -171,7 +209,7 @@ export function ConstructColumns(template_children) {
         children: EmissionFactorColArr
     }
     Columns.push(EmissionFactorCol)
-    if (activityNOCONSTFactorNum == 1 && EmissionNOCONSTFactorNum == 1) {
+    if (activityNOCONSTFactorNum <= 1 && EmissionNOCONSTFactorNum <= 1) {
         Columns.push({
             title: '总排放量(tCO₂)',
             key: 'sum',
@@ -236,23 +274,23 @@ export function ConstructColumns(template_children) {
 }
 
 
-export function ConstructInitData(template_children, col_key) {
-    let dataSource = []
-    for (let i = 0; i < template_children.length; i++) {
-        let obj = {}
-        obj.emissionName = template_children[i].className
-        // colkey是以activityFactor_或者EmissionFactor_开头的
-        for (let j = 0; j < col_key.length; j++) {
-            let [prefix, suffix] = col_key[j].split('_');
-            if (prefix === 'activityFactor') {
-                let target = template_children[i].activityFactor.find(item => item.dataSort === parseInt(suffix));
-                if (target) {
-                    obj[col_key[j]]['dataNum'] = target.dataNum;
-                    obj[col_key[j]]['defaultVal'] = target.defaultVal;
-                    obj[col_key[j]]['dataSource'] = target.dataSource;
-                }
-            }
-        }
+// export function ConstructInitData(template_children, col_key) {
+//     let dataSource = []
+//     for (let i = 0; i < template_children.length; i++) {
+//         let obj = {}
+//         obj.emissionName = template_children[i].className
+//         // colkey是以activityFactor_或者EmissionFactor_开头的
+//         for (let j = 0; j < col_key.length; j++) {
+//             let [prefix, suffix] = col_key[j].split('_');
+//             if (prefix === 'activityFactor') {
+//                 let target = template_children[i].activityFactor.find(item => item.dataSort === parseInt(suffix));
+//                 if (target) {
+//                     obj[col_key[j]]['dataNum'] = target.dataNum;
+//                     obj[col_key[j]]['defaultVal'] = target.defaultVal;
+//                     obj[col_key[j]]['dataSource'] = target.dataSource;
+//                 }
+//             }
+//         }
 
-    }
-}
+//     }
+// }

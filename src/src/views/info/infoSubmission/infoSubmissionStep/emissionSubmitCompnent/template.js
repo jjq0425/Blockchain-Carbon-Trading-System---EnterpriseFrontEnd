@@ -1002,11 +1002,14 @@ export const template_Test = {
 
 import { template_1 } from './template/template_1'
 import { template_10 } from './template/template_10'
+import { template_TEST2 } from './template/template_TEST2'
 
 
 export const template_THS = {
     template_1: template_1,
-    template_10: template_10
+    // template_10: template_10,
+    template_10: template_10,
+    template_Test: template_Test,
 }
 
 

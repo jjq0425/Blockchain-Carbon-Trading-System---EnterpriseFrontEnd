@@ -24,22 +24,22 @@
           :model="emissionForm"
           style="display: flex; width: 100%; justify-content: space-around"
           :rule="{
-            className: [{ required: true, message: '请输入排放源名', trigger: 'blur' }],
+            className: [{ required: true, message: '请输入报送项名', trigger: 'blur' }],
           }"
         >
           <div style="width: 15%; align-self: center">
             <a-form-model-item
               v-bind="formItemLayoutLeft"
-              label="排放源名"
+              label="报送项名"
               :rules="{
                 required: true,
-                message: '排放源名不能为空',
+                message: '报送项名不能为空',
                 trigger: 'blur',
               }"
               prop="className"
               labelAlign="left"
             >
-              <a-input v-model="emissionForm.className" placeholder="请输入排放源名" :disabled="type == 'detail'" />
+              <a-input v-model="emissionForm.className" placeholder="请输入报送项名" :disabled="type == 'detail'" />
               <div style="font-size: 9px; color: #868e96" v-show="type != 'detail'">
                 点击添加化学式角标：
                 <span class="chemicalSup" @click="() => (emissionForm.className = emissionForm.className + '₂')"
@@ -86,8 +86,14 @@
               <div style="font-weight: bold">活动水平</div>
               <div style="font-size: 12px">小计: {{ emissionForm.activityFactorNum }}</div>
             </div>
+            <template v-if="emissionForm?.activityFactor?.length == 0">
+              <a-empty>
+                <span slot="description">此项无数据待填报</span>
+              </a-empty>
+            </template>
+
             <template v-for="(activityFac, index) in emissionForm.activityFactor">
-              <template v-if="!activityFac.isConst">
+              <template v-if="!activityFac.isConst && emissionForm.activityFactor.length">
                 <div :key="`activityFac_${activityFac.dataSort}`">
                   <a-form-model-item
                     :key="activityFac.dataSort"
@@ -160,8 +166,13 @@
               <div style="font-weight: bold">排放因子</div>
               <div style="font-size: 12px">小计: {{ emissionForm.EmissionFactorNum }}</div>
             </div>
+            <template v-if="emissionForm?.EmissionFactor?.length == 0">
+              <a-empty>
+                <span slot="description">此项无数据待填报</span>
+              </a-empty>
+            </template>
             <template v-for="(EmissionFac, index) in emissionForm.EmissionFactor">
-              <template v-if="!EmissionFac.isConst">
+              <template v-if="!EmissionFac.isConst && emissionForm.EmissionFactor.length">
                 <div :key="`EmissionFac_${EmissionFac.dataSort}`">
                   <a-form-model-item
                     v-bind="formItemLayout"
@@ -176,7 +187,7 @@
                       :min="0"
                       :max="EmissionFac.dataUnit == '%' ? 1 : 99999999999999999999999999999999999999999999999"
                       placeholder="请输入数据"
-                      :disabled="EmissionFac.dataSource == 'DEFAULT' && type != 'detail'"
+                      :disabled="EmissionFac.dataSource == 'DEFAULT' || type == 'detail'"
                       style="width: 120px"
                       @change="reConclude"
                     />

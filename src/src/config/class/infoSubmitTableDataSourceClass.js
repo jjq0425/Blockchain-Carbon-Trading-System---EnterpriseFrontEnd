@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 
 const infoSubmitTableDataSourceClass_CN = {
@@ -12,7 +17,8 @@ const infoSubmitTableDataSourceClass_CN = {
     "USE": '使用记录',
     "EXPERT": '专家评估',
     "ESTIMATE": '自行评估',
-    "DEFAULT": '缺省值'
+    "DEFAULT": '缺省值',
+
 }
 const infoSubmitTableDataSourceClass_EN = {
     "INVOICE": 'INVOICE',
@@ -20,7 +26,8 @@ const infoSubmitTableDataSourceClass_EN = {
     "USE": 'USE RECORD',
     "EXPERT": 'EXPERT',
     "ESTIMATE": 'ESTIMATE',
-    "DEFAULT": 'DEFAULT'
+    "DEFAULT": 'DEFAULT',
+
 
 }
 

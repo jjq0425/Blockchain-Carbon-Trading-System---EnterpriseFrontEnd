@@ -29,38 +29,47 @@
 
       <template v-for="col in colkey" :slot="col" slot-scope="text, record">
         <div :key="col">
-          <span>{{
-            record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataUnit == '%'
-              ? record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataNum * 100
-              : record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataNum
-          }}</span>
-          <span
-            style="font-size: 8px"
-            v-if="
-              tableSetOptionsChecked.includes('ShowUnit') ||
-              record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataUnit == '%'
-            "
-          >
-            {{ record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataUnit }}</span
-          >
-          <br />
-          <div
-            style="font-size: 8.5px; color: #adb5bd"
-            v-if="tableSetOptionsChecked.includes('ShowDataSource') && lang.includes('zh')"
-          >
-            ({{
-              infoSubmitTableDataSourceClass_CN[record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataSource]
-            }})
-          </div>
-          <div
-            style="font-size: 8.5px; color: #adb5bd"
-            v-else-if="tableSetOptionsChecked.includes('ShowDataSource') && lang.includes('en')"
-          >
-            ({{
-              infoSubmitTableDataSourceClass_EN[record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataSource]
-            }})
-          </div>
-          <div style="font-size: 8.5px" v-show="!tableSetOptionsChecked.includes('ShowDataSource')">&nbsp;</div>
+          <template v-if="record[col.split('_')[0]].length == 0"> <div>/</div> </template>
+          <template v-if="record[col.split('_')[0]].length != 0">
+            <div>
+              <span>{{
+                record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataUnit == '%'
+                  ? record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataNum * 100
+                  : record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataNum
+              }}</span>
+              <span
+                style="font-size: 8px"
+                v-if="
+                  tableSetOptionsChecked.includes('ShowUnit') ||
+                  record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataUnit == '%'
+                "
+              >
+                {{ record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataUnit }}</span
+              >
+              <br />
+              <div
+                style="font-size: 8.5px; color: #adb5bd"
+                v-if="tableSetOptionsChecked.includes('ShowDataSource') && lang.includes('zh')"
+              >
+                ({{
+                  infoSubmitTableDataSourceClass_CN[
+                    record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataSource
+                  ]
+                }})
+              </div>
+              <div
+                style="font-size: 8.5px; color: #adb5bd"
+                v-else-if="tableSetOptionsChecked.includes('ShowDataSource') && lang.includes('en')"
+              >
+                ({{
+                  infoSubmitTableDataSourceClass_EN[
+                    record[col.split('_')[0]][parseInt(col.split('_')[1]) - 1].dataSource
+                  ]
+                }})
+              </div>
+              <div style="font-size: 8.5px" v-show="!tableSetOptionsChecked.includes('ShowDataSource')">&nbsp;</div>
+            </div>
+          </template>
         </div>
         <!-- <a-input
           :key="col"
@@ -250,6 +259,7 @@ export default {
     // 子组件传回信息(信息计算)
     dataUpdateFinish(TYEP, data) {
       if (TYEP == 'edit') {
+        console.log("111",data)
         this.tableData[data.classSort - 1] = data
         this.$forceUpdate()
       } else {

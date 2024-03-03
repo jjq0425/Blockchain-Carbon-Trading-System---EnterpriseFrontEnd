@@ -14,7 +14,7 @@
         <a-form-model ref="dynamicValidateForm" :model="emissionForm" v-bind="formItemLayout">
           <a-form-model-item
             v-bind="formItemLayout"
-            label="排放源名"
+            label="报送项名"
             :rules="{
               required: true,
               message: '排放原名不能为空',
@@ -22,7 +22,7 @@
             }"
             prop="className"
           >
-            <a-input v-model="emissionForm.className" placeholder="请输入排放源名" />
+            <a-input v-model="emissionForm.className" placeholder="请输入报送项名" />
           </a-form-model-item>
 
           <a-form-model-item v-bind="formItemLayout" label="该项排放总额">
