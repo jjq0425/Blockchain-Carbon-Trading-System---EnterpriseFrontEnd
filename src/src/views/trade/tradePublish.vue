@@ -155,7 +155,7 @@
           padding-top: 10px;
           padding-bottom: 10px;
           border-radius: 999px;
-          background: linear-gradient(90deg, #e7f5ff 20%, white 30%, #e7f5ff);
+          background: linear-gradient(90deg, #e7f5ff 10%, white 25%, white 40%, #e7f5ff);
         "
       >
         <div style="width: 25%">

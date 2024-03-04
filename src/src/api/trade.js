@@ -13,7 +13,11 @@ let token = storage.get(ACCESS_TOKEN)
 const tradeApi = {
     TradeList: '/public/tradeList',
     TradePublish: '/trade/tradePulish',
-    MakeTrade: '/trade/tradeComplete'
+    MakeTrade: '/trade/tradeComplete',
+
+    MyPublishTradeList: '/trade/myTradeList',
+    MyOrderList: '/trade/myOrderList',
+    OrderDetail: '/public/order',
 
 
 }
@@ -51,6 +55,42 @@ export function MakeTrade(params) {
             token: token,
             ...params
 
+        }
+    })
+}
+
+export function MyPublishTradeList() {
+    return request({
+        url: tradeApi.MyPublishTradeList,
+        method: 'post',
+        data: {
+            token: token,
+
+        }
+    })
+
+
+}
+
+
+export function MyOrderList() {
+    return request({
+        url: tradeApi.MyOrderList,
+        method: 'post',
+        data: {
+            token: token,
+
+        }
+    })
+}
+
+export function OrderDetail(orderID) {
+    return request({
+        url: tradeApi.OrderDetail,
+        method: 'post',
+        data: {
+            token: token,
+            orderID: orderID
         }
     })
 }

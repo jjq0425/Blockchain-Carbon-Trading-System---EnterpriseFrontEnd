@@ -23,6 +23,7 @@ export default {
     'menu.trade.tradeMarket': '交易市场',
     'menu.trade.tradePublish': '发布交易',
     'menu.trade.makeTrade': '交易订购',
+    'menu.trade.myTrade': '我的交易',
     'menu.trade.table-list': '查询表格',
     'menu.trade.basic-list': '标准列表',
     'menu.trade.card-list': '卡片列表',

@@ -148,6 +148,30 @@ export const asyncRouterMap = [
             meta: { title: 'menu.trade.makeTrade', keepAlive: true, permission: ['trade'] },
             hidden: true,
           },
+
+
+          {
+            path: '/trade/myTrade',
+            name: 'myTrade',
+            redirect: "/trade/myTrade/myPublish",
+            component: () => import('@/views/trade/myTrade'),
+            meta: { title: 'menu.trade.myTrade', keepAlive: true, permission: ['trade'] },
+            hideChildrenInMenu: true,
+            children: [
+              {
+                path: '/trade/myTrade/myPublish',
+                name: 'myPublish',
+                component: () => import('@/views/trade/myTrade/myPublish'),
+                meta: { title: 'menu.trade.myTrade', keepAlive: true, permission: ['trade'], hidden: true, },
+              },
+              {
+                path: '/trade/myTrade/myOrder',
+                name: 'myOrder',
+                component: () => import('@/views/trade/myTrade/myOrder'),
+                meta: { title: 'menu.trade.myTrade', keepAlive: true, permission: ['trade'], hidden: true, },
+              },
+            ]
+          },
           // {
           //   path: '/trade/search',
           //   name: 'SearchList',
