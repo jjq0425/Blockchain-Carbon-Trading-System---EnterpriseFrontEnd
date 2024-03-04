@@ -391,6 +391,7 @@ export default {
 /* 滚动条整体样式 */
 ::-webkit-scrollbar {
   width: 5px; /* 设置滚动条的宽度 */
+  height: 5px;
   /* height: 2000000000000000px; */
 }
 

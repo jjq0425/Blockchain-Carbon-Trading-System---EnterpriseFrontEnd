@@ -98,16 +98,16 @@
             (currentPage - 1) * pageSize + Number(index) + 1
           }}</template>
 
-          <template slot="publishName" slot-scope="text, record">
-            <div v-if="record.publishName.length <= 7">{{ record.publishName }}</div>
+          <template slot="purchaseName" slot-scope="text, record">
+            <div v-if="record.purchaseName.length <= 5">{{ record.purchaseName }}</div>
             <div v-else>
               <a-tooltip>
                 <template slot="title">
                   <div>
-                    {{ record.publishName }}
+                    {{ record.purchaseName }}
                   </div>
                 </template>
-                {{ record.publishName.substring(0, 7) + '...' }}
+                {{ record.purchaseName.substring(0, 5) + '...' }}
               </a-tooltip>
             </div>
           </template>
@@ -193,11 +193,11 @@ export default {
         },
 
         {
-          title: '甲方',
-          dataIndex: 'publishName',
-          key: 'publishName',
+          title: '乙方',
+          dataIndex: 'purchaseName',
+          key: 'purchaseName',
           // slots: { title: 'publishName' },
-          scopedSlots: { customRender: 'publishName' },
+          scopedSlots: { customRender: 'purchaseName' },
 
           // sorter: (a, b) => a.dealNum - b.dealNum,
         },
@@ -307,7 +307,7 @@ export default {
       this.$forceUpdate()
     },
     openOrderDetail(record) {
-      this.$refs.orderDetailRef.open(record)
+      this.$refs.orderDetailRef.open(record, true)
     },
   },
 }

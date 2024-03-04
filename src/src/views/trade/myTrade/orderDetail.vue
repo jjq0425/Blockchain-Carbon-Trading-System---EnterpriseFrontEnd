@@ -42,17 +42,33 @@
       <a-divider orientation="left" style="width: 50px; color: #228be6">合计</a-divider>
     </div>
     <div style="width: 50%; margin: 10px auto; text-align: right">
-      <div>
+      <div v-if="!isJIA">
         碳币变动：
         <span :style="{ color: orderInfo.tradeType == 'SALE' ? 'green' : 'red' }">
           <span>{{ orderInfo.tradeType == 'SALE' ? '+' : '-' }}</span>
           {{ (orderInfo.perEmission * orderInfo.dealNum).toFixed(2) }}</span
         >
       </div>
-      <div style="margin-top: 5px">
+      <div style="margin-top: 5px" v-if="!isJIA">
         碳排量变动：<span>
           <span :style="{ color: orderInfo.tradeType == 'SALE' ? 'red' : 'green' }">
             <span>{{ orderInfo.tradeType == 'SALE' ? '-' : '+' }}</span>
+            {{ orderInfo.dealNum == null ? '0.0000' : orderInfo.dealNum.toFixed(4) }}</span
+          >
+        </span>
+      </div>
+
+      <div v-if="isJIA">
+        碳币变动：
+        <span :style="{ color: orderInfo.tradeType == 'SALE' ? 'red' : 'green' }">
+          <span>{{ orderInfo.tradeType == 'SALE' ? '-' : '+' }}</span>
+          {{ (orderInfo.perEmission * orderInfo.dealNum).toFixed(2) }}</span
+        >
+      </div>
+      <div style="margin-top: 5px" v-if="isJIA">
+        碳排量变动：<span>
+          <span :style="{ color: orderInfo.tradeType == 'SALE' ? 'green' : 'red' }">
+            <span>{{ orderInfo.tradeType == 'SALE' ? '+' : '-' }}</span>
             {{ orderInfo.dealNum == null ? '0.0000' : orderInfo.dealNum.toFixed(4) }}</span
           >
         </span>
@@ -73,6 +89,8 @@ export default {
     return {
       visible: false,
 
+      isJIA: false,
+
       orderInfo: {},
     }
   },
@@ -81,8 +99,9 @@ export default {
       this.visible = true
       this.orderInfo = orderInfo
     },
-    close() {
+    close(isJIA = false) {
       this.visible = false
+      this.isJIA = isJIA
       //   this.orderInfo = {}
     },
     computedDay(ts) {
