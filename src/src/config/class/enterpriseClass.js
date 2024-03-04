@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 const enterpriseClassName_CN = {
     1: '发电',
@@ -32,7 +37,7 @@ const enterpriseClassName_EN = {
 
 }
 
-const enterpriseClassAllowed = [1, 10]
+const enterpriseClassAllowed = [1, 6, 10]
 export {
     enterpriseClassName_CN,
     enterpriseClassName_EN,

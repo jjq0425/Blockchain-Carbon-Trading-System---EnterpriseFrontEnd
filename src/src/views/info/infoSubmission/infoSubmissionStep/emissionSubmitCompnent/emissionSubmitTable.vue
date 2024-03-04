@@ -216,39 +216,94 @@ export default {
     },
     newRow() {
       let New_Template = JSON.parse(JSON.stringify(this.tableData[this.tableData.length - 1]))
+
+      // 计算New_template中的activityFactor和EmissionFactor中isConst==false的长度
+      let activityFactor_NOCONST_LENGTH = 0
+      let EmissionFactor_NOCONST_LENGTH = 0
+      for (let i = 0; i < New_Template.activityFactor.length; i++) {
+        if (!New_Template.activityFactor[i].isConst) {
+          activityFactor_NOCONST_LENGTH++
+        }
+      }
+      for (let i = 0; i < New_Template.EmissionFactor.length; i++) {
+        if (!New_Template.EmissionFactor[i].isConst) {
+          EmissionFactor_NOCONST_LENGTH++
+        }
+      }
+
       // 新的模板className需要自己填，其他实际上是保持不变的，可填写字段全部置为0.00即可
       New_Template.className = ''
       New_Template.classSort = this.tableData.length + 1
       New_Template.classDataSum = 0
       New_Template.activityFactorNum = 0
       // console.log(New_Template.activityFactor.length)
-      for (let i = 0; i < New_Template.activityFactor.length; i++) {
-        if (!New_Template.activityFactor[i].isConst) {
-          New_Template.activityFactor[i].dataNum = 0.0
-          if (New_Template.activityFactor[i].defaultVal.length == 0) {
-            New_Template.activityFactor[i].dataSource = 'MEASURE'
-            New_Template.activityFactor[i].defaultValChooseIdx = -1
-          } else {
-            New_Template.activityFactor[i].dataSource = 'DEFAULT'
-            New_Template.activityFactor[i].defaultValChooseIdx = 0
+      if (activityFactor_NOCONST_LENGTH == 1) {
+        for (let i = 0; i < New_Template.activityFactor.length; i++) {
+          if (!New_Template.activityFactor[i].isConst) {
+            New_Template.activityFactor[i].dataNum = 0.0
+            New_Template.activityFactor[i].dataName = ''
+            New_Template.activityFactor[i].dataUnit = ''
+            if (New_Template.activityFactor[i].defaultVal.length == 0) {
+              New_Template.activityFactor[i].dataSource = 'MEASURE'
+              New_Template.activityFactor[i].defaultValChooseIdx = -1
+            } else {
+              New_Template.activityFactor[i].dataSource = 'DEFAULT'
+              New_Template.activityFactor[i].defaultValChooseIdx = 0
+            }
           }
         }
-      }
-      New_Template.EmissionFactorNum = 0
-      for (let i = 0; i < New_Template.EmissionFactor; i++) {
-        if (!New_Template.EmissionFactor[i].isConst) {
-          New_Template.EmissionFactor[i].dataNum = 0.0
-          if (New_Template.EmissionFactor[i].defaultVal.length == 0) {
-            New_Template.EmissionFactor[i].dataSource = 'MEASURE'
-            New_Template.EmissionFactor[i].defaultValChooseIdx = -1
-          } else {
-            New_Template.EmissionFactor[i].dataSource = 'DEFAULT'
-            New_Template.EmissionFactor[i].defaultValChooseIdx = 0
+      } else {
+        for (let i = 0; i < New_Template.activityFactor.length; i++) {
+          if (!New_Template.activityFactor[i].isConst) {
+            New_Template.activityFactor[i].dataNum = 0.0
+            if (New_Template.activityFactor[i].defaultVal.length == 0) {
+              New_Template.activityFactor[i].dataSource = 'MEASURE'
+              New_Template.activityFactor[i].defaultValChooseIdx = -1
+            } else {
+              New_Template.activityFactor[i].dataSource = 'DEFAULT'
+              New_Template.activityFactor[i].defaultValChooseIdx = 0
+            }
           }
         }
       }
 
-      this.$refs.emissionSubmitFormModal.open('add', New_Template)
+      New_Template.EmissionFactorNum = 0
+      if (EmissionFactor_NOCONST_LENGTH == 1) {
+        for (let i = 0; i < New_Template.EmissionFactor.length; i++) {
+          if (!New_Template.EmissionFactor[i].isConst) {
+            New_Template.EmissionFactor[i].dataNum = 0.0
+            New_Template.EmissionFactor[i].dataName = ''
+            New_Template.EmissionFactor[i].dataUnit = ''
+            if (New_Template.EmissionFactor[i].defaultVal.length == 0) {
+              New_Template.EmissionFactor[i].dataSource = 'MEASURE'
+              New_Template.EmissionFactor[i].defaultValChooseIdx = -1
+            } else {
+              New_Template.EmissionFactor[i].dataSource = 'DEFAULT'
+              New_Template.EmissionFactor[i].defaultValChooseIdx = 0
+            }
+          }
+        }
+      } else {
+        for (let i = 0; i < New_Template.EmissionFactor.length; i++) {
+          if (!New_Template.EmissionFactor[i].isConst) {
+            New_Template.EmissionFactor[i].dataNum = 0.0
+            if (New_Template.EmissionFactor[i].defaultVal.length == 0) {
+              New_Template.EmissionFactor[i].dataSource = 'MEASURE'
+              New_Template.EmissionFactor[i].defaultValChooseIdx = -1
+            } else {
+              New_Template.EmissionFactor[i].dataSource = 'DEFAULT'
+              New_Template.EmissionFactor[i].defaultValChooseIdx = 0
+            }
+          }
+        }
+      }
+
+      this.$refs.emissionSubmitFormModal.open(
+        'add',
+        New_Template,
+        activityFactor_NOCONST_LENGTH == 1,
+        EmissionFactor_NOCONST_LENGTH == 1
+      )
     },
 
     /**

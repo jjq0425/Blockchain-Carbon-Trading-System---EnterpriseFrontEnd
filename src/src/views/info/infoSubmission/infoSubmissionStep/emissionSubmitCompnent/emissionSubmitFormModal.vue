@@ -98,12 +98,52 @@
                   <a-form-model-item
                     :key="activityFac.dataSort"
                     v-bind="formItemLayout"
+                    :label="`活动水平数据名称`"
+                    v-if="deepEdit.needActivityFactorEditDeep"
+                    :prop="'activityFactor.' + index + '.dataName'"
+                    :rules="{
+                      required: true,
+                      message: '请输入活动水平数据名称',
+                      trigger: 'blur',
+                    }"
+                  >
+                    <a-input
+                      v-model="activityFac.dataName"
+                      placeholder="请输入活动水平数据名称"
+                      style="width: 200px"
+                      v-if="deepEdit.needActivityFactorEditDeep"
+                    />
+                  </a-form-model-item>
+
+                  <a-form-model-item
+                    :key="activityFac.dataSort"
+                    v-bind="formItemLayout"
+                    :label="`活动水平单位`"
+                    v-if="deepEdit.needActivityFactorEditDeep"
+                    :prop="'activityFactor.' + index + '.dataUnit'"
+                    :rules="{
+                      required: true,
+                      message: '请输入活动水平数据单位',
+                      trigger: 'blur',
+                    }"
+                  >
+                    <a-input
+                      v-model="activityFac.dataUnit"
+                      placeholder="请输入活动水平数据单位"
+                      style="width: 200px"
+                      v-if="deepEdit.needActivityFactorEditDeep"
+                    />
+                  </a-form-model-item>
+                  <a-form-model-item
+                    :key="activityFac.dataSort"
+                    v-bind="formItemLayout"
                     :prop="'activityFactor.' + index + '.dataNum'"
                     :rules="ruleCompute(activityFac.dataUnit)"
                   >
-                    <span slot="label" :class="activityFac.dataName.length >= 11 ? 'label-box' : ''">{{
+                    <span slot="label" :class="activityFac.dataName.length >= 12 ? 'label-box' : ''">{{
                       `${activityFac.dataName}数值`
                     }}</span>
+
                     <a-input-number
                       v-model="activityFac.dataNum"
                       :min="0"
@@ -175,11 +215,50 @@
               <template v-if="!EmissionFac.isConst && emissionForm.EmissionFactor.length">
                 <div :key="`EmissionFac_${EmissionFac.dataSort}`">
                   <a-form-model-item
+                    :key="EmissionFac.dataSort"
+                    v-bind="formItemLayout"
+                    :label="`排放因子数据名称`"
+                    v-if="deepEdit.needEmissionFactorEditDeep"
+                    :prop="'EmissionFactor.' + index + '.dataName'"
+                    :rules="{
+                      required: true,
+                      message: '请输入排放因子数据名称',
+                      trigger: 'blur',
+                    }"
+                  >
+                    <a-input
+                      v-model="EmissionFac.dataName"
+                      placeholder="请输入排放因子数据名称"
+                      style="width: 200px"
+                      v-if="deepEdit.needEmissionFactorEditDeep"
+                    />
+                  </a-form-model-item>
+
+                  <a-form-model-item
+                    :key="EmissionFac.dataSort"
+                    v-bind="formItemLayout"
+                    :label="`排放因子单位`"
+                    v-if="deepEdit.needEmissionFactorEditDeep"
+                    :prop="'EmissionFactor.' + index + '.dataUnit'"
+                    :rules="{
+                      required: true,
+                      message: '请输入排放因子数据单位',
+                      trigger: 'blur',
+                    }"
+                  >
+                    <a-input
+                      v-model="EmissionFac.dataUnit"
+                      placeholder="请输入排放因子数据单位"
+                      style="width: 200px"
+                      v-if="deepEdit.needEmissionFactorEditDeep"
+                    />
+                  </a-form-model-item>
+                  <a-form-model-item
                     v-bind="formItemLayout"
                     :prop="'EmissionFactor.' + index + '.dataNum'"
                     :rules="ruleCompute(EmissionFac.dataUnit)"
                   >
-                    <span slot="label" :class="EmissionFac.dataName.length >= 11 ? 'label-box' : ''">{{
+                    <span slot="label" :class="EmissionFac.dataName.length >= 12 ? 'label-box' : ''">{{
                       `${EmissionFac.dataName}数值`
                     }}</span>
                     <a-input-number
@@ -297,6 +376,11 @@ export default {
       //       sm: { span: 20, offset: 4 },
       //     },
       //   },
+      deepEdit: {
+        needActivityFactorEditDeep: false,
+        needEmissionFactorEditDeep: false,
+      },
+
       infoSubmitTableDataSourceClass_CN: infoSubmitTableDataSourceClass_CN,
       infoSubmitTableDataSourceClass_EN: infoSubmitTableDataSourceClass_EN,
     }
@@ -307,13 +391,15 @@ export default {
     },
   },
   methods: {
-    open(editType, record) {
+    open(editType, record, needActivityFactorEditDeep = false, needEmissionFactorEditDeep = false) {
       this.visible = true
       this.type = editType
       if (editType == 'edit') {
         this.title = '编辑项目'
         this.record = JSON.parse(JSON.stringify(record))
         this.emissionForm = JSON.parse(JSON.stringify(record))
+        this.deepEdit.needActivityFactorEditDeep = needActivityFactorEditDeep
+        this.deepEdit.needEmissionFactorEditDeep = needEmissionFactorEditDeep
       } else if (editType == 'add') {
         this.title = '新增项目'
         let tempREC = JSON.parse(JSON.stringify(record))
@@ -328,6 +414,8 @@ export default {
           item.defaultValChooseIdx = -1
           item.dataSource = 'MEASURE'
         })
+        this.deepEdit.needActivityFactorEditDeep = needActivityFactorEditDeep
+        this.deepEdit.needEmissionFactorEditDeep = needEmissionFactorEditDeep
         this.record = JSON.parse(JSON.stringify(tempREC))
         this.emissionForm = JSON.parse(JSON.stringify(tempREC))
         // console.log(this.record)
@@ -335,6 +423,8 @@ export default {
         this.title = '项目详情'
         this.record = JSON.parse(JSON.stringify(record))
         this.emissionForm = JSON.parse(JSON.stringify(record))
+        this.deepEdit.needActivityFactorEditDeep = false
+        this.deepEdit.needEmissionFactorEditDeep = false
       }
     },
     close() {
