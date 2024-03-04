@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 
 export default {
@@ -20,6 +25,7 @@ export default {
     'menu.info.reportGuide': 'Report guide',
     'menu.trade': 'Carbon Trade',
     'menu.trade.tradeMarket': ' Trade Market',
+    'menu.trade.tradePublish': 'Create Trade',
     'menu.trade.table-list': 'Search Table',
     'menu.trade.basic-list': 'Basic List',
     'menu.trade.card-list': 'Card List',

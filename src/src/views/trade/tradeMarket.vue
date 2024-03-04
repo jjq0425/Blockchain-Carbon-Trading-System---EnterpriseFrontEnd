@@ -217,6 +217,7 @@
           }"
           shape="circle"
           icon="plus"
+          @click="handleAdd"
         >
         </a-button>
       </a-tooltip>
@@ -229,6 +230,7 @@
 import changeBgCSS from '@/utils/ChangeBgCSS'
 import { TradeList } from '@/api/trade'
 import { tradeTypeClass_CN, tradeTypeClass_EN } from '@/config/class/trade/tradeTypeClass'
+import store from '@/store'
 
 export default {
   name: 'CardList',
@@ -281,6 +283,7 @@ export default {
   methods: {
     async fetchData(needFilter = true) {
       this.dataLoading = true
+      await store.dispatch('GetInfo')
       TradeList()
         .then((res) => {
           if (res.success) {
@@ -384,7 +387,7 @@ export default {
     },
 
     handleAdd() {
-      console.log('add')
+      this.$router.push({ name: 'tradePublish' })
     },
   },
 }

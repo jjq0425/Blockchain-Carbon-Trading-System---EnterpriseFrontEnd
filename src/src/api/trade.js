@@ -1,13 +1,4 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
 
 import request from '@/utils/request'
 
@@ -21,6 +12,7 @@ let token = storage.get(ACCESS_TOKEN)
 
 const tradeApi = {
     TradeList: '/public/tradeList',
+    TradePublish: '/trade/tradePulish',
 
 
 }
@@ -31,6 +23,20 @@ export function TradeList() {
         method: 'post',
         data: {
             token: token,
+
+        }
+    })
+}
+
+
+
+export function TradePublish(params) {
+    return request({
+        url: tradeApi.TradePublish,
+        method: 'post',
+        data: {
+            token: token,
+            ...params
 
         }
     })
