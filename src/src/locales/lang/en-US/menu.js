@@ -26,6 +26,7 @@ export default {
     'menu.trade': 'Carbon Trade',
     'menu.trade.tradeMarket': ' Trade Market',
     'menu.trade.tradePublish': 'Create Trade',
+    'menu.trade.makeTrade': 'Make deal',
     'menu.trade.table-list': 'Search Table',
     'menu.trade.basic-list': 'Basic List',
     'menu.trade.card-list': 'Card List',

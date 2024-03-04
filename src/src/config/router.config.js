@@ -141,6 +141,13 @@ export const asyncRouterMap = [
             meta: { title: 'menu.trade.tradePublish', keepAlive: true, permission: ['trade'] },
             hidden: true,
           },
+          {
+            path: '/trade/makeTrade',
+            name: 'makeTrade',
+            component: () => import('@/views/trade/makeTrade'),
+            meta: { title: 'menu.trade.makeTrade', keepAlive: true, permission: ['trade'] },
+            hidden: true,
+          },
           // {
           //   path: '/trade/search',
           //   name: 'SearchList',

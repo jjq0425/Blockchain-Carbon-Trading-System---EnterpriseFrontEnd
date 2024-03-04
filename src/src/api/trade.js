@@ -13,6 +13,7 @@ let token = storage.get(ACCESS_TOKEN)
 const tradeApi = {
     TradeList: '/public/tradeList',
     TradePublish: '/trade/tradePulish',
+    MakeTrade: '/trade/tradeComplete'
 
 
 }
@@ -33,6 +34,18 @@ export function TradeList() {
 export function TradePublish(params) {
     return request({
         url: tradeApi.TradePublish,
+        method: 'post',
+        data: {
+            token: token,
+            ...params
+
+        }
+    })
+}
+
+export function MakeTrade(params) {
+    return request({
+        url: tradeApi.MakeTrade,
         method: 'post',
         data: {
             token: token,

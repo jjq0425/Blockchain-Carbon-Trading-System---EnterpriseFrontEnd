@@ -130,7 +130,11 @@
             </a-button>
           </template> -->
             <template>
-              <a-card :hoverable="true" style="background-size: 100% 60%; background-repeat: no-repeat">
+              <a-card
+                :hoverable="true"
+                style="background-size: 100% 60%; background-repeat: no-repeat"
+                @click="MakeTrade(item.tradeID)"
+              >
                 <a-card-meta>
                   <div slot="title">
                     <div style="display: flex; justify-content: space-between">
@@ -388,6 +392,10 @@ export default {
 
     handleAdd() {
       this.$router.push({ name: 'tradePublish' })
+    },
+
+    MakeTrade(tradeID) {
+      this.$router.push({ name: 'makeTrade', params: { tradeID: tradeID } })
     },
   },
 }
