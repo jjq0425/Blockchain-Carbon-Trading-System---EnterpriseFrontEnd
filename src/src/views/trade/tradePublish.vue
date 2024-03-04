@@ -97,6 +97,7 @@
             :step="0.0001"
             style="width: 300px"
           />
+          <span style="margin-left: 10px; font-size: 10px; color: grey">tCO₂</span>
         </a-form-model-item>
 
         <a-form-model-item label="交易(出售/收购)单价" prop="perEmission">
@@ -107,6 +108,7 @@
             :step="0.01"
             style="width: 300px"
           />
+          <span style="margin-left: 10px; font-size: 10px; color: grey">碳币/tCO₂</span>
         </a-form-model-item>
 
         <a-form-model-item
@@ -128,7 +130,7 @@
           </div>
         </a-form-model-item>
 
-        <a-form-model-item label="交易发布者">
+        <a-form-model-item label="交易发布者(甲方)">
           {{ enterpriseInfo.enterpriseName }} ({{ enterpriseInfo.enterpriseID }})
         </a-form-model-item>
 
@@ -143,6 +145,29 @@
       </a-form-model>
 
       <!-- 交易发布表单 -->
+      <div
+        style="
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          align-items: center;
+          margin-top: 50px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          border-radius: 999px;
+          background: linear-gradient(90deg, #e7f5ff 20%, white 30%, #e7f5ff);
+        "
+      >
+        <div style="width: 25%">
+          <video
+            src="@/assets/pages/trade/tradeElse/tradeInBlockChain.mp4"
+            loop
+            autoplay
+            style="width: 30%; transform: translateX(150%)"
+          ></video>
+        </div>
+        <div style="font-weight: 900; font-size: 30px; color: #438bfd">区块链正在守卫您的交易安全</div>
+      </div>
     </a-card>
 
     <div style="position: fixed; right: 50px; bottom: 50px">
@@ -287,8 +312,8 @@ export default {
                 this.$message.success('发布成功')
                 setTimeout(() => {
                   this.$router.go(-1)
-                }, 200)
-                this.dataLoading = false
+                  this.dataLoading = false
+                }, 300)
               } else {
                 this.$message.error(res.message)
                 this.dataLoading = false

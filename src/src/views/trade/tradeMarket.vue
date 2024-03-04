@@ -133,7 +133,7 @@
               <a-card
                 :hoverable="true"
                 style="background-size: 100% 60%; background-repeat: no-repeat"
-                @click="MakeTrade(item.tradeID)"
+                @click="MakeTrade(item)"
               >
                 <a-card-meta>
                   <div slot="title">
@@ -394,8 +394,8 @@ export default {
       this.$router.push({ name: 'tradePublish' })
     },
 
-    MakeTrade(tradeID) {
-      this.$router.push({ name: 'makeTrade', params: { tradeID: tradeID } })
+    MakeTrade(tradeInfo) {
+      this.$router.push({ name: 'makeTrade', params: { tradeInfo: tradeInfo } })
     },
   },
 }

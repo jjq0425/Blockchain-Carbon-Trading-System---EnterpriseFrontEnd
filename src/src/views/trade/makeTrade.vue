@@ -80,66 +80,91 @@
         :wrapper-col="wrapperCol"
         style="margin-top: 40px"
       >
+        <a-form-model-item label="甲方">
+          {{ tradeInfo.publishName }}
+        </a-form-model-item>
+
+        <a-form-model-item label="乙方">
+          {{ enterpriseInfo.enterpriseName }} ({{ enterpriseInfo.enterpriseID }}) <a-tag color="cyan"> 您 </a-tag>
+        </a-form-model-item>
         <a-form-model-item label="交易类型" prop="tradeType">
-          <a-radio-group v-model="tradePublishForm.tradeType">
-            <a-radio value="SOLD"> 出售碳排量 </a-radio>
-            <a-radio value="SALE"> 收购碳排量 </a-radio>
+          <a-radio-group v-model="tradeInfo.tradeType" disabled>
+            <a-radio value="SOLD"> 甲方向乙方出售碳排量 </a-radio>
+            <a-radio value="SALE"> 甲方向乙方收购碳排量 </a-radio>
           </a-radio-group>
         </a-form-model-item>
 
-        <a-form-model-item label="交易(出售/收购)量" prop="emission">
+        <a-form-model-item label="交易单价"> {{ tradeInfo.perEmission.toFixed(2) }} 碳币/tCO₂ </a-form-model-item>
+
+        <a-form-model-item :label="`甲方剩余${tradeInfo.tradeType == 'SOLD' ? '库存' : '需求'}量`">
+          {{ tradeInfo.emission.toFixed(4) }} tCO₂
+        </a-form-model-item>
+
+        <a-form-model-item :label="`交易(${tradeInfo.tradeType == 'SOLD' ? '购买' : '卖出'})碳排量`" prop="dealNum">
           <a-input-number
-            v-model="tradePublishForm.emission"
+            v-model="tradePublishForm.dealNum"
             :min="0.0001"
             :precision="4"
             :step="0.0001"
             style="width: 300px"
           />
+          <span style="margin-left: 10px; font-size: 10px; color: grey">tCO₂</span>
         </a-form-model-item>
-
-        <a-form-model-item label="交易(出售/收购)单价" prop="perEmission">
-          <a-input-number
-            v-model="tradePublishForm.perEmission"
-            :min="0.0001"
-            :precision="2"
-            :step="0.01"
-            style="width: 300px"
-          />
-        </a-form-model-item>
-
-        <a-form-model-item
-          label="所需碳币"
-          v-show="tradePublishForm.tradeType == 'SALE'"
-          :style="{
-            color:
-              (tradePublishForm.perEmission * tradePublishForm.emission).toFixed(2) > enterpriseInfo.coCoin
-                ? 'red'
-                : '',
-          }"
-        >
-          {{ (tradePublishForm.perEmission * tradePublishForm.emission).toFixed(2) }}
-          <div
-            style="color: red; font-weight: bold"
-            v-if="(tradePublishForm.perEmission * tradePublishForm.emission).toFixed(2) > enterpriseInfo.coCoin"
-          >
-            交易(收购)总价不能大于您当前剩余碳币量: {{ enterpriseInfo.coCoin }}，请调整交易量或单价
-          </div>
-        </a-form-model-item>
-
-        <a-form-model-item label="交易发布者">
-          {{ enterpriseInfo.enterpriseName }} ({{ enterpriseInfo.enterpriseID }})
-        </a-form-model-item>
-
-        <div style="width: 100%; text-align: center">
-          <a-button type="danger" style="color: white" @click="() => this.$router.go(-1)" :loading="dataLoading"
-            >返回</a-button
-          >
-          <a-button type="primary" style="color: white; margin-left: 10px" @click="handleSubmit" :loading="dataLoading"
-            >提交</a-button
-          >
-        </div>
       </a-form-model>
 
+      <div style="width: 50%; margin: 10px auto">
+        <a-divider orientation="left" style="width: 50px; color: #228be6">合计</a-divider>
+      </div>
+      <div style="width: 50%; margin: 10px auto; text-align: right">
+        <div>
+          碳币变动：
+          <span :style="{ color: tradeInfo.tradeType == 'SALE' ? 'green' : 'red' }">
+            <span>{{ tradeInfo.tradeType == 'SALE' ? '+' : '-' }}</span>
+            {{ (tradeInfo.perEmission * tradePublishForm.dealNum).toFixed(2) }}</span
+          >
+        </div>
+        <div style="margin-top: 5px; margin-bottom: 25px">
+          碳排量变动：<span>
+            <span :style="{ color: tradeInfo.tradeType == 'SALE' ? 'red' : 'green' }">
+              <span>{{ tradeInfo.tradeType == 'SALE' ? '-' : '+' }}</span>
+              {{ tradePublishForm.dealNum == null ? '0.0000' : tradePublishForm.dealNum.toFixed(4) }}</span
+            >
+          </span>
+        </div>
+      </div>
+
+      <div style="width: 100%; text-align: center">
+        <a-button type="danger" style="color: white" @click="() => this.$router.go(-1)" :loading="dataLoading"
+          >返回</a-button
+        >
+        <a-button type="primary" style="color: white; margin-left: 10px" @click="handleSubmit" :loading="dataLoading"
+          >提交</a-button
+        >
+      </div>
+
+      <div
+        style="
+          display: flex;
+          width: 100%;
+          justify-content: center;
+          align-items: center;
+          margin-top: 50px;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          border-radius: 999px;
+          background: linear-gradient(90deg, #e7f5ff 20%, white 30%, #e7f5ff);
+        "
+      >
+        <div style="width: 25%">
+          <video
+            src="@/assets/pages/trade/tradeElse/tradeInBlockChain.mp4"
+            loop
+            autoplay
+            style="width: 30%; transform: translateX(150%)"
+          ></video>
+        </div>
+        <div style="font-weight: 900; font-size: 30px; color: #438bfd">区块链正在守卫您的交易安全</div>
+      </div>
       <!-- 交易发布表单 -->
     </a-card>
 
@@ -166,13 +191,16 @@
         </a-button>
       </a-tooltip>
     </div>
+    <div>
+      <!-- <video src="@/assets/pages/trade/tradeElse/tradeInBlockChain.mp4" loop autoplay style="width: 100%"></video> -->
+    </div>
   </page-header-wrapper>
 </template>
 
 <script>
 // import pdfTest from '@/components/PDFgenerate/pdfTest'
 import changeBgCSS from '@/utils/ChangeBgCSS'
-import { TradePublish } from '@/api/trade'
+import { MakeTrade } from '@/api/trade'
 import { tradeTypeClass_CN, tradeTypeClass_EN } from '@/config/class/trade/tradeTypeClass'
 import store from '@/store'
 import { enterpriseClassName_CN, enterpriseClassName_EN } from '@/config/class/enterpriseClass'
@@ -192,21 +220,16 @@ export default {
       // extraImage: 'https://gw.alipayobjects.com/zos/rmsportal/RzwpdLnhmvDJToTdfDPe.png',
 
       tradePublishForm: {
-        tradeType: '',
-        emission: null,
-        perEmission: null,
+        dealNum: null,
       },
       tradePublishRules: {
-        tradeType: [{ required: true, message: '请选择交易类型', trigger: 'change' }],
-        emission: [
-          { required: true, message: '请输入交易(出售/收购)量', trigger: 'blur' },
-          { validator: this.validateEmission, trigger: 'change' },
-        ],
-        perEmission: [
-          { required: true, message: '请输入交易(出售/收购)单价', trigger: 'blur' },
-          { validator: this.validatePerEmission, trigger: 'change' },
+        dealNum: [
+          { required: true, message: '请输入交易量', trigger: 'blur' },
+          { validator: this.validateDealNum, trigger: 'change' },
         ],
       },
+
+      tradeInfo: {},
 
       dataLoading: false,
 
@@ -219,6 +242,7 @@ export default {
   },
   mounted() {
     changeBgCSS('TRADE')
+    this.$message.info('您正在进行交易，请注意网络环境安全')
     this.initInfo()
   },
   computed: {
@@ -232,43 +256,36 @@ export default {
 
   methods: {
     async initInfo() {
+      this.tradeInfo = this.$route.params.tradeInfo
+      console.log(this.tradeInfo)
       await store.dispatch('GetInfo')
     },
-    validateEmission(rule, val, callback) {
-      if (this.tradePublishForm.tradeType === 'SOLD') {
+
+    validateDealNum(rule, val, callback) {
+      // SALE标识甲方买入乙方的碳排量，保证乙方足够碳排量
+      if (this.tradeInfo.tradeType === 'SALE') {
         if (val <= 0) {
-          callback(new Error('交易(出售/收购)碳排量必须大于0'))
+          callback(new Error('交易(出售)量必须大于0'))
         } else if (val > this.enterpriseInfo.remainEmission) {
-          callback(new Error(`交易(出售)碳排量不能大于您当前剩余碳排放量: ${this.enterpriseInfo.remainEmission}`))
-        } else {
-          callback()
-        }
-      } else {
-        if (val <= 0) {
-          callback(new Error('交易(出售/收购)量必须大于0'))
-        } else if (val * this.tradePublishForm.perEmission > this.enterpriseInfo.coCoin) {
           callback(
-            new Error(`交易(收购)总价不能大于您当前剩余碳币量: ${this.enterpriseInfo.coCoin}，请调整交易量或单价`)
+            new Error(
+              `您当前剩余碳排量为: ${this.enterpriseInfo.remainEmission}，交易(出售)碳排放数量不能大于您当前剩余碳排量`
+            )
           )
+        } else if (val > this.tradeInfo.emission) {
+          callback(new Error(`交易（出售）的碳排量不能超过甲方剩余需求量`))
         } else {
           callback()
         }
       }
-    },
-    validatePerEmission(rule, val, callback) {
-      if (this.tradePublishForm.tradeType === 'SALE') {
+      // SOLD标识乙方买入甲方的碳排量，保证乙方足够碳币
+      else {
         if (val <= 0) {
-          callback(new Error('交易(出售/收购)单价必须大于0'))
-        } else if (val * this.tradePublishForm.emission > this.enterpriseInfo.coCoin) {
-          callback(
-            new Error(`交易(收购)总价不能大于您当前剩余碳币量: ${this.enterpriseInfo.coCoin}，请调整交易量或单价`)
-          )
-        } else {
-          callback()
-        }
-      } else {
-        if (val <= 0) {
-          callback(new Error('交易(出售/收购)单价必须大于0'))
+          callback(new Error('交易(收购)量必须大于0'))
+        } else if (val * this.tradeInfo.perEmission > this.enterpriseInfo.coCoin) {
+          callback(new Error(`您当前剩余碳币为: ${this.enterpriseInfo.coCoin}，交易（购买）总价不能大于您当前剩余碳币`))
+        } else if (val > this.tradeInfo.emission) {
+          callback(new Error(`交易（出售）的碳排量不能超过甲方剩余库存量`))
         } else {
           callback()
         }
@@ -279,21 +296,23 @@ export default {
       this.$refs.tradePublishForm.validate((valid) => {
         if (valid) {
           this.dataLoading = true
-          TradePublish(this.tradePublishForm)
+          let submitForm = JSON.parse(JSON.stringify(this.tradePublishForm))
+          submitForm.tradeID = this.tradeInfo.tradeID
+          MakeTrade(submitForm)
             .then((res) => {
               if (res.success) {
-                this.$message.success('发布成功')
+                this.$message.success('交易成功')
                 setTimeout(() => {
+                  this.dataLoading = false
                   this.$router.go(-1)
-                }, 200)
-                this.dataLoading = false
+                }, 300)
               } else {
                 this.$message.error(res.message)
                 this.dataLoading = false
               }
             })
             .catch((err) => {
-              this.$message.error('发布失败')
+              this.$message.error('交易失败', err.response.data.message)
               this.dataLoading = false
             })
         }
