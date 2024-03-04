@@ -15,7 +15,7 @@
       <template slot="footer">
         <div style="display: flex; justify-content: right; align-items: center; width: 100%; text-align: right">
           <div style="font-weight: bold; padding-right: 30px">本模块汇总碳排量:</div>
-          <a-statistic title="" :precision="6" :value="classdata.classDataSum" :valueStyle="{ color: '#1098ad' }">
+          <a-statistic title="" :precision="4" :value="classdata.classDataSum" :valueStyle="{ color: '#1098ad' }">
             <template #suffix> <span style="font-size: 12px; color: #adb5bd; padding-left: 20px">tCO₂</span> </template>
           </a-statistic>
         </div>
@@ -259,7 +259,7 @@ export default {
     // 子组件传回信息(信息计算)
     dataUpdateFinish(TYEP, data) {
       if (TYEP == 'edit') {
-        console.log("111",data)
+        console.log('111', data)
         this.tableData[data.classSort - 1] = data
         this.$forceUpdate()
       } else {

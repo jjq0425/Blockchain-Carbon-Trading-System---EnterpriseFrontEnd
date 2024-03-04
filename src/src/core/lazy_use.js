@@ -49,6 +49,9 @@ import {
   FormModel,
   Cascader,
   Empty,
+  Pagination,
+  BackTop,
+  Affix
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
 
@@ -105,6 +108,9 @@ Vue.use(Space)
 Vue.use(FormModel)
 Vue.use(Cascader)
 Vue.use(Empty)
+Vue.use(Pagination)
+Vue.use(BackTop)
+Vue.use(Affix)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

@@ -61,7 +61,7 @@
               <!-- {{ emissionForm.activityFactorNum * emissionForm.EmissionFactorNum }} -->
               <a-statistic
                 title=""
-                :precision="6"
+                :precision="4"
                 :value="emissionForm.classDataSum"
                 :valueStyle="{ fontWeight: 'bold', fontSize: '36px' }"
               />
