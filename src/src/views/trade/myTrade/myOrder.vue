@@ -1,13 +1,4 @@
-<!--
- * @Author: jjq
- * @Description: 
- * 
--->
-<!--
- * @Author: jjq
- * @Description: 
- * 
--->
+
 
 
 <template>
@@ -27,7 +18,20 @@
     <a-spin :spinning="dataLoading" :delay="100">
       <a-icon slot="indicator" type="loading" style="font-size: 48px" spin />
       <a-card :bordered="false" style="margin-top: 24px">
-        以下是由您的订单，点击表头按钮可以对表格进行筛选、排序。
+        <!-- 以下是由您的订单，点击表头按钮可以对表格进行筛选、排序。 -->
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <div>以下是由您的订单，点击表头按钮可以对表格进行筛选、排序</div>
+          <div>
+            <a-button
+              type="primary"
+              shape="round"
+              style="border-radius: 9999px"
+              icon="shopping-cart"
+              @click="gotoTradeMarket()"
+              >去交易市场逛逛</a-button
+            >
+          </div>
+        </div>
         <a-divider dashed></a-divider>
         <a-table
           :columns="columns"
@@ -78,7 +82,7 @@
           </template>
 
           <template slot="action" slot-scope="text, record">
-            <a> 详情</a>
+            <a @click="openOrderDetail(record)"> 详情</a>
           </template>
         </a-table>
         <div
@@ -108,6 +112,7 @@
         <!-- 表格区域 -->
       </a-card>
     </a-spin>
+    <orderDetail ref="orderDetailRef"></orderDetail>
   </div>
 </template>
 
@@ -119,11 +124,14 @@ import { MyOrderList } from '@/api/trade'
 import dayjs from 'dayjs'
 import { tradeTypeClass_CN, tradeTypeClass_EN } from '@/config/class/trade/tradeTypeClass'
 
+import orderDetail from '@/views/trade/myTrade/orderDetail.vue'
+
 export default {
   name: 'PreviousReports',
   components: {
     STable,
     info,
+    orderDetail,
   },
   data() {
     return {
@@ -247,6 +255,12 @@ export default {
       this.currentPage = pagination.current
       this.pagination = JSON.parse(JSON.stringify(pagination))
       this.$forceUpdate()
+    },
+    openOrderDetail(record) {
+      this.$refs.orderDetailRef.open(record)
+    },
+    gotoTradeMarket() {
+      this.$router.push({ name: 'tradeMarket' })
     },
   },
   computed: {

@@ -24,7 +24,14 @@
     <a-spin :spinning="dataLoading" :delay="100">
       <a-icon slot="indicator" type="loading" style="font-size: 48px" spin />
       <a-card :bordered="false" style="margin-top: 24px">
-        以下是由您发布的交易，点击表头按钮可以对表格进行筛选、排序。
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <div>以下是由您发布的交易，点击表头按钮可以对表格进行筛选、排序。</div>
+          <div>
+            <a-button type="primary" shape="round" style="border-radius: 9999px" icon="plus" @click="gotoTradePublish()"
+              >发布新交易</a-button
+            >
+          </div>
+        </div>
         <a-divider dashed></a-divider>
         <a-table
           :columns="columns"
@@ -242,6 +249,9 @@ export default {
       this.currentPage = pagination.current
       this.pagination = JSON.parse(JSON.stringify(pagination))
       this.$forceUpdate()
+    },
+    gotoTradePublish() {
+      this.$router.push({ name: 'tradePublish' })
     },
   },
   computed: {
