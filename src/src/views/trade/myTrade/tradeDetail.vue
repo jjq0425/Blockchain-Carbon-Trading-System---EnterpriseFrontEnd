@@ -292,7 +292,7 @@ export default {
         .then(() => {
           // console.log(this.myOrderListSource)
           this.dataLoading = false
-          this.$message.success('获取订单信息成功')
+          this.$message.success('获取订单信息成功，当前共有' + this.myOrderListSource.length + '个已成交订单')
         })
         .catch((err) => {
           this.dataLoading = false
