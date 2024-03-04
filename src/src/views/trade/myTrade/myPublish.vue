@@ -67,25 +67,6 @@
           <template slot="action" slot-scope="text, record">
             <a> 详情</a>
           </template>
-
-          <!-- <a slot="name" slot-scope="text">{{ text }}</a>
-          <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-          <span slot="tags" slot-scope="tags">
-            <a-tag
-              v-for="tag in tags"
-              :key="tag"
-              :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'"
-            >
-              {{ tag.toUpperCase() }}
-            </a-tag>
-          </span>
-          <span slot="action" slot-scope="text, record">
-            <a>Invite 一 {{ record.name }}</a>
-            <a-divider type="vertical" />
-            <a>Delete</a>
-            <a-divider type="vertical" />
-            <a class="ant-dropdown-link"> More actions <a-icon type="down" /> </a>
-          </span> -->
         </a-table>
         <div
           style="
@@ -108,7 +89,7 @@
               style="width: 30%; transform: translateX(150%)"
             ></video>
           </div>
-          <div style="font-weight: 900; font-size: 30px; color: #438bfd">区块链正在守卫您的交易安全</div>
+          <div style="font-weight: 900; font-size: 30px; color: #438bfd">碳贸区块链正在守卫您的交易安全</div>
         </div>
 
         <!-- 表格区域 -->
@@ -138,7 +119,6 @@ export default {
         remainDealNum: 0,
       },
       myPublishListSource: [],
-      myPublishListFilter: [],
 
       pageSize: 10,
       currentPage: 1,
@@ -176,7 +156,7 @@ export default {
           key: 'emission',
           slots: { title: 'emissionTitle' },
           scopedSlots: { customRender: 'emission' },
-          defaultSortOrder: 'emission',
+
           sorter: (a, b) => a.emission - b.emission,
         },
         {
@@ -184,7 +164,7 @@ export default {
           key: 'perEmission',
           slots: { title: 'perEmissionTitle' },
           scopedSlots: { customRender: 'perEmission' },
-          defaultSortOrder: 'descend',
+
           sorter: (a, b) => a.perEmission - b.perEmission,
         },
         {
@@ -220,7 +200,7 @@ export default {
             },
           ],
           onFilter: (value, record) => (record.orderID.length == 0 ? '0' : '1') == value,
-          defaultSortOrder: 'descend',
+
           sorter: (a, b) => a.orderID.length - b.orderID.length,
         },
         {
@@ -243,7 +223,6 @@ export default {
       this.dataLoading = true
       MyPublishTradeList().then((res) => {
         this.myPublishListSource = res.data.tradeListEnterprise
-        this.myPublishListFilter = res.data.tradeListEnterprise
         this.calcuStatistic()
         this.dataLoading = false
       })

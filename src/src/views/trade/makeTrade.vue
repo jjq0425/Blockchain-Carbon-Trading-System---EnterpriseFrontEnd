@@ -163,7 +163,7 @@
             style="width: 30%; transform: translateX(150%)"
           ></video>
         </div>
-        <div style="font-weight: 900; font-size: 30px; color: #438bfd">区块链正在守卫您的交易安全</div>
+        <div style="font-weight: 900; font-size: 30px; color: #438bfd">碳贸区块链正在守卫您的交易安全</div>
       </div>
       <!-- 交易发布表单 -->
     </a-card>

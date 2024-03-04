@@ -296,7 +296,7 @@ export default {
             if (needFilter) {
               setTimeout(() => {
                 this.filterData()
-              }, 500)
+              }, 200)
             }
           }
         })
