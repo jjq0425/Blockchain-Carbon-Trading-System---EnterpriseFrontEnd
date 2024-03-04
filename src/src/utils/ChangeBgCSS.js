@@ -1,13 +1,5 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
+
 const changeBgCSS = function (RouterPosition, EnterpriseClass) {
     document.documentElement.style.setProperty('--base-bg-backgroud', `none`)
     let BGPIC
@@ -24,12 +16,10 @@ const changeBgCSS = function (RouterPosition, EnterpriseClass) {
         BGPIC = require('@/assets/beauty/bg/bg_info.png')
 
     } else {
-        if (EnterpriseClass == 1) {
-            BGPIC = require('@/assets/beauty/bg/bg1.png')
-        } if (EnterpriseClass == 10) {
-            BGPIC = require('@/assets/beauty/bg/bg10.png')
+        if (EnterpriseClass > 0 && EnterpriseClass <= 10) {
+            BGPIC = require(`@/assets/beauty/bg/bg${EnterpriseClass}.png`)
         } else {
-            BGPIC = require('@/assets/beauty/bg/bg1.png')
+            BGPIC = require(`@/assets/beauty/bg/bg1.png`)
         }
 
 

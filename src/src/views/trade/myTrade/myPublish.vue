@@ -54,7 +54,7 @@
             {{ record.emission.toFixed(4) }}
           </template>
 
-          <template slot="perEmissionTitle"> <a-icon type="dollar" /> 交易单价 </template>
+          <template slot="perEmissionTitle"> <a-icon type="pay-circle" /> 交易单价 </template>
           <template slot="perEmission" slot-scope="text, record">
             {{ record.perEmission.toFixed(2) }}
           </template>
@@ -72,7 +72,7 @@
           </template>
 
           <template slot="action" slot-scope="text, record">
-            <a> 详情</a>
+            <a @click="openTradeDetail(record)"> 详情</a>
           </template>
         </a-table>
         <div
@@ -81,7 +81,7 @@
             width: 100%;
             justify-content: center;
             align-items: center;
-            margin-top: 0px;
+            margin-top: 10px;
             padding-top: 10px;
             padding-bottom: 10px;
             border-radius: 999px;
@@ -252,6 +252,9 @@ export default {
     },
     gotoTradePublish() {
       this.$router.push({ name: 'tradePublish' })
+    },
+    openTradeDetail(record) {
+      this.$router.push({ name: 'tradeDetail', params: { tradeInfo: record } })
     },
   },
   computed: {

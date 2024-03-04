@@ -170,7 +170,15 @@ export const asyncRouterMap = [
                 component: () => import('@/views/trade/myTrade/myOrder'),
                 meta: { title: 'menu.trade.myTrade', keepAlive: true, permission: ['trade'], hidden: true, },
               },
+
             ]
+          },
+          {
+            path: '/trade/myTradeDetail',
+            name: 'tradeDetail',
+            component: () => import('@/views/trade/myTrade/tradeDetail'),
+            meta: { title: 'menu.trade.TradeDetail', keepAlive: true, permission: ['trade'] },
+            hidden: true,
           },
           // {
           //   path: '/trade/search',

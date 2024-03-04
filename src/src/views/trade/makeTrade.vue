@@ -257,7 +257,7 @@ export default {
   methods: {
     async initInfo() {
       this.tradeInfo = this.$route.params.tradeInfo
-      console.log(this.tradeInfo)
+      // console.log(this.tradeInfo)
       await store.dispatch('GetInfo')
     },
 

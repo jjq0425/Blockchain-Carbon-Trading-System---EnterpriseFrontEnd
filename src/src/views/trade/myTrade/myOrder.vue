@@ -68,7 +68,7 @@
             {{ record.dealNum.toFixed(4) }}
           </template>
 
-          <template slot="perEmissionTitle"> <a-icon type="dollar" /> 交易单价 </template>
+          <template slot="perEmissionTitle"> <a-icon type="pay-circle" /> 交易单价 </template>
           <template slot="perEmission" slot-scope="text, record">
             {{ record.perEmission.toFixed(2) }}
           </template>
@@ -91,7 +91,7 @@
             width: 100%;
             justify-content: center;
             align-items: center;
-            margin-top: 0px;
+            margin-top: 10px;
             padding-top: 10px;
             padding-bottom: 10px;
             border-radius: 999px;

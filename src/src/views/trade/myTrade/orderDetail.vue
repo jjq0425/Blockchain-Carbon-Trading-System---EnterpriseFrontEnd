@@ -8,10 +8,16 @@
     <a-form-model :model="orderInfo" :label-col="{ span: 9 }" :wrapper-col="{ span: 14 }">
       <a-form-model-item label="甲方">
         {{ orderInfo.publishName }}
+        <a-tag color="cyan" v-if="orderInfo.publishName === enterpriseInfo.enterpriseName"> 您 </a-tag>
       </a-form-model-item>
 
-      <a-form-model-item label="乙方">
-        {{ enterpriseInfo.enterpriseName }} ({{ enterpriseInfo.enterpriseID }}) <a-tag color="cyan"> 您 </a-tag>
+      <a-form-model-item label="乙方" v-if="orderInfo.purchaseName == null">
+        {{ enterpriseInfo.enterpriseName }} ({{ enterpriseInfo.enterpriseID }})
+        <a-tag color="cyan"> 您 </a-tag>
+      </a-form-model-item>
+      <a-form-model-item label="乙方" v-else>
+        {{ orderInfo.purchaseName }}
+        <a-tag color="cyan" v-if="orderInfo.purchaseName == enterpriseInfo.enterpriseName"> 您 </a-tag>
       </a-form-model-item>
       <a-form-model-item label="交易类型" prop="tradeType">
         <a-radio-group v-model="orderInfo.tradeType" disabled>

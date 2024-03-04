@@ -28,6 +28,7 @@ export default {
     'menu.trade.tradePublish': 'Create Trade',
     'menu.trade.makeTrade': 'Make deal',
     'menu.trade.myTrade': 'My Trade',
+    'menu.trade.TradeDetail': 'Trade Detail',
     'menu.trade.table-list': 'Search Table',
     'menu.trade.basic-list': 'Basic List',
     'menu.trade.card-list': 'Card List',
