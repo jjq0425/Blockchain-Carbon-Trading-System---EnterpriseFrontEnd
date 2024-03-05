@@ -53,7 +53,7 @@
             </div>
             <!-- 默认是第零层 -->
             <div v-if="currentFloor == 0">
-              <a-result title="个性化填报模板" sub-title="使用指南（以发电企业为例）">
+              <a-result title="个性化填报模板" sub-title="设计后点击右上角导出模板即可在填报时使用">
                 <template #icon>
                   <img src="@/assets/pages/user/account/template/templateGuide.png" alt="" style="width: 400px" />
                 </template>
