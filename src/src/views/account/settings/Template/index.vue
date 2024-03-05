@@ -7,9 +7,22 @@
   
     </a-list> -->
   <div>
-    <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 20px">
-      <div></div>
-      <div style="width: 30%">
+    <div
+      style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #dbe4ff, #d0ebff);
+        padding: 10px 30px;
+        border-radius: 999px;
+      "
+    >
+      <div style="color: #134089; font-size: 12px">
+        设计个性化模板后，点击右侧按钮即可导出模板，在填报时进行导入，方便快捷。您也可以导入已有模板进行二次修改、二次编辑。
+      </div>
+      <div style="width: 30%; margin-left: 40px">
         <a-button-group>
           <a-tooltip>
             <template slot="title"> 导出模板以便您下次填报时可直接使用 </template>
