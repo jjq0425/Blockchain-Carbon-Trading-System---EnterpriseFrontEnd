@@ -108,7 +108,7 @@
     >
       <span class="popover-wrapper" style="min-width: 80px">
         <a-popover
-          title="表单校验信息"
+          :title="$t('info.infoSubmission.footer.errorList.title')"
           overlayClassName="antd-pro-pages-forms-style-errorPopover"
           trigger="hover"
           :getPopupContainer="(trigger) => trigger.parentNode"
@@ -167,7 +167,7 @@
       >
 
       <a-popconfirm
-        title="确认提交数据？提交后将暂时无法修改"
+        :title="$t('modal.confirm.confirmSubmit.content')"
         :ok-text="$t('modal.btn.confirm')"
         :cancel-text="$t('modal.btn.cancel')"
         @confirm="validate"
@@ -207,18 +207,6 @@ import { Submit, GetReport } from '@/api/info'
 //   dateRange2: '生效日期',
 //   type2: '任务类型',
 // }
-const fieldLabels = [
-  {
-    checkComfirm: '填报任务确认框',
-  },
-  {},
-  {
-    fileListsTmp: '数据来源文件上传框',
-  },
-  {
-    fileListsTmp: '核算报告文件上传框',
-  },
-]
 
 export default {
   name: 'AdvancedForm',
@@ -236,6 +224,18 @@ export default {
   },
   data() {
     return {
+      fieldLabels: [
+        {
+          checkComfirm: this.$t('info.infoSubmission.footer.errorList.field.checkComfirm'),
+        },
+        {},
+        {
+          fileListsTmp: this.$t('info.infoSubmission.footer.errorList.field.fileListsTmp_source'),
+        },
+        {
+          fileListsTmp: this.$t('info.infoSubmission.footer.errorList.field.fileListsTmp_report'),
+        },
+      ],
       NowStep: 0,
       taskInfo: {},
       submitData: {},
@@ -266,7 +266,7 @@ export default {
           this.$nextTick(() => {
             this.dataLoading = false
           })
-          this.$message.success('获取历史数据成功')
+          this.$message.success(this.$t('result.success.getHistorySuccess'))
         }, 900)
         this.$refs.taskComfirm.passSubmitType('edit')
       })
@@ -293,7 +293,7 @@ export default {
         .map((key) => ({
           key: key,
           message: errors[key][0],
-          fieldLabel: fieldLabels[this.NowStep][key],
+          fieldLabel: this.fieldLabels[this.NowStep][key],
         }))
     },
     scrollToField(fieldKey) {
@@ -422,10 +422,10 @@ export default {
     SubmitDataNow() {
       Submit(this.submitData).then((res) => {
         if ((res.success = true)) {
-          this.$message.success('提交成功！')
+          this.$message.success(this.$t('result.success.submitSuccess'))
           this.goTonextPage()
         } else {
-          this.$message.error('提交失败！请重新提交')
+          this.$message.error(this.$t('result.fail.submitErrorAndTryAgain'))
         }
       })
     },

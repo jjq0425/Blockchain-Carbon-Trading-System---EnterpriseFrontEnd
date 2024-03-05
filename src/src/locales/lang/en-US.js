@@ -14,6 +14,7 @@ import account from './en-US/account'
 import modal from './en-US/modal'
 
 import info from './en-US/info'
+import trade from './en-US/trade'
 
 const components = {
   antLocale: antdEnUS,
@@ -37,5 +38,6 @@ export default {
   ...result,
   ...account,
   ...modal,
-  ...info
+  ...info,
+  ...trade
 }

@@ -1,7 +1,5 @@
 <template>
-  <page-header-wrapper
-    content="欢迎来到交易市场，我们为您打造了一个安全可靠的碳交易平台。在这里，区块链技术如同一条忠诚的守护者，每笔交易都经过它的严格监督，确保信息不被泄露，让您在交易中享受到铜墙铁壁般的安全保障。"
-  >
+  <page-header-wrapper :content="$t('trade.market.header')">
     <!-- :tab-list="tabList"
     :tab-active-key="tabActiveKey"
     :tab-change="
@@ -43,7 +41,7 @@
           >
             <a-col :flex="1">
               <a-statistic
-                title="您当前剩余碳排量"
+                :title="$t('trade.market.header.infoCard.remainEmission')"
                 :value="enterpriseInfo.remainEmission.toFixed(4)"
                 style="margin-right: 50px"
               >
@@ -53,7 +51,11 @@
               </a-statistic>
             </a-col>
             <a-col :flex="1">
-              <a-statistic title="您当前剩余碳币" :value="enterpriseInfo.coCoin.toFixed(2)" style="margin-right: 50px">
+              <a-statistic
+                :title="$t('trade.market.header.infoCard.remainCoCoin')"
+                :value="enterpriseInfo.coCoin.toFixed(2)"
+                style="margin-right: 50px"
+              >
                 <!-- <template #suffix>
                   <a-icon type="like" />
                 </template> -->
@@ -71,41 +73,65 @@
             >
               <a-row type="flex">
                 <a-col :flex="1">
-                  <a-form-model-item label="排序顺序" prop="sort">
+                  <a-form-model-item :label="$t('trade.market.header.filter.sort.label')" prop="sort">
                     <a-select default-value="random" v-model="searchForm.sort">
                       <a-select-opt-group>
-                        <span slot="label"><a-icon type="retweet" /> 默认</span>
-                        <a-select-option value="random"> 随机排序 </a-select-option>
+                        <span slot="label"
+                          ><a-icon type="retweet" /> {{ $t('trade.market.header.filter.sort.group.default') }}</span
+                        >
+                        <a-select-option value="random">
+                          {{ $t('trade.market.header.filter.sort.random') }}
+                        </a-select-option>
                       </a-select-opt-group>
                       <a-select-opt-group>
-                        <span slot="label"><a-icon type="pay-circle" /> 按价格</span>
-                        <a-select-option value="HighPriceHighRank"> 高价优先 </a-select-option>
-                        <a-select-option value="LowPriceHighRank"> 低价优先 </a-select-option>
+                        <span slot="label"
+                          ><a-icon type="pay-circle" /> {{ $t('trade.market.header.filter.sort.group.Byprice') }}</span
+                        >
+                        <a-select-option value="HighPriceHighRank">
+                          {{ $t('trade.market.header.filter.sort.HighPriceHighRank') }}
+                        </a-select-option>
+                        <a-select-option value="LowPriceHighRank">
+                          {{ $t('trade.market.header.filter.sort.LowPriceHighRank') }}
+                        </a-select-option>
                       </a-select-opt-group>
                       <a-select-opt-group>
-                        <span slot="label"><a-icon type="gold" /> 按余量</span>
-                        <a-select-option value="HighStockHighRank"> 量大优先 </a-select-option>
-                        <a-select-option value="LowStockHighRank"> 量少优先 </a-select-option>
+                        <span slot="label"
+                          ><a-icon type="gold" /> {{ $t('trade.market.header.filter.sort.group.Bystock') }}</span
+                        >
+                        <a-select-option value="HighStockHighRank"
+                          >{{ $t('trade.market.header.filter.sort.HighStockHighRank') }}
+                        </a-select-option>
+                        <a-select-option value="LowStockHighRank">
+                          {{ $t('trade.market.header.filter.sort.LowStockHighRank') }}
+                        </a-select-option>
                       </a-select-opt-group>
                     </a-select>
                   </a-form-model-item>
                 </a-col>
                 <a-col :flex="1" style="margin-left: 30px">
-                  <a-form-model-item label="交易类型" prop="tradeTypeShow">
+                  <a-form-model-item :label="$t('trade.market.header.filter.tradeType.label')" prop="tradeTypeShow">
                     <a-select default-value="all" v-model="searchForm.tradeTypeShow">
                       <a-select-option value="all">
-                        全&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;部
+                        {{ $t('trade.market.header.filter.tradeType.all') }}
                       </a-select-option>
-                      <a-select-option value="SOLD"> 只看出售 </a-select-option>
-                      <a-select-option value="SALE"> 只看收购 </a-select-option>
+                      <a-select-option value="SOLD">
+                        {{ $t('trade.market.header.filter.tradeType.SOLD') }}
+                      </a-select-option>
+                      <a-select-option value="SALE">
+                        {{ $t('trade.market.header.filter.tradeType.SALE') }}
+                      </a-select-option>
                     </a-select>
                   </a-form-model-item>
                 </a-col>
               </a-row>
               <a-row>
                 <a-col :style="{ textAlign: 'right' }">
-                  <a-button type="primary" html-type="submit" style="color: white" @click="searchNow"> 搜索 </a-button>
-                  <a-button :style="{ marginLeft: '8px' }" @click="searchOptionReset"> 重置刷新</a-button>
+                  <a-button type="primary" html-type="submit" style="color: white" @click="searchNow">
+                    {{ $t('trade.market.header.filter.btn.search') }}
+                  </a-button>
+                  <a-button :style="{ marginLeft: '8px' }" @click="searchOptionReset">
+                    {{ $t('trade.market.header.filter.btn.resetRefresh') }}</a-button
+                  >
                 </a-col>
               </a-row>
             </a-form-model>
@@ -142,7 +168,7 @@
                         lang.includes('zh') ? tradeTypeClass_CN[item.tradeType] : tradeTypeClass_EN[item.tradeType]
                       }}</a-tag>
                       <div style="font-size: 10px; font-weight: 200; color: grey; word-wrap: break-word">
-                        {{ item.publishName }}发布
+                        {{ item.publishName }}{{ $t('trade.market.card.publish') }}
                       </div>
                     </div>
                   </div>
@@ -174,16 +200,27 @@
                           }"
                         >
                           <template #suffix>
-                            <div style="font-size: 10px; font-weight: 200; color: grey">/每tCO₂</div>
+                            <div style="font-size: 10px; font-weight: 200; color: grey">
+                              /{{ $t('trade.market.card.per') }} tCO₂
+                            </div>
                           </template>
                         </a-statistic>
-                        <div>单价 <a-icon type="pay-circle" style="color: grey; margin-left: 0px" /></div>
+                        <div>
+                          {{ $t('trade.market.card.perPrice') }}
+                          <a-icon type="pay-circle" style="color: grey; margin-left: 0px" />
+                        </div>
                       </div>
                     </template>
                   </div>
                 </a-card-meta>
                 <template class="ant-card-actions" slot="actions" style="z-index: 10">
-                  <div>剩余{{ item.tradeType == 'SALE' ? '需求' : '库存' }}：{{ item.emission.toFixed(4) }} tCO₂</div>
+                  <div>
+                    {{ $t('trade.market.card.remain')
+                    }}{{ item.tradeType == 'SALE' ? $t('trade.market.card.need') : $t('trade.market.card.stock') }}：{{
+                      item.emission.toFixed(4)
+                    }}
+                    tCO₂
+                  </div>
                 </template>
               </a-card>
             </template>
@@ -197,7 +234,12 @@
         :page-size="page.pageSize"
         v-model="page.pageNow"
         @change="pageChange"
-        :show-total="(total, range) => `记录${range[0]}-${range[1]}  (共${total} 条记录)`"
+        :show-total="
+          (total, range) =>
+            `${$t('trade.market.footer.record')}${range[0]}-${range[1]}  (${$t('trade.market.footer.sum')}${total} ${$t(
+              'trade.market.footer.record'
+            )})`
+        "
       />
     </a-card>
     <!-- <pdfTest ref="pdfTest"></pdfTest> -->
@@ -206,7 +248,7 @@
     </a-back-top> -->
     <div style="position: fixed; right: 50px; bottom: 50px">
       <a-tooltip>
-        <template slot="title"> 发布交易 </template>
+        <template slot="title"> {{ $t('menu.trade.tradePublish') }} </template>
         <a-button
           type="primary"
           :style="{
@@ -301,7 +343,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.$message.warning('获取数据失败')
+          this.$message.warning(this.$t('result.fail.getError'))
           this.dataLoading = false
         })
     },

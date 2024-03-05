@@ -1,13 +1,4 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
 import antd from 'ant-design-vue/es/locale-provider/zh_CN'
 import momentCN from 'moment/locale/zh-cn'
 import global from './zh-CN/global'
@@ -22,7 +13,9 @@ import account from './zh-CN/account'
 import modal from './zh-CN/modal'
 
 
+
 import info from './zh-CN/info'
+import trade from './zh-CN/trade'
 
 const components = {
   antLocale: antd,
@@ -46,5 +39,6 @@ export default {
   ...result,
   ...account,
   ...modal,
-  ...info
+  ...info,
+  ...trade
 }

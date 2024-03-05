@@ -1,13 +1,15 @@
-
 {
-  "modal.notice.title": "Notice",
+  "modal.btn.back": "Return",
+  "modal.btn.cancel": "Cancel",
+  "modal.btn.close": "Close",
+  "modal.btn.confirm": "Confirm",
+  "modal.btn.lastPage": "Previous page",
+  "modal.btn.nextPage": "Next page",
+  "modal.btn.ok2": "ok",
+  "modal.btn.return": "Return",
+  "modal.btn.submit": "Submit",
+  "modal.confirm.confirmSubmit.content": "Confirm submission of data? After submission, it will be unable to be modified",
   "modal.confirm.title": "Please confirm",
   "modal.detail.title": "Detail",
-  "modal.btn.cancel": "Cancel",
-  "modal.btn.confirm": "Confirm",
-  "modal.btn.close": "Close",
-  "modal.btn.ok2": "ok",
-  "modal.btn.submit": "Submit",
-  "modal.btn.nextPage": "Next page",
-  "modal.btn.lastPage": "Previous page"
+  "modal.notice.title": "Notice"
 }

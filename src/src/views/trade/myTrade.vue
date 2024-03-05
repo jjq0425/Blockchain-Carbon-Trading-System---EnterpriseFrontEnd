@@ -1,3 +1,8 @@
+<!--
+ * @Author: jjq
+ * @Description: 
+ * 
+-->
 
 
 <template>
@@ -6,7 +11,7 @@
     :tab-list="tabList"
     :tab-active-key="tabActiveKey"
     :tab-change="tabChange"
-    content="欢迎来到“我的交易”页面，这里是您查询之前发布和订购碳排放量交易的页面，您可以快速管理您的交易信息，让您轻松参与碳交易市场，实现低碳发展。"
+    :content="$t('trade.myTrade.tab.header')"
   >
     <template v-slot:extraContent>
       <transition-group
@@ -55,8 +60,8 @@ export default {
   },
   data() {
     this.tabList = [
-      { key: 'myPublish', tab: '我的发布' },
-      { key: 'myOrder', tab: '我的订单' },
+      { key: 'myPublish', tab: this.$t('trade.myTrade.tab.myPublish') },
+      { key: 'myOrder', tab: this.$t('trade.myTrade.tab.myOrder') },
     ]
     return {
       tabActiveKey: 'myPublish',

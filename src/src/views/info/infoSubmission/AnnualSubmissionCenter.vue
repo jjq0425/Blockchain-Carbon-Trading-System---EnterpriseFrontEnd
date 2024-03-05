@@ -98,7 +98,7 @@
 
     <a-card
       class="card info-submission-requirement-card"
-      title="数据上报须知"
+      :title="$t('info.submissionCenter.updateInfoShouldNotice')"
       :bordered="false"
       style="min-height: 30px"
       v-if="lang.includes('zh')"

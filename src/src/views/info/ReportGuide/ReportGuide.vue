@@ -6,9 +6,7 @@
 
 <template>
   <!-- hidden PageHeaderWrapper title demo -->
-  <page-header-wrapper
-    content="欢迎来到“碳排放量填报指南”页面，这里为您提供了一整套详尽的填报步骤和实用技巧，助您轻松完成碳排放量填报任务。遵循本指南，让我们共同为绿色发展、低碳未来努力。"
-  >
+  <page-header-wrapper :content="$t('info.ReportGuide.header')">
     <template v-slot:extraContent>
       <transition-group
         appear
@@ -28,7 +26,7 @@
       <div style="height: 30px"></div>
     </template>
 
-    <a-card :body-style="{ padding: '10px' }" :bordered="false" title="填报数据架构">
+    <a-card :body-style="{ padding: '10px' }" :bordered="false" :title="$t('info.ReportGuide.shu-ju-jia-gou')">
       <div>
         <Vue2OrgTree
           :data="treeData_LAST"
@@ -37,7 +35,7 @@
           collapsable
           style="margin: 0 auto; width: 100%; overflow-x: scroll"
         ></Vue2OrgTree>
-        <a-alert message="点击 + 可以展开树状图，查看报送数据详细架构" style="text-align: center" type="info" banner />
+        <a-alert :message="$t('info.ReportGuide.shu-ju-jia-gou.info')" style="text-align: center" type="info" banner />
       </div>
     </a-card>
 
@@ -92,7 +90,7 @@
           <div class="question_Card" style="padding: 20px">
             <div style="margin-bottom: 30px" v-for="(item, index) in qANDa" :key="index">
               <div style="font-weight: bold">
-                <span style="font-size: 16px; color: #438bfd">问题：</span>{{ item.q }}
+                <span style="font-size: 16px; color: #438bfd">{{ $t('info.ReportGuide.question') }}：</span>{{ item.q }}
               </div>
               <div style="margin-top: 5px">
                 {{ item.a }}
@@ -174,28 +172,28 @@ export default {
 
       qANDa: [
         {
-          q: '集团公司与子公司在同一个工业园区内，如何处理？',
-          a: '子公司通常是独立的法人单位或独立的核算单位，需要单独作为报告主体参加碳排放报告核查工作。集团公司需要留存转供凭证，计算各自企业法人边界内的燃料及原材料消耗的活动数据。',
+          q: this.$t('info.ReportGuide.question.1.q'),
+          a: this.$t('info.ReportGuide.question.1.a'),
         },
         {
-          q: '企业碳排放核算范围应如何确定？',
-          a: '应根据企业生产运营的实际情况确定碳排放核算范围，包括所有产生温室气体排放的设施和活动。范围确定后，需在数据质量控制计划中明确，并在排放报告中详细说明。',
+          q: this.$t('info.ReportGuide.question.2.q'),
+          a: this.$t('info.ReportGuide.question.2.a'),
         },
         {
-          q: '碳排放核算中的排放因子是什么？如何获取',
-          a: '排放因子是指将某一活动水平数据转换为碳排放量的系数。例如，化石燃料消耗的排放因子是将化石燃料消耗量转换为二氧化碳排放量的系数。排放因子数据主要来源于国家和行业公布的缺省值。如果企业具备条件，也可自行检测获得。在缺乏实测值的情况下，应使用公布的缺省值。',
+          q: this.$t('info.ReportGuide.question.3.q'),
+          a: this.$t('info.ReportGuide.question.3.a'),
         },
         {
-          q: '碳排放核算中的活动水平是什么？如何获取',
-          a: '活动水平是指企业在一定时间内通过某一排放源产生的温室气体排放量。例如，化石燃料燃烧活动水平是指企业通过燃烧化石燃料产生的二氧化碳排放量。活动水平数据来源于企业对排放源的实际监测。企业需要按照数据质量控制计划的要求，安装和使用监测设备，获取相关排放参数的实测数据。',
+          q: this.$t('info.ReportGuide.question.4.q'),
+          a: this.$t('info.ReportGuide.question.4.a'),
         },
         {
-          q: '碳排放核算的结果应保留几位小数？',
-          a: '根据不同行业的要求，一般保留到小数点后两位，个别行业可能有更详细的要求。建议在排放报告中明确说明所采用的小数位数。本系统提供至多四位小数保留',
+          q: this.$t('info.ReportGuide.question.5.q'),
+          a: this.$t('info.ReportGuide.question.5.a'),
         },
         {
-          q: '第三方机构如何对企业碳排放核算进行核查？',
-          a: '第三方机构对企业碳排放核算进行核查时，主要核查企业排放边界的合理性、数据质量控制计划执行情况、活动因子和排放因子选择的合理性、监测设备准确性、数据处理方法的规范性，以及核算结果的可靠性等。',
+          q: this.$t('info.ReportGuide.question.6.q'),
+          a: this.$t('info.ReportGuide.question.6.a'),
         },
       ],
     }
