@@ -1,3 +1,8 @@
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 import request from '@/utils/request'
 
@@ -20,6 +25,7 @@ const publicApi = {
  * 获取填报任务列表
  */
 export function UploadFileAPI() {
+    let token = storage.get(ACCESS_TOKEN)
     if (token == null) {
         token = storage.get(ACCESS_TOKEN)
         // console.log(token)

@@ -24,6 +24,7 @@ const tradeApi = {
 }
 
 export function TradeList() {
+    let token = localStorage.getItem('ACCESS_TOKEN')
     return request({
         url: tradeApi.TradeList,
         method: 'post',
@@ -37,6 +38,7 @@ export function TradeList() {
 
 
 export function TradePublish(params) {
+    let token = localStorage.getItem('ACCESS_TOKEN')
     return request({
         url: tradeApi.TradePublish,
         method: 'post',
@@ -49,6 +51,7 @@ export function TradePublish(params) {
 }
 
 export function MakeTrade(params) {
+    let token = localStorage.getItem('ACCESS_TOKEN')
     return request({
         url: tradeApi.MakeTrade,
         method: 'post',
@@ -61,6 +64,7 @@ export function MakeTrade(params) {
 }
 
 export function MyPublishTradeList() {
+    let token = localStorage.getItem('ACCESS_TOKEN')
     return request({
         url: tradeApi.MyPublishTradeList,
         method: 'post',
@@ -75,6 +79,7 @@ export function MyPublishTradeList() {
 
 
 export function MyOrderList() {
+    let token = localStorage.getItem('ACCESS_TOKEN')
     return request({
         url: tradeApi.MyOrderList,
         method: 'post',
@@ -86,6 +91,7 @@ export function MyOrderList() {
 }
 
 export function OrderDetail(orderID) {
+    let token = localStorage.getItem('ACCESS_TOKEN')
     return request({
         url: tradeApi.OrderDetail,
         method: 'post',

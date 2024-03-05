@@ -8,6 +8,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 import request from '@/utils/request'
 
@@ -32,7 +37,7 @@ const infoApi = {
  * 获取填报任务列表
  */
 export function GetTaskList() {
-
+    let token = storage.get(ACCESS_TOKEN)
     return request({
         url: infoApi.TaskList,
         method: 'post',
@@ -50,6 +55,7 @@ export function GetTaskList() {
  */
 
 export function Submit(parameter) {
+    let token = storage.get(ACCESS_TOKEN)
     return request({
         url: infoApi.TaskSubmit,
         method: 'post',
@@ -61,6 +67,7 @@ export function Submit(parameter) {
 }
 
 export function GetReport(parameter) {
+    let token = storage.get(ACCESS_TOKEN)
     return request({
         url: infoApi.GetReport,
         method: 'post',
