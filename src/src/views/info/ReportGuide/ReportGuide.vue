@@ -133,7 +133,7 @@
             margin-top: 20px;
             width: 100%;
             height: 140px;
-            background: linear-gradient(135deg, #ce9ffc, #7367f0);
+            background: linear-gradient(45deg, #20c997, #339af0);
             border-radius: 9px;
             color: white;
             text-align: center;
