@@ -8,7 +8,13 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 export default {
+  'user.login': 'userLogin',
   'user.login.userName': 'userName',
   'user.login.password': 'password',
   'user.login.username.placeholder': 'Please enter your company account',

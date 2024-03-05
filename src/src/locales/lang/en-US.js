@@ -1,13 +1,4 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
 import antdEnUS from 'ant-design-vue/es/locale-provider/en_US'
 import momentEU from 'moment/locale/eu'
 import global from './en-US/global'

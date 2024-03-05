@@ -9,6 +9,7 @@ export const template_10 = {
         {
             "className": "化石燃料燃烧", //大类名
             "classSort": 1, //大类排序，1为最先。数字越大越靠后，不写0
+            "canAdd": true,
             "classDataSum": 0.00, //大类累计值，企业前端计算出来，=各个小类classDataSum求和
             "children": [
                 {
@@ -2341,6 +2342,7 @@ export const template_10 = {
         {
             "className": "生物质混合燃料燃烧", //大类名
             "classSort": 2, //大类排序，1为最先。数字越大越靠后，不写0
+            "canAdd": false,
             "classDataSum": 0.00, //大类累计值，企业前端计算出来，=各个小类classDataSum求和
             "children": [
                 {
@@ -2568,6 +2570,7 @@ export const template_10 = {
         {
             "className": "净购入电力、热力", //大类名
             "classSort": 3, //大类排序，1为最先。数字越大越靠后，不写0
+            "canAdd": false,
             "classDataSum": 0.00, //大类累计值，企业前端计算出来，=各个小类classDataSum求和
             "children": [
                 {
