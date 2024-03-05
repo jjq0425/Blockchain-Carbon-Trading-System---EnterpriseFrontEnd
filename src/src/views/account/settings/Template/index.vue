@@ -12,13 +12,13 @@
       <div style="width: 30%">
         <a-button-group>
           <a-tooltip>
-            <template slot="title"> 临时性导出数据以便您下次填报时可直接使用 </template>
-            <a-button icon="cloud-download" @click="exportData"> 导出数据 </a-button>
+            <template slot="title"> 导出模板以便您下次填报时可直接使用 </template>
+            <a-button icon="cloud-download" @click="exportData"> 导出模板 </a-button>
           </a-tooltip>
 
           <a-tooltip>
-            <template slot="title"> 将临时导出的数据重新导入，您也可以导入您自定义的模板 </template>
-            <a-button icon="cloud-upload" @click="importData" v-if="submitType != 'detail'"> 导入数据 </a-button>
+            <template slot="title"> 将导出的模板/数据重新导入，然后您可以对模板进行修改 </template>
+            <a-button icon="cloud-upload" @click="importData" v-if="submitType != 'detail'"> 导入模板 </a-button>
           </a-tooltip>
           <input type="file" @change="loadTextFromFile" id="txtUpload" style="display: none" />
         </a-button-group>
@@ -364,7 +364,6 @@ export default {
         for (let b = 0; b < treeD[a].children.length; b++) {
           treeD[a].children[b].classSort = b + 1
           treeD[a].children[b].classDataSum = 0
-          treeD[a].children[b].classDataSum = 0
           treeD[a].children[b].activityFactorNum = 0
           treeD[a].children[b].EmissionFactorNum = 0
           for (let i = 0; i < treeD[a].children[b].activityFactor.length; i++) {
@@ -385,6 +384,7 @@ export default {
           delete treeD[a].children[b].idx
         }
       }
+      console.log(treeD)
       return treeD
     },
 
@@ -432,6 +432,7 @@ export default {
         // alert('您的浏览器不支持FileReader接口')
       }
       this.$message.loading({ content: '数据解析中...', key: 'importData' })
+      e.target.value = '' //文件置空，传重复的文件也会导入
       setTimeout(() => {
         reader.onload = (e) => this.$emit('load', this.dealFile(e.target.result))
         reader.readAsText(file, 'utf-8')
@@ -439,21 +440,21 @@ export default {
     },
     dealFile(item) {
       const dcStr = Base64.decode(item) //加密
-      // try {
-      const dcObj = JSON.parse(dcStr)
-      let res = {
-        detail: dcObj,
-      }
-      this.treeData = []
-      this.expandedKeys = []
-      setTimeout(() => {
-        this.initTree(true, res)
-      }, 200)
+      try {
+        const dcObj = JSON.parse(dcStr)
+        let res = {
+          detail: dcObj,
+        }
+        this.treeData = []
+        this.expandedKeys = []
+        setTimeout(() => {
+          this.initTree(true, res)
+        }, 200)
 
-      this.$message.success({ content: '数据解析成功', key: 'importData' }, 1)
-      // } catch {
-      //   this.$message.warning({ content: '数据解析失败,请勿修改元数据', key: 'importData' })
-      // }
+        this.$message.success({ content: '数据解析成功', key: 'importData' }, 1)
+      } catch {
+        this.$message.warning({ content: '数据解析失败,请勿修改元数据', key: 'importData' })
+      }
       return
       // console.log(dcObj)
     },

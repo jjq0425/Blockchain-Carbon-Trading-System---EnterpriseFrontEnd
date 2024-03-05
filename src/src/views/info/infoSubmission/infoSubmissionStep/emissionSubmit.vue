@@ -305,6 +305,7 @@ export default {
         // alert('您的浏览器不支持FileReader接口')
       }
       this.$message.loading({ content: '数据解析中...', key: 'importData' })
+      e.target.value = '' //文件置空，传重复的文件也会导入
       setTimeout(() => {
         reader.onload = (e) => this.$emit('load', this.dealFile(e.target.result))
         reader.readAsText(file, 'utf-8')
@@ -312,20 +313,20 @@ export default {
     },
     dealFile(item) {
       const dcStr = Base64.decode(item) //加密
-      // try {
-      const dcObj = JSON.parse(dcStr)
-      this.dataSource.detail = dcObj
-      for (let i = 0; i < this.dataSource.detail.length; i++) {
-        let ref = eval('this.$refs.emissionSubmitTableRef' + i)[0]
-        ref.initTable(true, this.dataSource.detail[i])
-      }
+      try {
+        const dcObj = JSON.parse(dcStr)
+        this.dataSource.detail = dcObj
+        for (let i = 0; i < this.dataSource.detail.length; i++) {
+          let ref = eval('this.$refs.emissionSubmitTableRef' + i)[0]
+          ref.initTable(true, this.dataSource.detail[i])
+        }
 
-      this.reconcludeSum()
-      this.$forceUpdate()
-      this.$message.success({ content: '数据解析成功', key: 'importData' }, 1)
-      // } catch {
-      //   this.$message.warning({ content: '数据解析失败,请勿修改元数据', key: 'importData' })
-      // }
+        this.reconcludeSum()
+        this.$forceUpdate()
+        this.$message.success({ content: '数据解析成功', key: 'importData' }, 1)
+      } catch {
+        this.$message.warning({ content: '数据解析失败,请勿修改元数据', key: 'importData' }, 1)
+      }
       return
       // console.log(dcObj)
     },
