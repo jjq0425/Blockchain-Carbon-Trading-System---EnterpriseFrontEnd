@@ -7,7 +7,7 @@
 <template>
   <!-- hidden PageHeaderWrapper title demo -->
   <page-header-wrapper
-    content="在这里，您可以轻松查看过去的碳排放报告情况，包括排放量、来源和时间等关键信息，助您更好地掌握碳排放趋势，制定有效的碳减排策略。立即探索我们的碳排放历史数据页面，为您的环保事业增添力量！"
+    content="欢迎来到“碳排放量填报指南”页面，这里为您提供了一整套详尽的填报步骤和实用技巧，助您轻松完成碳排放量填报任务。遵循本指南，让我们共同为绿色发展、低碳未来努力。"
   >
     <template v-slot:extraContent>
       <transition-group

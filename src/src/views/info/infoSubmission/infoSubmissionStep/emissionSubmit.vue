@@ -82,10 +82,28 @@
         >
           <span slot="label" slot-scope="{ value }">{{ value }}</span>
         </a-checkbox-group>
+        <a-button-group>
+          <a-tooltip>
+            <template slot="title"> 临时性导出数据以便您下次填报时可直接使用 </template>
+            <a-button icon="cloud-download" @click="exportData"> 导出数据 </a-button>
+          </a-tooltip>
+
+          <a-tooltip>
+            <template slot="title"> 将临时导出的数据重新导入，您也可以导入您自定义的模板 </template>
+            <a-button icon="cloud-upload" @click="importData"> 导入数据 </a-button>
+          </a-tooltip>
+          <input type="file" @change="loadTextFromFile" id="txtUpload" style="display: none" />
+        </a-button-group>
       </div>
       <a-tabs tab-position="top" default-active-key="0">
-        <a-tab-pane v-for="(name, idx) in MainClassName.length" :key="`tab_${idx}`" :tab="MainClassName[idx]">
+        <a-tab-pane
+          v-for="(name, idx) in MainClassName.length"
+          :key="`tab_${idx}`"
+          :tab="MainClassName[idx]"
+          :forceRender="true"
+        >
           <emission-submit-table
+            :ref="`emissionSubmitTableRef` + idx"
             :submitType="submitType"
             :tableIdx="idx"
             :classdata="dataSource.detail[idx]"
@@ -125,6 +143,11 @@ import emissionSubmitTable from './emissionSubmitCompnent/emissionSubmitTable.vu
 import { ScrollNumber } from 'vue2-scroll-number'
 import store from '@/store'
 import dataSourceQuestionModal from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/dataSourceQuestionModal'
+import { saveAs } from 'file-saver'
+import dayjs from 'dayjs'
+
+const Base64 = require('js-base64').Base64
+
 export default {
   name: 'emissionSubmit',
   data() {
@@ -231,6 +254,80 @@ export default {
       this.dataSource = JSON.parse(JSON.stringify(submitData))
       this.submitType = type
       this.initTable()
+    },
+
+    /**
+     * 导入导出数据
+     */
+
+    exportData() {
+      this.$message.loading({ content: '导出数据中...', key: 'exportData' })
+      setTimeout(() => {
+        const exStr = Base64.encode(JSON.stringify(this.dataSource.detail)) //加密
+        const file = new File(
+          [exStr],
+          `${dayjs().format('YYYY-MM-DD_HH-MM-ss')}--${this.dataSource.taskYear}年度上报数据--临时存储(切勿修改).json`,
+          {
+            type: 'text/plain;charset=utf-8',
+          }
+        )
+        saveAs(file)
+        this.$message.success({ content: '保存成功,请勿修改元数据', key: 'exportData' })
+      }, 500)
+    },
+    importData() {
+      this.$confirm({
+        title: this.$t('modal.notice.title'),
+        content: '注意！导入数据后将覆盖原有数据，确认继续吗？',
+        okType: 'danger',
+        onOk() {
+          document.getElementById('txtUpload').click()
+          return new Promise((resolve, reject) => {
+            // console.log('aa')
+
+            resolve()
+          })
+        },
+        onCancel() {},
+      })
+    },
+    loadTextFromFile(e) {
+      const file = e.target.files[0]
+      let name = file.name.split('.').splice(-1).toString()
+      if (name !== 'json') {
+        this.$message.warning({ content: '文件类型错误,请重新选择文件', key: 'importData' })
+        return
+      }
+      const reader = new FileReader()
+      if (typeof FileReader === 'undefined') {
+        this.$message.warning({ content: '您的浏览器不支持FileReader接口', key: 'importData' })
+        return
+        // alert('您的浏览器不支持FileReader接口')
+      }
+      this.$message.loading({ content: '数据解析中...', key: 'importData' })
+      setTimeout(() => {
+        reader.onload = (e) => this.$emit('load', this.dealFile(e.target.result))
+        reader.readAsText(file, 'utf-8')
+      }, 500)
+    },
+    dealFile(item) {
+      const dcStr = Base64.decode(item) //加密
+      // try {
+      const dcObj = JSON.parse(dcStr)
+      this.dataSource.detail = dcObj
+      for (let i = 0; i < this.dataSource.detail.length; i++) {
+        let ref = eval('this.$refs.emissionSubmitTableRef' + i)[0]
+        ref.initTable(true, this.dataSource.detail[i])
+      }
+
+      this.reconcludeSum()
+      this.$forceUpdate()
+      this.$message.success({ content: '数据解析成功', key: 'importData' }, 1)
+      // } catch {
+      //   this.$message.warning({ content: '数据解析失败,请勿修改元数据', key: 'importData' })
+      // }
+      return
+      // console.log(dcObj)
     },
     // OLD
     // newMember() {

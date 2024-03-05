@@ -177,8 +177,13 @@ export default {
     this.initTable()
   },
   methods: {
-    initTable() {
-      this.tableData = this.classdata.children
+    initTable(useSource = false, source = {}) {
+      if (!useSource) {
+        this.tableData = this.classdata.children
+      } else {
+        this.tableData = source.children
+        this.classdata = source
+      }
       this.columns = ConstructColumns(this.tableData).Columns
       this.colkey = ConstructColumns(this.tableData).ColKey
       // console.log(this.colkey, this.columns)
