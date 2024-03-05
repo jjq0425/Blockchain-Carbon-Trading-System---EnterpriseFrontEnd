@@ -53,9 +53,9 @@
             </div>
             <!-- 默认是第零层 -->
             <div v-if="currentFloor == 0">
-              <a-result title="Great, we have done all the operations!">
+              <a-result title="个性化填报模板" sub-title="使用指南（以发电企业为例）">
                 <template #icon>
-                  <a-icon type="smile" theme="twoTone" />
+                  <img src="@/assets/pages/user/account/template/templateGuide.png" alt="" style="width: 400px" />
                 </template>
               </a-result>
             </div>
