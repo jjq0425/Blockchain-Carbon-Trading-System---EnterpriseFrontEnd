@@ -17,7 +17,7 @@
       <div class="extra-content">
         <div class="stat-item">
           <!-- <a-statistic title="项目数" :value="56" /> -->
-          <div style="font-size: 14px">行业类型</div>
+          <div style="font-size: 14px">{{ $t('dashboard.header.info.EnterpriseClass') }}</div>
           <div style="font-size: 18px; margin-top: 10px; font-weight: bold" v-if="lang.includes('CN')">
             {{ user.enterpriseClassName_CN }}
           </div>
@@ -27,12 +27,12 @@
         </div>
         <div class="stat-item">
           <!-- <a-statistic title="团队内排名" :value="8" suffix="/ 24" /> -->
-          <div style="font-size: 14px">剩余碳排量</div>
+          <div style="font-size: 14px">{{ $t('dashboard.header.info.remainEmission') }}</div>
           <div style="font-size: 18px; margin-top: 10px; font-weight: bold">{{ user.remainEmission }}</div>
         </div>
         <div class="stat-item">
           <!-- <a-statistic title="项目访问" :value="2223" /> -->
-          <div style="font-size: 14px">碳币余额</div>
+          <div style="font-size: 14px">{{ $t('dashboard.header.info.remainCoCoin') }}</div>
           <div style="font-size: 18px; margin-top: 10px; font-weight: bold">{{ user.coCoin }}</div>
         </div>
       </div>

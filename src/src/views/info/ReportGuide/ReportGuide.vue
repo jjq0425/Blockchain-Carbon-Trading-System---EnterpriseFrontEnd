@@ -84,7 +84,9 @@
             >
               Q & A
             </div>
-            <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">常见问题</div>
+            <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">
+              {{ $t('info.ReportGuide.question.title') }}
+            </div>
           </div>
 
           <div class="question_Card" style="padding: 20px">
@@ -115,7 +117,9 @@
             >
               Flow
             </div>
-            <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">填报流程</div>
+            <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">
+              {{ $t('info.ReportGuide.workflow.title') }}
+            </div>
           </div>
 
           <div class="question_Card" style="">
