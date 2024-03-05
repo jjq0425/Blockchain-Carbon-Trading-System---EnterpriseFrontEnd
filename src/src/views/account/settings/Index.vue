@@ -39,6 +39,11 @@
                 {{ $t('account.settings.menuMap.binding') }}
               </router-link>
             </a-menu-item>
+            <a-menu-item key="/account/template">
+              <router-link :to="{ name: 'TemplateSettings' }">
+                {{ $t('account.settings.menuMap.template') }}
+              </router-link>
+            </a-menu-item>
             <a-menu-item key="/account/security">
               <router-link :to="{ name: 'SecuritySettings' }">
                 {{ $t('account.settings.menuMap.security') }}

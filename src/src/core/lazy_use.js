@@ -51,7 +51,8 @@ import {
   Empty,
   Pagination,
   BackTop,
-  Affix
+  Affix,
+  Tree
 } from 'ant-design-vue'
 import Viser from 'viser-vue'
 
@@ -111,6 +112,7 @@ Vue.use(Empty)
 Vue.use(Pagination)
 Vue.use(BackTop)
 Vue.use(Affix)
+Vue.use(Tree)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 export default {
   'account.settings.header.title': '在此页面，您可以细致配置公司信息，包括企业企业基本资料、详细信息等，以满足您的个性化需求。助您打造一个高效、协同的工作环境，从而提升碳排放企业管理效能。',
@@ -11,6 +16,7 @@ export default {
   'account.settings.menuMap.binding': '账号绑定',
   'account.settings.menuMap.security': '安全设置',
   'account.settings.menuMap.custom': '个性化',
+  'account.settings.menuMap.template': '个性化填报模板',
 
   'account.settings.menuMap.notification': '新消息通知',
   'account.settings.basic.avatar': '头像',

@@ -90,7 +90,7 @@
 
           <a-tooltip>
             <template slot="title"> 将临时导出的数据重新导入，您也可以导入您自定义的模板 </template>
-            <a-button icon="cloud-upload" @click="importData"> 导入数据 </a-button>
+            <a-button icon="cloud-upload" @click="importData" v-if="submitType != 'detail'"> 导入数据 </a-button>
           </a-tooltip>
           <input type="file" @change="loadTextFromFile" id="txtUpload" style="display: none" />
         </a-button-group>

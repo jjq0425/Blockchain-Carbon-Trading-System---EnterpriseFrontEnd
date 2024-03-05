@@ -3,6 +3,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 export default {
   'account.settings.header.title': 'On this page, you can configure company information in detail, including basic and detailed information of the enterprise, to meet your personalized needs. To help you create an efficient and collaborative work environment, thereby improving the management efficiency of carbon emission enterprises.',
@@ -12,6 +17,7 @@ export default {
   'account.settings.menuMap.custom': 'Custom Settings',
   'account.settings.menuMap.binding': 'Account Binding',
   'account.settings.menuMap.notification': 'New Message Notification',
+  'account.settings.menuMap.template': 'Template',
   'account.settings.basic.avatar': 'Avatar',
   'account.settings.basic.change-avatar': 'Change avatar',
   'account.settings.basic.email': 'Email',

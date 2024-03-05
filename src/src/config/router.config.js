@@ -397,6 +397,12 @@ export const asyncRouterMap = [
             meta: { title: 'account.settings.menuMap.binding', hidden: true, keepAlive: true, }
           },
           {
+            path: '/account/template',
+            name: 'TemplateSettings',
+            component: () => import('@/views/account/settings/Template/index'),
+            meta: { title: 'account.settings.menuMap.template', hidden: true, keepAlive: true, }
+          },
+          {
             path: '/account/notification',
             name: 'NotificationSettings',
             component: () => import('@/views/account/settings/Notification'),
