@@ -41,7 +41,7 @@
       </div>
     </a-card>
 
-    <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" style="margin-top: 24px">
+    <!-- <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" style="margin-top: 24px">
       <div style="margin-bottom: 20px">
         <div
           style="
@@ -66,18 +66,87 @@
             {{ item.a }}
           </div>
         </div>
-
-        <!-- <div style="margin-bottom: 20px">
-          <div style="font-weight: bold">
-            <span style="font-size: 16px; color: #438bfd">问题：</span
-            >集团性质的企业是由省级的集团总公司汇总上报还是由各级地市(县)分公司分别上报？
-          </div>
-          <div style="margin-top: 5px">
-            独立法人企业和视同法人的独立核算单位应单独上报，其余分公司由上一级独立法人企业或视同法人的独立核算单位报告。
-          </div>
-        </div> -->
       </div>
-    </a-card>
+    </a-card> -->
+
+    <a-row :gutter="24">
+      <a-col :xl="16" :lg="24" :md="24" :sm="24" :xs="24">
+        <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" style="margin-top: 24px">
+          <div style="margin-bottom: 20px">
+            <div
+              style="
+                display: inline-block;
+                font-size: 24px;
+                font-weight: bold;
+                padding: 5px 10px;
+                background: linear-gradient(135deg, #abdcff, #0396ff);
+                border-radius: 999px;
+                color: white;
+              "
+            >
+              Q & A
+            </div>
+            <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">常见问题</div>
+          </div>
+
+          <div class="question_Card" style="padding: 20px">
+            <div style="margin-bottom: 30px" v-for="(item, index) in qANDa" :key="index">
+              <div style="font-weight: bold">
+                <span style="font-size: 16px; color: #438bfd">问题：</span>{{ item.q }}
+              </div>
+              <div style="margin-top: 5px">
+                {{ item.a }}
+              </div>
+            </div>
+          </div>
+        </a-card>
+      </a-col>
+      <a-col :xl="8" :lg="24" :md="24" :sm="24" :xs="24">
+        <a-card :body-style="{ padding: '24px 32px' }" :bordered="false" style="margin-top: 24px">
+          <div style="margin-bottom: 20px">
+            <div
+              style="
+                display: inline-block;
+                font-size: 24px;
+                font-weight: bold;
+                padding: 5px 10px;
+                background: linear-gradient(135deg, #42e695, #3bb2b8);
+                border-radius: 999px;
+                color: white;
+              "
+            >
+              Flow
+            </div>
+            <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">填报流程</div>
+          </div>
+
+          <div class="question_Card" style="">
+            <img src="@/assets/pages/info/reportGuide/ReportWokflow.png" alt="" style="height: 550px" />
+          </div>
+        </a-card>
+        <div
+          style="
+            display: inline-block;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 5px 10px;
+            margin-top: 20px;
+            width: 100%;
+            height: 140px;
+            background: linear-gradient(135deg, #ce9ffc, #7367f0);
+            border-radius: 9px;
+            color: white;
+            text-align: center;
+            display: flex;
+          "
+        >
+          <div style="margin: auto; font-size: 36px" class="bottom-solgan">
+            链接绿色未来 <br />
+            碳盟领航之道
+          </div>
+        </div>
+      </a-col>
+    </a-row>
   </page-header-wrapper>
 </template>
 
@@ -486,5 +555,13 @@ export default {
 }
 .tree-floor-1 {
   font-weight: bold;
+}
+
+.bottom-solgan {
+  font-size: 30px;
+  font-weight: 900;
+  background-image: -webkit-linear-gradient(bottom, #e6fcf5, #f3f0ff, #edf2ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 </style>
