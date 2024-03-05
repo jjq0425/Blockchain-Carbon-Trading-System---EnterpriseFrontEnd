@@ -13,7 +13,7 @@
   "account.settings.basic.email-message": "Please input your email!",
   "account.settings.basic.EnterpriseName": "Enterprise name",
   "account.settings.basic.EnterpriseName-message": "Please input the enterprise Name!",
-  "account.settings.basic.profile": "Personal profile",
+  "account.settings.basic.profile": "Enterprise profile",
   "account.settings.basic.profile-message": "Please input the enterprise profile!",
   "account.settings.basic.profile-placeholder": "Brief introduction to yourself",
   "account.settings.basic.country": "Country/Region",
