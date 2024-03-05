@@ -1,7 +1,14 @@
 <template>
   <div>
     <a-form-model layout="vertical" :model="formData">
-      <a-form-model-item label="报送项名">
+      <a-form-model-item
+        label="报送项名"
+        :rules="{
+          required: true,
+          message: '请填写',
+          trigger: 'blur',
+        }"
+      >
         <a-input v-model="className" placeholder="请输入" />
       </a-form-model-item>
       <a-divider orientation="left" style="color: #339af0" dashed> 活动水平 </a-divider>
@@ -91,16 +98,7 @@ export default {
       type: Object,
     },
   },
-  computed: {
-    className: {
-      get() {
-        return this.classNameTEMP
-      },
-      set(val) {
-        this.classNameTEMP = val
-      },
-    },
-  },
+  computed: {},
   data() {
     return {
       formData: {},
@@ -218,8 +216,12 @@ export default {
       this.filter_Emission = res
     },
     save() {
+      if (this.className == null || this.className == '') {
+        this.$message.warning('请填写报送项名')
+        return
+      }
       this.formData.className = this.className
-      console.log('save', this.formData)
+      // console.log('save', this.formData)
       this.$emit('save', this.formData, this.parentIdx, this.idx, this.type)
     },
     remove() {

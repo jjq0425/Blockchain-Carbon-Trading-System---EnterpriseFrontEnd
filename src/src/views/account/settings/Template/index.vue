@@ -38,7 +38,7 @@
               box-shadow: 0 0px 25px 0 rgba(176, 191, 231, 0.25);
               border: 2px dashed #134089;
               min-height: 650px;
-              max-height: 100px;
+              max-height: 850px;
               overflow-y: scroll;
               border-radius: 10px;
               padding: 20px;
