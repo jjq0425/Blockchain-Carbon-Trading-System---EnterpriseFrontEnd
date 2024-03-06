@@ -90,7 +90,7 @@
           </a-card>
         </a-col>
         <a-col style="padding: 0 12px" :xl="8" :lg="24" :md="24" :sm="24" :xs="24">
-          <a-card
+          <!-- <a-card
             title="快速开始 / 便捷导航"
             style="margin-bottom: 24px"
             :bordered="false"
@@ -105,7 +105,46 @@
               <a>操作六</a>
               <a-button size="small" type="primary" ghost icon="plus">添加</a-button>
             </div>
-          </a-card>
+          </a-card> -->
+          <!-- AI -->
+          <div
+            style="
+              padding: 0px 10px;
+              padding-right: 40px;
+              margin-bottom: 24px;
+              background: linear-gradient(90deg, #f3f4fd 0, #fcf2fc 100%);
+              border-radius: 10px;
+              min-height: 80px;
+
+              font-size: 50px;
+              font-weight: 900;
+              display: flex;
+              justify-content: space-around;
+              align-items: center;
+              box-shadow: 0 5px 15px 0 rgba(176, 191, 231, 0.45);
+              cursor: pointer;
+            "
+            @click="() => this.$refs.aiModalRef.open()"
+          >
+            <div id="lottie_ai" style="width: 40%; transform: translateX(10px) translateY(10px)"></div>
+            <aiLottie></aiLottie>
+            <div style="">
+              <div style="font-size: 30px; color: black">智碳 AI</div>
+              <div
+                style="
+                  font-size: 40px;
+                  background: linear-gradient(90deg, #4752e6, #de81de);
+                  background-clip: text;
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                "
+              >
+                领航员
+              </div>
+            </div>
+          </div>
+          <aiModal ref="aiModalRef"></aiModal>
+          <!--  -->
           <a-card
             title="XX 指数"
             style="margin-bottom: 24px"
@@ -146,6 +185,9 @@ import ChangeBgCSS from '../../utils/ChangeBgCSS'
 
 import { getRoleList, getServiceList } from '@/api/manage'
 
+import aiLottie from './components/aiLottie.vue'
+import aiModal from '@/views/dashboard/components/aiModal.vue'
+
 const DataSet = require('@antv/data-set')
 
 export default {
@@ -153,6 +195,8 @@ export default {
   components: {
     PageHeaderWrapper,
     Radar,
+    aiLottie,
+    aiModal,
   },
   data() {
     return {
