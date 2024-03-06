@@ -156,11 +156,14 @@ import { enterpriseClassName_CN, enterpriseClassName_EN } from '@/config/class/e
 import dayjs from 'dayjs'
 import orderDetail from '@/views/trade/myTrade/orderDetail.vue'
 
+// import trading from '@/views/trade/myTrade/trading.vue'
+
 export default {
   name: 'CardList',
   components: {
     // pdfTest,
     orderDetail,
+    // trading,
   },
   data() {
     // this.tabList = [
@@ -274,8 +277,8 @@ export default {
           .then((res) => {
             // 确保响应状态码是200
             if (res.success) {
-              res.data.perEmission = this.tradeInfo.perEmission
-              this.myOrderListSource.push(res.data)
+              res.data.orderListEnterprise[0].perEmission = this.tradeInfo.perEmission
+              this.myOrderListSource.push(res.data.orderListEnterprise[0])
               return true
             } else {
               this.$message.error(res.message)

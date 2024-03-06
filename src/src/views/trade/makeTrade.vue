@@ -210,6 +210,7 @@
     <div>
       <!-- <video src="@/assets/pages/trade/tradeElse/tradeInBlockChain.mp4" loop autoplay style="width: 100%"></video> -->
     </div>
+    <trading ref="trading"></trading>
   </page-header-wrapper>
 </template>
 
@@ -220,11 +221,13 @@ import { MakeTrade } from '@/api/trade'
 import { tradeTypeClass_CN, tradeTypeClass_EN } from '@/config/class/trade/tradeTypeClass'
 import store from '@/store'
 import { enterpriseClassName_CN, enterpriseClassName_EN } from '@/config/class/enterpriseClass'
+import trading from '@/views/trade/myTrade/trading'
 
 export default {
   name: 'CardList',
   components: {
     // pdfTest,
+    trading,
   },
   data() {
     // this.tabList = [
@@ -322,10 +325,12 @@ export default {
           this.dataLoading = true
           let submitForm = JSON.parse(JSON.stringify(this.tradePublishForm))
           submitForm.tradeID = this.tradeInfo.tradeID
+          this.$refs.trading.open()
           MakeTrade(submitForm)
             .then((res) => {
               if (res.success) {
                 this.$message.success(this.$t('trade.makeTrade.info.successDeal'))
+                this.$refs.trading.close(true)
                 setTimeout(() => {
                   this.dataLoading = false
                   this.$router.go(-1)
@@ -333,11 +338,13 @@ export default {
               } else {
                 this.$message.error(res.message)
                 this.dataLoading = false
+                this.$refs.trading.close(true)
               }
             })
             .catch((err) => {
               this.$message.error(this.$t('trade.makeTrade.info.failDeal'), err.response.data.message)
               this.dataLoading = false
+              this.$refs.trading.close(true)
             })
         }
       })

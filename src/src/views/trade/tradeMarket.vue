@@ -334,7 +334,7 @@ export default {
         .then((res) => {
           if (res.success) {
             this.page.pageNow = 1
-            this.dataSource = res.data.tradeList
+            this.dataSource = res.data.tradeListEnterprise
             if (needFilter) {
               setTimeout(() => {
                 this.filterData()
@@ -351,7 +351,7 @@ export default {
     async filterData() {
       // 首先排除掉tradeStatus==YES的数据
       this.filterDataSource = this.dataSource.filter((item) => {
-        return item.tradeStatus === 'NO'
+        return item.tradeStatus === 'NO' && item.publishName != this.enterpriseInfo.enterpriseName
       })
       // console.log(this.filterDataSource)
 
@@ -391,15 +391,23 @@ export default {
       this.dataLoading = true
       if (this.searchForm.tradeTypeShow == 'SOLD') {
         this.filterDataSource = this.dataSource.filter((item) => {
-          return item.tradeType == 'SOLD' && item.tradeStatus == 'NO'
+          return (
+            item.tradeType == 'SOLD' &&
+            item.tradeStatus == 'NO' &&
+            item.publishName != this.enterpriseInfo.enterpriseName
+          )
         })
       } else if (this.searchForm.tradeTypeShow == 'SALE') {
         this.filterDataSource = this.dataSource.filter((item) => {
-          return item.tradeType == 'SALE' && item.tradeStatus == 'NO'
+          return (
+            item.tradeType == 'SALE' &&
+            item.tradeStatus == 'NO' &&
+            item.publishName != this.enterpriseInfo.enterpriseName
+          )
         })
       } else {
         this.filterDataSource = this.dataSource.filter((item) => {
-          return item.tradeStatus === 'NO'
+          return item.tradeStatus === 'NO' && item.publishName != this.enterpriseInfo.enterpriseName
         })
       }
 
