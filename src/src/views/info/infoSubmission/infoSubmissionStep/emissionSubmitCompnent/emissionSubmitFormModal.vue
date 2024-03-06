@@ -456,10 +456,8 @@ export default {
      * 计算
      */
     reConclude(type, factor) {
-      //   console.log(this.emissionForm.activityFactor)
-
-      // 计算emissionForm.activityFactorNum
       let res = 1
+      let res_array = []
       for (let i = 0; i < this.emissionForm.activityFactor.length; i++) {
         if (this.emissionForm.activityFactor[i].extraCalcu != null) {
           let temp_res_extra = 0
@@ -468,19 +466,25 @@ export default {
             this.emissionForm.activityFactor[i].dataNum
           )
           temp_res_extra = eval(temp_extra_str)
-          // extraCalcu为一个带X的表达式，需要替换X为dataNum
-          res = res * temp_res_extra
+          res_array.push(temp_res_extra)
         } else {
-          res = res * this.emissionForm.activityFactor[i].dataNum
+          res_array.push(this.emissionForm.activityFactor[i].dataNum)
         }
-
-        // console.log(res, this.emissionForm.activityFactor)
       }
-      // console.log(res)
+
+      if (this.emissionForm.activityFactorExtraCalcu != null) {
+        let activityFactor_map = res_array.map(Number)
+        let expression = this.emissionForm.activityFactorExtraCalcu.replace(/\[(\d+)\]/g, (match, index) => {
+          return activityFactor_map[index - 1] // 调整索引以匹配数组元素
+        })
+        res = eval(expression)
+      } else {
+        res = res_array.reduce((acc, cur) => acc * cur, 1)
+      }
       this.emissionForm.activityFactorNum = res.toFixed(6)
 
-      // 计算emissionForm.EmissionFactorNum
       let res_2 = 1
+      let res_2_array = []
       for (let i = 0; i < this.emissionForm.EmissionFactor.length; i++) {
         if (this.emissionForm.EmissionFactor[i].extraCalcu != null) {
           let temp_res_extra = 0
@@ -489,12 +493,21 @@ export default {
             this.emissionForm.EmissionFactor[i].dataNum
           )
           temp_res_extra = eval(temp_extra_str)
-          // extraCalcu为一个带X的表达式，需要替换X为dataNum
-          res_2 = res_2 * temp_res_extra
+          res_2_array.push(temp_res_extra)
         } else {
-          res_2 = res_2 * this.emissionForm.EmissionFactor[i].dataNum
+          res_2_array.push(this.emissionForm.EmissionFactor[i].dataNum)
         }
       }
+      if (this.emissionForm.EmissionFactorExtraCalcu != null) {
+        let EmissionFactor_map = res_2_array.map(Number)
+        let expression_2 = this.emissionForm.EmissionFactorExtraCalcu.replace(/\[(\d+)\]/g, (match, index) => {
+          return EmissionFactor_map[index - 1] // 调整索引以匹配数组元素
+        })
+        res_2 = eval(expression_2)
+      } else {
+        res_2 = res_2_array.reduce((acc, cur) => acc * cur, 1)
+      }
+
       this.emissionForm.EmissionFactorNum = res_2.toFixed(6)
 
       this.emissionForm.classDataSum = (

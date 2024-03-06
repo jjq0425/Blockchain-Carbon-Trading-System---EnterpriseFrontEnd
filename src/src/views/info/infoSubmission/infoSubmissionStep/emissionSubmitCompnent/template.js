@@ -19,6 +19,7 @@ export const template_Test = {
                     "classSort": 1, //小类排序。各个大类之间编号独立。
                     "classDataSum": 0.00, //小类累计值，activityFactorNum*EmissionFactorNum
                     "activityFactorNum": 0.00, //活动水平数值，即activityFactor各个子元素相乘。若其中有除法请转化为分之一。
+                    "activityFactorExtraCalcu": '[1]+[2]+[3]*1000000',
                     "activityFactor": [ //活动水平
                         {
                             "dataSort": 1, //活动水平数据排序
@@ -69,6 +70,7 @@ export const template_Test = {
                         }
                     ],
                     "EmissionFactorNum": 0.00, //活动水平数值，即EmissionFactor各个子元素相乘
+                    "EmissionFactorExtraCalcu": '[1]+[2]+[3]*10',
                     "EmissionFactor": [ //排放因子
                         {
                             "dataSort": 1,
@@ -1009,8 +1011,8 @@ import { template_TEST2 } from './template/template_TEST2'
 
 export const template_THS = {
     template_1: template_1,
-    // template_10: template_10,
     template_10: template_10,
+    // template_10: template_Test,
     template_6: template_6,
     template_3: template_3,
     template_Test: template_Test,
