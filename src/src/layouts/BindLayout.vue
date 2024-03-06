@@ -372,7 +372,7 @@ export default {
       this.BindStatus = res.data.auditStatus
 
       if (this.BindStatus == 'REFUSE') {
-        this.RefuseStr = res.data.auditStr
+        this.RefuseStr = res.data.auditOpinion
       }
     })
     if (this.BindStatus == 'AUDIT') {

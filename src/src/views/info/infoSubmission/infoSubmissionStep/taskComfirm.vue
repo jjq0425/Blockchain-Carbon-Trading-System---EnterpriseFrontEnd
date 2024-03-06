@@ -53,9 +53,19 @@
       <a-descriptions-item label="填报描述" :span="3">
         {{ taskInfo.taskDescription }}
       </a-descriptions-item>
-      <a-descriptions-item label="审核意见" :span="3">
-        <div style="color: #e18a3b; font-size: 16px; padding-bottom: 2px; border-bottom: 1px dashed #e18a3b">
-          审核意见审核意见审核意见审核意见
+      <a-descriptions-item
+        label="审核意见"
+        :span="3"
+        v-if="submitType != 'create' && taskInfo.auditOpinion != undefined"
+      >
+        <div
+          style="font-size: 16px; padding-bottom: 2px"
+          :style="{
+            color: taskInfo.auditStatus == 'REFUSE' ? '#e18a3b' : '#20c997',
+            borderBottom: taskInfo.auditStatus == 'REFUSE' ? '1px dashed #e18a3b' : '1px dashed #20c997',
+          }"
+        >
+          {{ taskInfo.auditOpinion }}
         </div>
       </a-descriptions-item>
     </a-descriptions>
