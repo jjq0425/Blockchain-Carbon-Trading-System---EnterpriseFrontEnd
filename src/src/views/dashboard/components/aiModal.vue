@@ -53,12 +53,14 @@
     
     </div>
     <div>
-        <a-textarea :placeholder="noSend?'当前状态禁止发送装填问题':'智碳AI领航员乐意为您领航' " :rows="3" v-model="nowMsg"  :disabled="noSend"></a-textarea>
+        <a-textarea :placeholder="noSend?'领航员正在思考，稍后再装填问题吧':'智碳AI领航员乐意为您领航' " :rows="3" v-model="nowMsg"  :disabled="noSend||!canUse" @pressEnter="sendMsg"></a-textarea>
         <a-button
         class="btn"
-        :disabled="noSend"
+        :disabled="noSend||!canUse"
+        :max="100"
         shape="round"
         @click="sendMsg"
+        
         >发送</a-button
       >
      
@@ -73,6 +75,8 @@
 <script>
 import store from '@/store'
 import aiLoadingLottie from './aiLoadingLottie.vue'
+import CryptoJS from 'crypto-js'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -84,6 +88,16 @@ export default {
       nowMsg: '',
       respondComplete: true, //响应请求是否完成
       initMsg: false, //是否初始化
+
+      //   配置
+      canUse: false,
+      appId: '',
+      apiSecret: '',
+      apiKey: '',
+
+      ttsWS: null,
+      willsendMsg: '',
+      template: '',
     }
   },
   components: {
@@ -95,13 +109,39 @@ export default {
     },
   },
   methods: {
+    fetchConfig() {
+      axios.get('https://mock.apifox.com/m1/2214773-0-default/llm').then((res) => {
+        let resData = res.data.data
+        this.canUse = resData.canUse
+        if (!this.canUse) {
+          this.init()
+          setTimeout(() => {
+            this.msgList.push({
+              my: false,
+              msg: '🔔为了防止大模型随意调用，目前暂时关闭，若有确实需要请联系jjq。模型已成功对接星火',
+            })
+            this.initMsg = true
+            this.noSend = true
+            this.showLoadMsg = true
+            this.showLoadMsg = false
+            this.liushishuchu()
+          }, 1200)
+        } else {
+          this.appId = resData.appId
+          this.apiKey = resData.apiKey
+          this.apiSecret = resData.apiSecret
+          this.init()
+        }
+      })
+    },
     open() {
       this.noSend = false
       this.msgList = []
       this.msgList_Liushi = []
       this.nowMsg = ''
       this.visible = true
-      this.init()
+
+      this.fetchConfig()
     },
     liushishuchu() {
       this.msgList_Liushi.push({
@@ -131,7 +171,6 @@ export default {
       })
       this.initMsg = true
       this.noSend = true
-      this.showLoadMsg = true
       this.showLoadMsg = false
       this.liushishuchu()
     },
@@ -175,6 +214,11 @@ export default {
       }) // 设置滚动条位置为最大值，即滚动到最下面
     },
     sendMsg() {
+      if (this.nowMsg == '') {
+        this.$message.warning('不能发送空字符串')
+        return
+      }
+      this.boxHeightAdjust()
       this.noSending()
       this.msgList.push({
         my: true,
@@ -184,8 +228,161 @@ export default {
         my: true,
         msg: this.nowMsg,
       })
+      this.willsendMsg = this.nowMsg
       this.nowMsg = ''
+
       this.noSending()
+      this.inSendingProcess()
+    },
+
+    webSocketSend() {
+      let textArrySend = []
+      textArrySend.push({
+        role: 'user',
+        content: this.template + this.willsendMsg,
+      })
+      const params = {
+        header: {
+          app_id: this.appId,
+          uid: 'fd3f47e4-d',
+        },
+        parameter: {
+          chat: {
+            domain: 'general',
+            temperature: 0.5,
+            max_tokens: 1024,
+          },
+        },
+        payload: {
+          message: {
+            text: textArrySend,
+          },
+        },
+      }
+      this.willsendMsg = ''
+      this.ttsWS.send(JSON.stringify(params))
+      console.log('>模型准备发送数据', params)
+    },
+    getWebsocketUrl() {
+      let this_ = this
+      return new Promise((resolve, reject) => {
+        const apiKey = this_.apiKey
+        const apiSecret = this_.apiSecret
+        const url = 'wss://spark-api.xf-yun.com/v1.1/chat'
+        const host = window.location.host
+        const date = new Date().toGMTString()
+        const algorithm = 'hmac-sha256'
+        const headers = 'host date request-line'
+        const signatureOrigin = `host: ${host}\ndate: ${date}\nGET /v1.1/chat HTTP/1.1`
+        const signatureSha = CryptoJS.HmacSHA256(signatureOrigin, apiSecret)
+        const signature = CryptoJS.enc.Base64.stringify(signatureSha)
+        const authorizationOrigin = `api_key="${apiKey}", algorithm="${algorithm}", headers="${headers}", signature="${signature}"`
+        const authorization = window.btoa(authorizationOrigin)
+        const finalUrl = `${url}?authorization=${authorization}&date=${date}&host=${host}`
+        // console.log(finalUrl)
+        resolve(finalUrl)
+      })
+    },
+
+    inSendingProcess() {
+      this.getWebsocketUrl().then((url) => {
+        let ttsWS
+        if ('WebSocket' in window) {
+          ttsWS = new WebSocket(url)
+        } else if ('MozWebSocket' in window) {
+          ttsWS = new MozWebSocket(url)
+        } else {
+          alert('浏览器不支持WebSocket')
+          return
+        }
+        this.ttsWS = ttsWS
+        // 建立链接
+        ttsWS.onopen = (e) => {
+          this.webSocketSend()
+          //链接成功
+          this.respondComplete = false
+          // push
+
+          this.showLoadMsg = false
+          this.msgList.push({
+            my: false,
+            msg: '',
+          })
+          this.liushishuchu()
+        }
+        ttsWS.onmessage = (e) => {
+          //   this.result(e.data)
+          //接收消息
+
+          let result = JSON.parse(e.data)
+
+          let dataArray = result.payload.choices.text
+          console.log(dataArray)
+          this.msgList[this.msgList.length - 1].msg += dataArray[0].content
+          //   for (let i = 0; i < dataArray.length; i++) {
+          //     this.msgList[this.msgList.length - 1].msg += dataArray[i]
+          //   }
+          let jsonData = JSON.parse(e.data)
+
+          if (jsonData.header.code !== 0) {
+            this.$message.error('大模型调用失败，星火服务器原因')
+            this.showLoadMsg = false
+            this.noSend = false
+            this.ttsWS.close()
+            return
+          }
+          if (jsonData.header.code === 0 && jsonData.header.status === 2) {
+            this.respondComplete = true
+            this.ttsWS.close()
+          }
+        }
+        ttsWS.onerror = (e) => {
+          this.$message.error('大模型调用失败，星火服务器原因！')
+          this.showLoadMsg = false
+          this.noSend = false
+          this.respondComplete = true
+          console.error(`详情查看：${encodeURI(url.replace('wss:', 'https:'))}`)
+        }
+        ttsWS.onclose = (e) => {
+          console.log(e)
+        }
+      })
+
+      //发送消息
+
+      //   链接断开
+    },
+    inSendingProcess_tets() {
+      // 建立链接
+
+      //链接成功
+      this.respondComplete = false
+
+      //发送消息
+
+      // push
+      setTimeout(() => {
+        this.showLoadMsg = false
+        this.msgList.push({
+          my: false,
+          msg: '',
+        })
+        this.liushishuchu()
+      }, 1000)
+
+      //接收消息
+      setTimeout(() => {
+        this.msgList[this.msgList.length - 1].msg +=
+          '你好安居客大家ask贷记卡圣诞节甲i到静安寺哦大家算擦及擦酒精擦军事才能'
+
+        //   链接断开
+      }, 2000)
+
+      setTimeout(() => {
+        this.msgList[this.msgList.length - 1].msg +=
+          '你好安居客大家ask贷记卡圣诞节甲i到静安寺哦大家算擦及擦酒精擦军事才能'
+        this.respondComplete = true
+      }, 5000)
     },
   },
   mounted() {},
@@ -218,7 +415,7 @@ export default {
   height: 15px;
   background-color: #d0bfff;
   border-radius: 10px;
-  animation: cursorBlink 1s infinite;
+  animation: cursorBlink 0.5s infinite;
 }
 /* 实现一个闪烁效果的动画 */
 @keyframes cursorBlink {
