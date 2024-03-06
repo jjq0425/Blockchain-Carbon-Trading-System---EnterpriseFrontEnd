@@ -26,7 +26,7 @@
                     </div>
                 </a-row>
                 <!-- 人类提问 -->
-                <a-row style="width:95%;margin:0 auto;margin-bottom:30px" type="flex" v-if="item.my">
+                <a-row style="width:95%;margin:0 auto;margin-bottom:30px" type="flex" v-if="item.my" >
                     <div style="text-align: right;min-width:92%;max-width:92%;padding:10px 20px;border-radius: 10px;" :flex="100" class="left-sanjiao">
                         {{ item.msg }}
                     </div>
