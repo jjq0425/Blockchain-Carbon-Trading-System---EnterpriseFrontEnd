@@ -9,7 +9,7 @@
         </span>
       </div>
 
-      <div class="user-layout-content" style="margin-top: 10px">
+      <div class="user-layout-content" style="margin-top: 0px">
         <div style="display: flex; justify-content: center; align-items: center">
           <div
             class="user-layout-content-inner"
@@ -61,6 +61,22 @@
             </div>
 
             <div class="FormDiv">
+              <div
+                v-if="BindStatus == 'REFUSE'"
+                style="
+                  width: 100%;
+                  padding: 10px 40px;
+                  background: #ffe3e3;
+                  border-radius: 999px;
+                  margin-top: 10px;
+                  margin-bottom: 10px;
+                "
+              >
+                <div style="padding-bottom: 2px; border-bottom: 1px dashed grey">
+                  <span style="font-weight: bold; border: 0px dashed grey">审核意见：</span>
+                  {{ RefuseStr }}
+                </div>
+              </div>
               <a-form :form="form" :label-col="{ span: 6 }" :wrapper-col="{ span: 15 }" style="margin-top: 20px">
                 <a-row type="flex">
                   <a-col :flex="2"
@@ -291,6 +307,9 @@ export default {
       enterpriseClassName_CN: enterpriseClassName_CN,
       enterpriseClassName_EN: enterpriseClassName_EN,
       enterpriseClassAllowed: enterpriseClassAllowed,
+
+      BindStatus: '',
+      RefuseStr: '',
     }
   },
   mixins: [deviceMixin],
@@ -348,6 +367,14 @@ export default {
     // 设置全局禁止滚动
     document.body.style.overflow = 'hidden'
     document.body.classList.add('userLayout')
+    store.dispatch('GetInfo').then((res) => {
+      console.log('res', res)
+      this.BindStatus = res.data.auditStatus
+
+      if (this.BindStatus == 'REFUSE') {
+        this.RefuseStr = res.data.auditStr
+      }
+    })
     if (this.BindStatus == 'AUDIT') {
       this.$notification.open({
         message: '绑定审核中',
