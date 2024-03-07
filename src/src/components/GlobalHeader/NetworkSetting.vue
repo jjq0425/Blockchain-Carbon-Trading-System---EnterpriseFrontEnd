@@ -116,13 +116,13 @@ export default {
       //       this.TestRes = err.data + '   (测试失败)'
       //       this.$message.error('测试失败！')
       //     })
-      let testUrl = this.NewServer + '/test'
+      let testUrl = this.NewServer
       if (this.NewServer == '' || this.NewServer == 'https://') {
         this.$notification.open({
           message: `按旧地址测试`,
           description: '您未设置新地址，按旧地址' + this.OldServer + '测试',
         })
-        testUrl = this.OldServer + '/test'
+        testUrl = this.OldServer
       }
       request({
         url: testUrl,
