@@ -1086,14 +1086,16 @@ export default {
                 //   rowSpan: mainClasData.children.length,
                 // },
                 {
-                  content: `${mainClasData.children[rowIdx].className} `,
+                  // content: `${mainClasData.children[rowIdx].className} `,
+                  content: `${mainClasData.children[rowIdx].activityFactor[0].dataName} `,
                   styles: { halign: 'center', valign: 'middle' },
                 },
               ]
             } else {
               row = [
                 {
-                  content: `${mainClasData.children[rowIdx].className} `,
+                  // content: `${mainClasData.children[rowIdx].className} `,
+                  content: `${mainClasData.children[rowIdx].activityFactor[0].dataName} `,
                   styles: { halign: 'center', valign: 'middle' },
                 },
               ]
@@ -1421,14 +1423,16 @@ export default {
                 //   rowSpan: mainClasData.children.length,
                 // },
                 {
-                  content: `${mainClasData.children[rowIdx].className} `,
+                  // content: `${mainClasData.children[rowIdx].className} `,
+                  content: `${mainClasData.children[rowIdx].EmissionFactor[0].dataName} `,
                   styles: { halign: 'center', valign: 'middle' },
                 },
               ]
             } else {
               row = [
                 {
-                  content: `${mainClasData.children[rowIdx].className} `,
+                  // content: `${mainClasData.children[rowIdx].className} `,
+                  content: `${mainClasData.children[rowIdx].EmissionFactor[0].dataName} `,
                   styles: { halign: 'center', valign: 'middle' },
                 },
               ]

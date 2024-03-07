@@ -291,7 +291,9 @@ export default {
   mounted() {
     ChangeBgCSS('INFO')
     GetTaskList().then((res) => {
-      let taskList = res.data.taskList
+      let taskList = res.data.taskList.sort((a, b) => {
+        return b.taskYear - a.taskYear
+      })
       taskList.forEach((item) => {
         item.isBegin = this.DayAafterOrSameB(
           this.momentFormat(this.getTodayTimeStamp()),
