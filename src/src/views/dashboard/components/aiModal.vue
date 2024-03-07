@@ -11,6 +11,7 @@
     @cancel="close"
     title="智碳AI领航员"
     :dialog-style="{ top: '20px' }"
+    :destroyOnClose="true"
   >
     <div style="min-height: 500px;max-height: 500px;margin-bottom:0px; overflow-y: scroll; scroll-behavior: smooth;" id="AImsgbox">
         <div >
@@ -117,15 +118,17 @@ export default {
         if (!this.canUse) {
           this.init()
           setTimeout(() => {
-            this.msgList.push({
-              my: false,
-              msg: '🔔为了防止大模型随意调用，目前暂时关闭，若有确实需要请联系jjq。模型已成功对接星火',
-            })
-            this.initMsg = true
-            this.noSend = true
-            this.showLoadMsg = true
-            this.showLoadMsg = false
-            this.liushishuchu()
+            if (this.visible) {
+              this.msgList.push({
+                my: false,
+                msg: '🔔为了防止大模型随意调用，目前暂时关闭，若有确实需要请联系jjq。模型已成功对接星火',
+              })
+              this.initMsg = true
+              this.noSend = true
+              this.showLoadMsg = true
+              this.showLoadMsg = false
+              this.liushishuchu()
+            }
           }, 2100)
         } else {
           this.appId = resData.appId
@@ -142,26 +145,40 @@ export default {
       this.nowMsg = ''
       this.visible = true
 
-      this.fetchConfig()
+      this.$nextTick(() => {
+        this.msgList = []
+        this.msgList_Liushi = []
+        this.fetchConfig()
+      })
     },
     liushishuchu() {
+      if (!this.visible) return
       this.msgList_Liushi.push({
         my: false,
         msg: '',
       })
-      let timer
+
       let index = 0
+      let timer
       timer = setInterval(() => {
-        if (index < this.msgList[this.msgList_Liushi.length - 1].msg.length) {
-          this.msgList_Liushi[this.msgList_Liushi.length - 1].msg +=
-            this.msgList[this.msgList_Liushi.length - 1].msg.charAt(index)
-          index++
-        } else if (!this.respondComplete) {
+        // console.log('xiangy', timer)
+        if (this.visible) {
+          if (index < this.msgList[this.msgList_Liushi.length - 1].msg.length) {
+            this.msgList_Liushi[this.msgList_Liushi.length - 1].msg +=
+              this.msgList[this.msgList_Liushi.length - 1].msg.charAt(index)
+            index++
+          } else if (!this.respondComplete) {
+          } else {
+            //   clear(timer)
+            clearInterval(timer)
+            timer = null
+            if (this.visible) {
+              this.noSendOver()
+            }
+            //   console.log('over')
+          }
         } else {
-          //   clear(timer)
           clearInterval(timer)
-          this.noSendOver()
-          //   console.log('over')
         }
       }, 20)
     },
@@ -176,9 +193,15 @@ export default {
       this.liushishuchu()
     },
     close() {
-      this.visible = false
-      this.noSend = false
+      console.log('close')
       this.msgList = []
+      this.msgList_Liushi = []
+      this.$forceUpdate()
+      // console.log(timer)
+      this.$nextTick(() => {
+        this.visible = false
+        this.noSend = false
+      })
     },
     noSending() {
       if (!this.noSend) {
@@ -189,7 +212,9 @@ export default {
             this.$refs.aiLoadingLottieRef.openL()
           }, 100)
           setTimeout(() => {
-            this.boxHeightAdjust()
+            if (this.visible) {
+              this.boxHeightAdjust()
+            }
           }, 610)
         })
       } else {
@@ -200,7 +225,9 @@ export default {
       this.noSend = false
       this.showLoadMsg = false
       setTimeout(() => {
-        this.boxHeightAdjust()
+        if (this.visible) {
+          this.boxHeightAdjust()
+        }
       }, 10)
       this.initMsg = false
     },
