@@ -19,7 +19,8 @@
                 <!-- AI回答 -->
                 <a-row style="width:95%;margin:0 auto;margin-bottom:30px" type="flex" v-if="!item.my">
                     <a-col :flex="1">
-                        <a-avatar size="large" src="https://pic.code-nav.cn/yucongming_model_picture/1650492623718633473/3AjmCaZA-logo.webp" />
+                        <!-- <a-avatar size="large" src="https://pic.code-nav.cn/yucongming_model_picture/1650492623718633473/3AjmCaZA-logo.webp" /> -->
+                        <a-avatar size="large" :src="require('@/assets/pages/dashboard/ai/aiLogo.png')" />
                     </a-col>
                     <div style="background-color: #f5f5f5;min-width:92%;max-width:92%;padding:20px 20px;border-radius: 10px;" :flex="100" class="left-sanjiao">
                         {{ item.msg }}<div class="cursor" v-show="index==msgList_Liushi.length-1&&noSend==true&&showLoadMsg==false"></div>
