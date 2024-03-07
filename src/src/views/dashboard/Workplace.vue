@@ -166,7 +166,10 @@
             </div>
 
             <!-- 页面 -->
-            <div id="vertical" style="width: 100%; height: 300px"></div>
+            <div id="vertical" style="width: 100%; height: 300px" v-show="hasMy"></div>
+            <a-result title="暂无您企业的任何填报数据" sub-title="填报后即可查看分析" v-show="!hasMy">
+              <template #icon><img style="height: 200px" src="@/assets/default/EmptyInfo.png" /> </template
+            ></a-result>
           </a-card>
         </a-col>
         <a-col style="padding: 0 12px" :xl="8" :lg="24" :md="24" :sm="24" :xs="24">
@@ -242,6 +245,9 @@
               "
             ></div>
             <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">排量分布</div>
+            <div style="display: inline-block; font-size: 12px; padding: 10px">
+              内圈为本企业各模块占比，外圈为其他企业平均各模块占比，您可以据此分析各模块是否健康。
+            </div>
             <!-- 图 -->
             <div id="pie" style="width: 100%; height: 300px"></div>
           </a-card>
@@ -521,15 +527,47 @@ export default {
             dataIndex: 0,
             xField: ['x', 'type'],
             yField: 'y',
+            bar: {
+              style: {
+                cornerRadius: 5,
+              },
+            },
           },
           {
-            type: 'line',
+            type: 'area',
             dataIndex: 1,
             label: { visible: true },
             seriesField: 'type',
             xField: 'x',
             yField: 'y',
             stack: false,
+            area: {
+              style: {
+                fillOpacity: 1,
+                fill: {
+                  gradient: 'linear',
+                  x0: 0.5,
+                  y0: 0,
+                  x1: 0.5,
+                  y1: 1,
+                  stops: [
+                    {
+                      offset: 0,
+                      opacity: 0.2,
+                    },
+                    {
+                      offset: 1,
+                      opacity: 0,
+                    },
+                  ],
+                },
+              },
+            },
+            point: {
+              style: {
+                symbolType: 'diamond',
+              },
+            },
           },
         ],
         axes: [{ orient: 'left' }, { orient: 'bottom', label: { visible: true }, type: 'band' }],
@@ -558,11 +596,16 @@ export default {
               value: item.children[i].classDataSum,
             })
           }
+          data_class_my.forEach((item_) => {
+            item_.percent = ((item_.value / item.sumEmission) * 100).toFixed(2)
+          })
         }
       })
       let isFirst = true
+      let noMyEnterprise_sum = 0
       for (let i = 0; i < this.horizontalData.length; i++) {
         if (this.horizontalData[i].isMy == false) {
+          noMyEnterprise_sum += this.horizontalData[i].sumEmission
           if (isFirst) {
             for (let j = 0; j < this.horizontalData[i].children.length; j++) {
               data_class_others.push({
@@ -585,7 +628,11 @@ export default {
           continue
         }
       }
-      // 找出data_class_others中type相同的元素，并计算总和
+      // 计算data_class每一类占的百分比
+      data_class_others.forEach((item) => {
+        item.percent = ((item.value / noMyEnterprise_sum) * 100).toFixed(2)
+      })
+      // console.log(data_class_my, data_class_others)
       data_class_my = data_class_my.sort((a, b) => {
         return a.type - b.type
       })
@@ -631,16 +678,27 @@ export default {
             valueField: 'value',
             categoryField: 'type',
             label: {
-              // position: 'inside',
-              visible: false,
-              // style: {
-              //   fill: 'white',
-              // },
+              position: 'inside',
+              visible: true,
+              formatter: '{_percent_}%',
+              style: {
+                fill: 'white',
+              },
             },
             pie: {
               style: {
                 stroke: '#ffffff',
                 lineWidth: 2,
+              },
+            },
+            tooltip: {
+              mark: {
+                content: [
+                  {
+                    key: (datum) => '本企业：' + datum['type'],
+                    value: (datum) => datum['percent'] + '%',
+                  },
+                ],
               },
             },
           },
@@ -652,7 +710,7 @@ export default {
             valueField: 'value',
             categoryField: 'type',
             label: {
-              visible: true,
+              visible: false,
             },
             pie: {
               style: {
@@ -660,9 +718,19 @@ export default {
                 lineWidth: 2,
               },
             },
+            tooltip: {
+              mark: {
+                content: [
+                  {
+                    key: (datum) => '行业平均：' + datum['type'],
+                    value: (datum) => datum['percent'] + '%',
+                  },
+                ],
+              },
+            },
           },
         ],
-        color: ['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00'],
+        // color: ['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56', '#d0743c', '#ff8c00'],
         title: {
           visible: false,
           text: 'Population Distribution by Age in the United States, 2021 (in millions)',

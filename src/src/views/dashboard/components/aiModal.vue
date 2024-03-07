@@ -122,19 +122,6 @@ export default {
         this.canUse = resData.canUse
         if (!this.canUse) {
           this.init()
-          setTimeout(() => {
-            if (this.visible) {
-              this.msgList.push({
-                my: false,
-                msg: '🔔为了防止大模型随意调用，目前暂时关闭，若有确实需要请联系jjq。模型已成功对接星火',
-              })
-              this.initMsg = true
-              this.noSend = true
-              this.showLoadMsg = true
-              this.showLoadMsg = false
-              this.liushishuchu()
-            }
-          }, 2100)
         } else {
           this.appId = resData.appId
           this.apiKey = resData.apiKey
@@ -142,6 +129,58 @@ export default {
           this.init()
         }
       })
+    },
+    sendNouse() {
+      setTimeout(() => {
+        if (this.visible) {
+          this.msgList.push({
+            my: false,
+            msg: '🔔为了防止大模型随意调用，目前暂时关闭',
+          })
+          this.respondComplete = false
+          this.initMsg = true
+          this.noSend = true
+          this.showLoadMsg = true
+          this.showLoadMsg = false
+          // this.liushishuchu()
+          // 拼接流失输出
+          if (!this.visible) return
+          this.msgList_Liushi.push({
+            my: false,
+            msg: '',
+          })
+
+          setTimeout(() => {
+            this.msgList[this.msgList.length - 1].msg =
+              '🔔为了防止大模型随意调用，目前暂时关闭，若有确实需要请联系jjq。模型已成功对接星火'
+            this.respondComplete = true
+          }, 1500)
+
+          let index = 0
+          let timer
+          timer = setInterval(() => {
+            // console.log('xiangy', timer)
+            if (this.visible) {
+              if (index < this.msgList[this.msgList_Liushi.length - 1].msg.length) {
+                this.msgList_Liushi[this.msgList_Liushi.length - 1].msg +=
+                  this.msgList[this.msgList_Liushi.length - 1].msg.charAt(index)
+                index++
+              } else if (!this.respondComplete) {
+              } else {
+                //   clear(timer)
+                clearInterval(timer)
+                timer = null
+                if (this.visible) {
+                  this.noSendOver()
+                }
+                //   console.log('over')
+              }
+            } else {
+              clearInterval(timer)
+            }
+          }, 20)
+        }
+      }, 10)
     },
     open() {
       this.noSend = false
@@ -178,6 +217,9 @@ export default {
             clearInterval(timer)
             timer = null
             if (this.visible) {
+              if (!this.canUse) {
+                this.sendNouse()
+              }
               this.noSendOver()
             }
             //   console.log('over')
@@ -192,6 +234,7 @@ export default {
         my: false,
         msg: '你好，我是您的智碳AI领航员，我可以为您解答碳普惠、碳中和、碳填报的一系列问题，欢迎向我提问',
       })
+
       this.initMsg = true
       this.noSend = true
       this.showLoadMsg = false
