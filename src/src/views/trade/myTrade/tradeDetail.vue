@@ -71,7 +71,7 @@
         <a-form-model-item label="交易单价"> {{ tradeInfo.perEmission.toFixed(2) }} 碳币/tCO₂ </a-form-model-item>
 
         <a-form-model-item :label="`甲方剩余${tradeInfo.tradeType == 'SOLD' ? '库存' : '需求'}量`">
-          {{ tradeInfo.emission.toFixed(4) }} tCO₂
+          {{ tradeInfo.emission.toFixed(2) }} tCO₂
         </a-form-model-item>
 
         <a-form-model-item :label="`交易状态`">
@@ -114,7 +114,7 @@
 
           <template slot="dealNumTitle"> <a-icon type="gold" /> 交易量 (tCO₂) </template>
           <template slot="dealNum" slot-scope="text, record">
-            {{ record.dealNum.toFixed(4) }}
+            {{ record.dealNum.toFixed(2) }}
           </template>
 
           <template slot="sum"> <a-icon type="money-collect" /> 总金额 </template>

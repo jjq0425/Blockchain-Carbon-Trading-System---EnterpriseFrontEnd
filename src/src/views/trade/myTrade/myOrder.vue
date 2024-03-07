@@ -65,7 +65,7 @@
 
           <template slot="dealNumTitle"> <a-icon type="gold" /> 交易量 (tCO₂) </template>
           <template slot="dealNum" slot-scope="text, record">
-            {{ record.dealNum.toFixed(4) }}
+            {{ record.dealNum.toFixed(2) }}
           </template>
 
           <template slot="perEmissionTitle"> <a-icon type="pay-circle" /> 交易单价 </template>
@@ -248,7 +248,7 @@ export default {
         .reduce((pre, cur) => {
           return pre + cur.dealNum
         }, 0)
-        .toFixed(4)
+        .toFixed(2)
     },
     handleTableChange(pagination) {
       // console.log(this.pagination)

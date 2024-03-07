@@ -42,7 +42,7 @@
             <a-col :flex="1">
               <a-statistic
                 :title="$t('trade.market.header.infoCard.remainEmission')"
-                :value="enterpriseInfo.remainEmission.toFixed(4)"
+                :value="enterpriseInfo.remainEmission.toFixed(2)"
                 style="margin-right: 50px"
               >
                 <!-- <template #suffix>
@@ -217,7 +217,7 @@
                   <div>
                     {{ $t('trade.market.card.remain')
                     }}{{ item.tradeType == 'SALE' ? $t('trade.market.card.need') : $t('trade.market.card.stock') }}：{{
-                      item.emission.toFixed(4)
+                      item.emission.toFixed(2)
                     }}
                     tCO₂
                   </div>

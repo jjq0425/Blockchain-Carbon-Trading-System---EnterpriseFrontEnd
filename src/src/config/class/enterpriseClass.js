@@ -33,7 +33,7 @@ const enterpriseClassName_EN = {
 
 }
 
-const enterpriseClassAllowed = [1, 6, 10, 3, 7, 8, 5]
+const enterpriseClassAllowed = [1, 6, 10, 3, 7, 8, 5, 2]
 export {
     enterpriseClassName_CN,
     enterpriseClassName_EN,

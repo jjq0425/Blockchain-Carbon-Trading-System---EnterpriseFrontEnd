@@ -4,7 +4,12 @@
       <a-col :order="isMobile ? 2 : 1" :md="24" :lg="16">
         <a-form-model layout="vertical" :model="form" ref="BasicForm" :rules="rules">
           <a-form-model-item :label="$t('account.settings.basic.EnterpriseName')" prop="enterpriseName">
-            <a-input :placeholder="$t('account.settings.basic.EnterpriseName-message')" v-model="form.enterpriseName" />
+            <a-input
+              :placeholder="$t('account.settings.basic.EnterpriseName-message')"
+              v-model="form.enterpriseName"
+              disabled
+            />
+            <div style="font-size: 10px; color: grey; font-weight: bold">(企业名暂不允许更改)</div>
           </a-form-model-item>
 
           <a-form-model-item label="企业组织机构代码" prop="enterpriseID">

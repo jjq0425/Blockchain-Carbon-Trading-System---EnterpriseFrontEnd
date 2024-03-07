@@ -18,6 +18,10 @@
             <!-- 正常对话 -->
             <div v-for="(item,index) in msgList_Liushi" :key="index">
                 <!-- AI回答 -->
+                <transition
+                  enter-active-class="animate__animated animate__fadeIn animate__animated animate__faster"
+                  appear
+                >
                 <a-row style="width:95%;margin:0 auto;margin-bottom:30px" type="flex" v-if="!item.my">
                     <a-col :flex="1">
                         <!-- <a-avatar size="large" src="https://pic.code-nav.cn/yucongming_model_picture/1650492623718633473/3AjmCaZA-logo.webp" /> -->
@@ -27,6 +31,7 @@
                         {{ item.msg }}<div class="cursor" v-show="index==msgList_Liushi.length-1&&noSend==true&&showLoadMsg==false"></div>
                     </div>
                 </a-row>
+                </transition>
                 <!-- 人类提问 -->
                 <a-row style="width:95%;margin:0 auto;margin-bottom:30px" type="flex" v-if="item.my" >
                     <div style="text-align: right;min-width:92%;max-width:92%;padding:10px 20px;border-radius: 10px;" :flex="100" class="left-sanjiao">

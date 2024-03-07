@@ -29,7 +29,7 @@
       <a-form-model-item label="交易单价"> {{ orderInfo.perEmission.toFixed(2) }} 碳币/tCO₂ </a-form-model-item>
 
       <a-form-model-item :label="`交易(${orderInfo.tradeType == 'SOLD' ? '购买' : '卖出'})碳排量`" prop="dealNum">
-        {{ orderInfo.dealNum.toFixed(4) }}
+        {{ orderInfo.dealNum.toFixed(2) }}
         <span style="margin-left: 10px; font-size: 10px; color: grey">tCO₂</span>
       </a-form-model-item>
 
@@ -53,7 +53,7 @@
         碳排量变动：<span>
           <span :style="{ color: orderInfo.tradeType == 'SALE' ? 'red' : 'green' }">
             <span>{{ orderInfo.tradeType == 'SALE' ? '-' : '+' }}</span>
-            {{ orderInfo.dealNum == null ? '0.0000' : orderInfo.dealNum.toFixed(4) }}</span
+            {{ orderInfo.dealNum == null ? '0.0000' : orderInfo.dealNum.toFixed(2) }}</span
           >
         </span>
       </div>
@@ -69,7 +69,7 @@
         碳排量变动：<span>
           <span :style="{ color: orderInfo.tradeType == 'SALE' ? 'green' : 'red' }">
             <span>{{ orderInfo.tradeType == 'SALE' ? '+' : '-' }}</span>
-            {{ orderInfo.dealNum == null ? '0.0000' : orderInfo.dealNum.toFixed(4) }}</span
+            {{ orderInfo.dealNum == null ? '0.0000' : orderInfo.dealNum.toFixed(2) }}</span
           >
         </span>
       </div>

@@ -51,7 +51,7 @@
 
           <template slot="emissionTitle"> <a-icon type="gold" /> 剩余交易量 (tCO₂) </template>
           <template slot="emission" slot-scope="text, record">
-            {{ record.emission.toFixed(4) }}
+            {{ record.emission.toFixed(2) }}
           </template>
 
           <template slot="perEmissionTitle"> <a-icon type="pay-circle" /> 交易单价 </template>
@@ -192,7 +192,7 @@ export default {
           onFilter: (value, record) => record.tradeStatus.indexOf(value) >= 0,
         },
         {
-          title: '成交人数',
+          title: '成交次数',
           dataIndex: 'orderNum',
           key: 'orderNum',
           scopedSlots: { customRender: 'orderNum' },
@@ -243,7 +243,7 @@ export default {
         .reduce((pre, cur) => {
           return pre + cur.emission
         }, 0)
-        .toFixed(4)
+        .toFixed(2)
     },
     handleTableChange(pagination) {
       // console.log(this.pagination)

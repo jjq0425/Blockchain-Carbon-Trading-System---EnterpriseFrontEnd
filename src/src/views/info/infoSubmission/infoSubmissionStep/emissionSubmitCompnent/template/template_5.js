@@ -3,7 +3,7 @@ export const template_5 = {
     "dataSourcePDF": "", //数据来源报告的PDFurl（即各种贴图，如电费发票等）
     "taskYear": 2023,
     "enterpriseID": "", //企业ID
-    "enterpriseClass": 8, //企业类别3（代表
+    "enterpriseClass": 5, //企业类别3（代表
     "sumEmission": 0.00, //各个大类的classDataSum的和。企业本年度碳排放量
     "detail": [ //后端请完整存储detail的json
         {

@@ -24,7 +24,7 @@
             <!-- <span style="font-size: 42px; color: white; font-weight: bold">{{ dataSource.sumEmission }}</span> -->
             <a-statistic
               title=""
-              :precision="4"
+              :precision="2"
               :value="dataSource.sumEmission"
               :valueStyle="{ fontSize: '50px', color: 'white', fontWeight: '900' }"
             />
@@ -38,7 +38,7 @@
             <!-- <span style="font-size: 42px; color: white; font-weight: bold">{{ enterpriseRemainEmission() }}</span> -->
             <a-statistic
               title=""
-              :precision="4"
+              :precision="2"
               :value="enterpriseRemainEmission - dataSource.sumEmission"
               :valueStyle="{
                 fontSize: '42px',
@@ -58,7 +58,7 @@
             <!-- <span style="font-size: 42px; color: white; font-weight: bold">{{ enterpriseRemainEmission() }}</span> -->
             <a-statistic
               title=""
-              :precision="4"
+              :precision="2"
               :value="enterpriseRemainEmission"
               :valueStyle="{ fontSize: '42px', color: 'white', fontWeight: 'bold' }"
             />

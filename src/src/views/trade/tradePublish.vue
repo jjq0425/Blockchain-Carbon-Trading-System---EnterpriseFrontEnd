@@ -44,7 +44,7 @@
             <a-col :flex="1">
               <a-statistic
                 title="您当前剩余碳排量"
-                :value="enterpriseInfo.remainEmission.toFixed(4)"
+                :value="enterpriseInfo.remainEmission.toFixed(2)"
                 style="margin-right: 50px"
               >
                 <!-- <template #suffix>
@@ -93,7 +93,7 @@
           <a-input-number
             v-model="tradePublishForm.emission"
             :min="0.0001"
-            :precision="4"
+            :precision="2"
             :step="0.0001"
             style="width: 300px"
           />

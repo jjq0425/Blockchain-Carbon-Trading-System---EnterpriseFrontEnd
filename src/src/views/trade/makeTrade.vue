@@ -42,7 +42,7 @@
             <a-col :flex="1">
               <a-statistic
                 :title="$t('trade.market.header.infoCard.remainEmission')"
-                :value="enterpriseInfo.remainEmission.toFixed(4)"
+                :value="enterpriseInfo.remainEmission.toFixed(2)"
                 style="margin-right: 50px"
               >
                 <!-- <template #suffix>
@@ -106,7 +106,7 @@
             tradeInfo.tradeType == 'SOLD' ? $t('trade.market.card.stock') : $t('trade.market.card.need')
           }`"
         >
-          {{ tradeInfo.emission.toFixed(4) }} tCO₂
+          {{ tradeInfo.emission.toFixed(2) }} tCO₂
         </a-form-model-item>
 
         <a-form-model-item
@@ -118,7 +118,7 @@
           <a-input-number
             v-model="tradePublishForm.dealNum"
             :min="0.0001"
-            :precision="4"
+            :precision="2"
             :step="0.0001"
             style="width: 300px"
           />
@@ -143,7 +143,7 @@
           {{ $t('trade.makeTrade.info.emissionChange') }}：<span>
             <span :style="{ color: tradeInfo.tradeType == 'SALE' ? 'red' : 'green' }">
               <span>{{ tradeInfo.tradeType == 'SALE' ? '-' : '+' }}</span>
-              {{ tradePublishForm.dealNum == null ? '0.0000' : tradePublishForm.dealNum.toFixed(4) }}</span
+              {{ tradePublishForm.dealNum == null ? '0.0000' : tradePublishForm.dealNum.toFixed(2) }}</span
             >
           </span>
         </div>
