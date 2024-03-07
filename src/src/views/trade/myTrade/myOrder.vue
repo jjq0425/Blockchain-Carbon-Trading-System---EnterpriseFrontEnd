@@ -210,6 +210,7 @@ export default {
 
           key: 'orderTime',
           scopedSlots: { customRender: 'orderTime' },
+          defaultSortOrder: 'descend',
           sorter: (a, b) => parseInt(a.orderTime) - parseInt(b.orderTime),
         },
 

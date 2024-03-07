@@ -229,7 +229,9 @@ export default {
     fetchData() {
       this.dataLoading = true
       MyPublishTradeList().then((res) => {
-        this.myPublishListSource = res.data.tradeListEnterprise
+        this.myPublishListSource = res.data.tradeListEnterprise.sort(
+          (a, b) => parseInt(b.tradeID) - parseInt(a.tradeID)
+        )
         this.calcuStatistic()
         this.dataLoading = false
       })

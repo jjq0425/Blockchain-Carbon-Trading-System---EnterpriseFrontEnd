@@ -126,7 +126,7 @@ export default {
             this.showLoadMsg = true
             this.showLoadMsg = false
             this.liushishuchu()
-          }, 1200)
+          }, 2100)
         } else {
           this.appId = resData.appId
           this.apiKey = resData.apiKey
