@@ -287,6 +287,8 @@ import aiLottie from './components/aiLottie.vue'
 import aiModal from '@/views/dashboard/components/aiModal.vue'
 import { default as VChart } from '@visactor/vchart'
 
+import { vertical, horizontal } from '@/api/dashboard.js'
+
 const DataSet = require('@antv/data-set')
 
 export default {
@@ -310,44 +312,9 @@ export default {
       teams: [],
 
       // data
-      axis1Opts: {
-        dataKey: 'item',
-        line: null,
-        tickLine: null,
-        grid: {
-          lineStyle: {
-            lineDash: null,
-          },
-          hideFirstLine: false,
-        },
-      },
-      axis2Opts: {
-        dataKey: 'score',
-        line: null,
-        tickLine: null,
-        grid: {
-          type: 'polygon',
-          lineStyle: {
-            lineDash: null,
-          },
-        },
-      },
-      scale: [
-        {
-          dataKey: 'score',
-          min: 0,
-          max: 80,
-        },
-      ],
-      axisData: [
-        { item: '引用', a: 70, b: 30, c: 40 },
-        { item: '口碑', a: 60, b: 70, c: 40 },
-        { item: '产量', a: 50, b: 60, c: 40 },
-        { item: '贡献', a: 40, b: 50, c: 40 },
-        { item: '热度', a: 60, b: 70, c: 40 },
-        { item: '引用', a: 70, b: 50, c: 40 },
-      ],
-      radarData: [],
+      verticalData: null,
+      horizontalData: null,
+      hasMy: true,
     }
   },
   computed: {
@@ -417,48 +384,105 @@ export default {
       //   this.teams = res.data
       // })
     },
-    fetchData() {
+    async fetchData() {
+      await vertical().then((res) => {
+        this.verticalData = res.data.datas
+        this.hasMy = res.data.hasMy
+      })
+      await horizontal().then((res) => {
+        this.horizontalData = res.data.datas
+      })
+
       this.initCharts()
     },
     initCharts() {
-      this.initHorize()
+      this.initHorizontal()
       this.initVertical()
       this.initPie()
     },
-    initHorize() {
+    initVertical() {
+      let data_ = []
+      let v_dataSource = this.verticalData.sort((a, b) => {
+        return a.taskYear - b.taskYear
+      })
+      for (let i = 0; i < v_dataSource.length; i++) {
+        data_.push({
+          year: v_dataSource[i].taskYear,
+          class_type: '总和',
+          value: this.verticalData[i].sumEmission,
+        })
+        for (let j = 0; j < v_dataSource[i].children.length; j++) {
+          data_.push({
+            year: v_dataSource[i].taskYear,
+            class_type: v_dataSource[i].children[j].className,
+            value: v_dataSource[i].children[j].classDataSum,
+          })
+        }
+      }
       const spec = {
         type: 'line',
         data: {
-          values: [
-            { type: 'Eyeshadows', country: 'Africa', value: 3308 },
-            { type: 'Eyeshadows', country: 'EU', value: 4572 },
-            { type: 'Eyeshadows', country: 'China', value: 12043 },
-            { type: 'Eyeshadows', country: 'USA', value: 12998 },
-            { type: 'Eyeliner', country: 'Africa', value: 5432 },
-            { type: 'Eyeliner', country: 'EU', value: 3417 },
-            { type: 'Eyeliner', country: 'China', value: 15067 },
-            { type: 'Eyeliner', country: 'USA', value: 12321 },
-          ],
+          values: [...data_],
         },
         title: {
           visible: false,
           text: 'Stacked line chart',
         },
-        stack: true,
-        xField: 'type',
+        stack: false,
+        xField: 'year',
         yField: 'value',
-        seriesField: 'country',
+        seriesField: 'class_type',
         lineLabel: { visible: true },
         legends: [{ visible: true, position: 'middle', orient: 'bottom' }],
       }
 
-      const vchart = new VChart(spec, { dom: 'horizontal' })
+      const vchart = new VChart(spec, { dom: 'vertical' })
       vchart.renderSync()
 
       // Just for the convenience of console debugging, DO NOT COPY!
       window['vchart'] = vchart
     },
-    initVertical() {
+    initHorizontal() {
+      let noMyEnterpriseIdx = 1
+      let data_val_sum = []
+      let data_class = []
+      // 找出this.horizontalData[i].isMy==true的那一项
+      this.horizontalData.forEach((item) => {
+        if (item.isMy == true) {
+          data_val_sum.push({
+            x: '本企业',
+            type: '总和',
+            y: item.sumEmission,
+          })
+          for (let i = 0; i < item.children.length; i++) {
+            data_class.push({
+              x: '本企业',
+              type: item.children[i].className,
+              y: item.children[i].classDataSum,
+            })
+          }
+        }
+      })
+      for (let i = 0; i < this.horizontalData.length; i++) {
+        if (this.horizontalData[i].isMy == false) {
+          data_val_sum.push({
+            x: '企业' + noMyEnterpriseIdx,
+            type: '总和',
+            y: this.horizontalData[i].sumEmission,
+          })
+          for (let j = 0; j < this.horizontalData[i].children.length; j++) {
+            data_class.push({
+              x: '企业' + noMyEnterpriseIdx,
+              type: this.horizontalData[i].children[j].className,
+              y: this.horizontalData[i].children[j].classDataSum,
+            })
+          }
+          noMyEnterpriseIdx++
+        } else {
+          continue
+        }
+      }
+
       const spec = {
         type: 'common',
         seriesField: 'color',
@@ -466,33 +490,26 @@ export default {
           {
             id: 'id0',
             values: [
-              { x: '周一', type: '早餐', y: 15 },
-              { x: '周一', type: '午餐', y: 25 },
-              { x: '周二', type: '早餐', y: 12 },
-              { x: '周二', type: '午餐', y: 30 },
-              { x: '周三', type: '早餐', y: 15 },
-              { x: '周三', type: '午餐', y: 24 },
-              { x: '周四', type: '早餐', y: 10 },
-              { x: '周四', type: '午餐', y: 25 },
-              { x: '周五', type: '早餐', y: 13 },
-              { x: '周五', type: '午餐', y: 20 },
-              { x: '周六', type: '早餐', y: 10 },
-              { x: '周六', type: '午餐', y: 22 },
-              { x: '周日', type: '早餐', y: 12 },
-              { x: '周日', type: '午餐', y: 19 },
+              ...data_class,
+              // { x: '周一', type: '早餐', y: 15 },
+              // { x: '周一', type: '午餐', y: 25 },
+              // { x: '周二', type: '早餐', y: 12 },
+              // { x: '周二', type: '午餐', y: 30 },
+              // { x: '周三', type: '早餐', y: 15 },
+              // { x: '周三', type: '午餐', y: 24 },
+              // { x: '周四', type: '早餐', y: 10 },
+              // { x: '周四', type: '午餐', y: 25 },
+              // { x: '周五', type: '早餐', y: 13 },
+              // { x: '周五', type: '午餐', y: 20 },
+              // { x: '周六', type: '早餐', y: 10 },
+              // { x: '周六', type: '午餐', y: 22 },
+              // { x: '周日', type: '早餐', y: 12 },
+              // { x: '周日', type: '午餐', y: 19 },
             ],
           },
           {
             id: 'id1',
-            values: [
-              { x: '周一', type: '饮料', y: 22 },
-              { x: '周二', type: '饮料', y: 43 },
-              { x: '周三', type: '饮料', y: 33 },
-              { x: '周四', type: '饮料', y: 22 },
-              { x: '周五', type: '饮料', y: 10 },
-              { x: '周六', type: '饮料', y: 30 },
-              { x: '周日', type: '饮料', y: 50 },
-            ],
+            values: [...data_val_sum],
           },
         ],
         series: [
@@ -522,36 +539,86 @@ export default {
         },
       }
 
-      const vchart = new VChart(spec, { dom: 'vertical' })
+      const vchart = new VChart(spec, { dom: 'horizontal' })
       vchart.renderSync()
 
       // Just for the convenience of console debugging, DO NOT COPY!
       window['vchart'] = vchart
     },
     initPie() {
+      let data_class_my = []
+
+      let data_class_others = []
+      // 找出this.horizontalData[i].isMy==true的那一项
+      this.horizontalData.forEach((item) => {
+        if (item.isMy == true) {
+          for (let i = 0; i < item.children.length; i++) {
+            data_class_my.push({
+              type: item.children[i].className,
+              value: item.children[i].classDataSum,
+            })
+          }
+        }
+      })
+      let isFirst = true
+      for (let i = 0; i < this.horizontalData.length; i++) {
+        if (this.horizontalData[i].isMy == false) {
+          if (isFirst) {
+            for (let j = 0; j < this.horizontalData[i].children.length; j++) {
+              data_class_others.push({
+                type: this.horizontalData[i].children[j].className,
+                value: this.horizontalData[i].children[j].classDataSum,
+              })
+              isFirst = false
+            }
+          } else {
+            //找到data_class_others.type与this.horizontalData[i].children[j].className相同的元素，并计算value
+            for (let j = 0; j < this.horizontalData[i].children.length; j++) {
+              data_class_others.forEach((item) => {
+                if (item.type == this.horizontalData[i].children[j].className) {
+                  item.value += this.horizontalData[i].children[j].classDataSum
+                }
+              })
+            }
+          }
+        } else {
+          continue
+        }
+      }
+      // 找出data_class_others中type相同的元素，并计算总和
+      data_class_my = data_class_my.sort((a, b) => {
+        return a.type - b.type
+      })
+
+      data_class_others = data_class_others.sort((a, b) => {
+        return a.type - b.type
+      })
+
       const spec = {
         type: 'common',
         data: [
           {
             id: 'id0',
             values: [
-              { type: '0~29', value: '126.04' },
-              { type: '30~59', value: '128.77' },
-              { type: '60 and over', value: '77.09' },
+              // { type: '0~29', value: '126.04' },
+              // { type: '30~59', value: '128.77' },
+              // { type: '60 and over', value: '77.09' },
+              ...data_class_my,
             ],
           },
           {
             id: 'id1',
             values: [
-              { type: '0~9', value: '119.12' },
-              { type: '10~19', value: '43.01' },
-              { type: '20~29', value: '43.91' },
-              { type: '30~39', value: '45.4' },
-              { type: '40~49', value: '40.89' },
-              { type: '50~59', value: '42.48' },
-              { type: '60~69', value: '39.63' },
-              { type: '70~79', value: '25.17' },
-              { type: '80 and over', value: '12.29' },
+              // { type: '0~9', value: '119.12' },
+              // { type: '10~19', value: '43.01' },
+              // { type: '20~29', value: '43.91' },
+              // { type: '30~39', value: '45.4' },
+              // { type: '40~49', value: '40.89' },
+              // { type: '50~59', value: '42.48' },
+              // { type: '60~69', value: '39.63' },
+              // { type: '70~79', value: '25.17' },
+              // { type: '80 and over', value: '12.29' },
+              ...data_class_others,
             ],
           },
         ],
@@ -564,11 +631,11 @@ export default {
             valueField: 'value',
             categoryField: 'type',
             label: {
-              position: 'inside',
-              visible: true,
-              style: {
-                fill: 'white',
-              },
+              // position: 'inside',
+              visible: false,
+              // style: {
+              //   fill: 'white',
+              // },
             },
             pie: {
               style: {
