@@ -160,6 +160,7 @@ export default {
     if (process.env.NODE_ENV !== 'production' || process.env.VUE_APP_PREVIEW === 'true') {
       updateTheme(this.settings.primaryColor)
     }
+    this.$forceUpdate()
   },
   methods: {
     i18nRender,

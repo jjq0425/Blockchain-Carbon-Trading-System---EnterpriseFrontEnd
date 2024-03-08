@@ -114,5 +114,6 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(() => {
+  window.scrollTo(0, 0);
   NProgress.done() // finish progress bar
 })
