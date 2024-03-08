@@ -182,15 +182,17 @@ export default {
         }
       }, 10)
     },
-    open() {
+    open(msgInit = '') {
       this.noSend = false
       this.msgList = []
       this.msgList_Liushi = []
-      this.nowMsg = ''
+
       this.visible = true
+      this.nowMsg = msgInit
 
       this.$nextTick(() => {
         this.msgList = []
+
         this.msgList_Liushi = []
         this.fetchConfig()
       })

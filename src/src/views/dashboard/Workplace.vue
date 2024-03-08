@@ -271,6 +271,43 @@
               <!-- <div style="display: inline-block; font-size: 12px; padding: 10px">
                 随机对等分析行业内四个企业碳排动态与表现
               </div> -->
+              <div
+                id="lottie_ai_aiAnalyze"
+                style="width: 100%; transform: translateX(10px) translateY(10px)"
+                v-show="isAnalysizing"
+              ></div>
+              <aiAnalyzeLottie></aiAnalyzeLottie>
+              <div style="display: flex">
+                <a-button
+                  shape="round"
+                  style="border-radius: 999px"
+                  type="dashed"
+                  size="small"
+                  @click="
+                    () => {
+                      this.$refs.aiModalRef.open(
+                        this.userInfo.enterpriseClassName_CN + '企业如何减少二氧化碳排放，给出五点建议'
+                      )
+                    }
+                  "
+                  >去问AI：如何减排</a-button
+                >
+                <a-button
+                  shape="round"
+                  style="border-radius: 999px; margin-left: 10px"
+                  type="dashed"
+                  size="small"
+                  @click="
+                    () => {
+                      this.$router.push({ name: 'tradeMarket' })
+                    }
+                  "
+                  >去交易市场逛逛</a-button
+                >
+              </div>
+              <a-button shape="circle" style="border-radius: 999px; border: none; float: right" icon="sync"
+                >换个维度</a-button
+              >
             </div>
           </a-card>
         </a-col>
@@ -292,6 +329,7 @@ import { getRoleList, getServiceList } from '@/api/manage'
 import aiLottie from './components/aiLottie.vue'
 import aiModal from '@/views/dashboard/components/aiModal.vue'
 import { default as VChart } from '@visactor/vchart'
+import aiAnalyzeLottie from './components/aiAnalyzeLottie.vue'
 
 import { vertical, horizontal } from '@/api/dashboard.js'
 
@@ -304,6 +342,7 @@ export default {
     Radar,
     aiLottie,
     aiModal,
+    aiAnalyzeLottie,
   },
   data() {
     return {
@@ -321,6 +360,8 @@ export default {
       verticalData: null,
       horizontalData: null,
       hasMy: true,
+
+      isAnalysizing: true,
     }
   },
   computed: {
