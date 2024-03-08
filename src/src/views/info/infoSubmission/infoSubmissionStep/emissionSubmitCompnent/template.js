@@ -1010,6 +1010,7 @@ import { template_7 } from './template/template_7'
 import { template_8 } from './template/template_8'
 import { template_5 } from './template/template_5'
 import { template_2 } from './template/template_2'
+import { template_9 } from './template/template_9'
 import { template_TEST2 } from './template/template_TEST2'
 
 
@@ -1023,6 +1024,7 @@ export const template_THS = {
     template_8: template_8,
     template_5: template_5,
     template_2: template_2,
+    template_9: template_9,
     template_Test: template_Test,
 }
 
