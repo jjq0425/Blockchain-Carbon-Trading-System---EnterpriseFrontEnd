@@ -17,7 +17,7 @@
           <info title="完结发布数" :value="`${statistic.successNum} 个`" :bordered="true" />
         </a-col>
         <a-col :sm="8" :xs="24">
-          <info title="剩余交易量" :value="`${statistic.remainDealNum} tCO₂`" />
+          <info title="剩余未成交易量" :value="`${statistic.remainDealNum} tCO₂`" />
         </a-col>
       </a-row>
     </a-card>
@@ -49,7 +49,7 @@
             }}</a-tag>
           </template>
 
-          <template slot="emissionTitle"> <a-icon type="gold" /> 剩余交易量 (tCO₂) </template>
+          <template slot="emissionTitle"> <a-icon type="gold" /> 剩余未成交易量 (tCO₂) </template>
           <template slot="emission" slot-scope="text, record">
             {{ record.emission.toFixed(2) }}
           </template>

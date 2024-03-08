@@ -290,7 +290,7 @@
               <div v-show="!ana.isAnalysizing" style="margin-bottom: 30px" class="animate__fadeIn animate__animated">
                 <div style="font-size: 18px; font-weight: 700; color: #4263eb">{{ ana.msgs[ana.nowType].title }}</div>
                 <div style="margin-top: 10px">
-                  {{ ana.msgLiushi }}
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ana.msgLiushi }}
                   <div class="cursor" v-show="ana.noChange == true && ana.isAnalysizing == false"></div>
                 </div>
               </div>
@@ -325,10 +325,9 @@
               <a-button
                 type="text"
                 style="border-radius: 999px; border: none; float: right; margin-top: 10px"
-                icon="sync"
                 @click="changeAnalyze"
                 :disabled="ana.noChange"
-                >换个维度</a-button
+                ><a-icon type="sync" :spin="ana.noChange" />换个维度</a-button
               >
             </div>
           </a-card>
@@ -391,18 +390,24 @@ export default {
         msgs: [
           {
             title: '维度一：横向对比',
-            describe:
+            describe: [
               '根据横向对比分析，该企业在同行业内温室气体排放表现相对优秀。相较于其他同类企业，该企业不仅在排放量上显著低于行业平均水平，而且在环保措施和节能减排技术应用方面也处于领先地位。这一成就不仅有助于企业降低运营成本，提高市场竞争力，同时也展现了企业对履行社会责任的坚定承诺和对可持续发展的深入践行。在日益强调绿色发展和低碳经济的今天，该企业的这一表现无疑为行业树立了标杆，也为其他企业提供了值得借鉴的经验。',
+              '这是横向文本2',
+            ],
           },
           {
             title: '维度二：纵向对比',
-            describe:
+            describe: [
               '通过纵向对比分析，我们发现该企业在历史碳排放数据上的表现呈现出明显的改善和下降趋势。与过去几年相比，该企业的碳排放量有了显著的减少，这充分展示了企业在环保领域的努力和成效。企业能够在减少碳排放方面取得进展，不仅有助于保护环境，减少温室气体排放，也为企业在绿色经济中的长远发展奠定了坚实的基础。因此，该企业的这一积极变化是值得肯定的，同时也为其他企业树立了减排降碳的榜样。',
+              '这是纵向文本2',
+            ],
           },
           {
             title: '维度三：模块分布对比',
-            describe:
+            describe: [
               '经过对各模块数据的细致分析和行业对比，我们得出结论：该企业在碳排放的各个细分领域与同行业平均水平大致相当，没有出现显著的差异。进一步分析显示，企业各模块的排放量占比分布合理，没有出现某个特定模块的碳排放异常偏高或偏低的情况。总之，该企业在碳排放管理上已经展现出一定的稳健性，但仍需不断探索和实践，以期在日益严峻的环境保护要求下，不断提升自身的绿色竞争力，实现可持续发展。',
+              '这是文本3',
+            ],
           },
         ],
       },
@@ -462,22 +467,27 @@ export default {
       this.ana.noChange = true
       this.ana.msgLiushi = ''
 
+      let describe_idx = 0
+
+      describe_idx = Math.floor(Math.random() * (this.ana.msgs[this.ana.nowType].describe.length - 1 - 0 + 1)) + 0 // 含最小值，含最大值
+      // console.log(describe_idx, 'di')
+
       setTimeout(() => {
         this.ana.isAnalysizing = false
         // this.ana.msgLiushi = this.ana.msgs[this.ana.nowType].describe
         let index = 0
         let timer
         timer = setInterval(() => {
-          if (index < this.ana.msgs[this.ana.nowType].describe.length) {
-            this.ana.msgLiushi += this.ana.msgs[this.ana.nowType].describe.charAt(index)
+          if (index < this.ana.msgs[this.ana.nowType].describe[describe_idx].length) {
+            this.ana.msgLiushi += this.ana.msgs[this.ana.nowType].describe[describe_idx].charAt(index)
             index++
           } else {
             this.ana.noChange = false
             clearInterval(timer)
             timer = null
           }
-        }, 40)
-      }, 1000)
+        }, 100)
+      }, 1200)
     },
     checkUserHasBind() {
       if (this.userInfo.BindStatus != 'PASS') {
@@ -515,6 +525,91 @@ export default {
       this.initHorizontal()
       this.initVertical()
       this.initPie()
+      this.initAnayize()
+    },
+    initAnayize() {
+      let horizontal_ana = {
+        title: '维度一：横向分析',
+        describe: [],
+      }
+      let vertical_ana = {
+        title: '维度二：纵向分析',
+        describe: [],
+      }
+      let pie_ana = {
+        title: '维度三：模块分析',
+        describe: [],
+      }
+      /**
+       * 横向分析—— 按年份统计
+       */
+      // 准备基础数据
+      // 横向数据
+      let sum_average_others = 0 //其他行业总平均值
+      let average_others_modal = JSON.parse(JSON.stringify(this.horizontalData[0].children)) //其他行业每个模块的平均值
+      let sum_average_me = 0
+      let average_me_modal = []
+      average_others_modal.forEach((item) => {
+        item.classDataSum = 0
+      })
+      this.horizontalData.forEach((item) => {
+        if (item.isMy) {
+          sum_average_me = item.sumEmission
+          average_me_modal = item.children
+        } else {
+          sum_average_others += item.sumEmission
+          for (let i = 0; i < item.children.length; i++) {
+            for (let j = 0; j < average_others_modal.length; j++) {
+              if (item.children[i].className == average_others_modal[j].className) {
+                average_others_modal[j].classDataSum += item.children[i].classDataSum
+              }
+            }
+          }
+        }
+      })
+      sum_average_others =
+        sum_average_others / (this.hasMy ? this.horizontalData.length - 1 : this.horizontalData.length)
+      average_others_modal.forEach((item) => {
+        item.classDataSum =
+          item.classDataSum / (this.hasMy ? this.horizontalData.length - 1 : this.horizontalData.length)
+        item.percent = item.classDataSum / sum_average_others
+      })
+      average_me_modal.forEach((item) => {
+        item.percent = item.classDataSum / sum_average_me
+      })
+
+      // console.log('sum_average_others', average_others_modal, sum_average_others, sum_average_me, average_me_modal)
+
+      //纵向数据
+      let sum_average_old = 0
+      let average_old_modal = JSON.parse(JSON.stringify(this.verticalData[0].children))
+      average_old_modal.forEach((item) => {
+        item.classDataSum = 0
+      })
+      this.verticalData.forEach((item) => {
+        // console.log('1', item)
+        sum_average_old += item.sumEmission
+        for (let i = 0; i < item.children.length; i++) {
+          for (let j = 0; j < average_old_modal.length; j++) {
+            if (item.children[i].className == average_old_modal[j].className) {
+              average_old_modal[j].classDataSum += item.children[i].classDataSum
+            }
+          }
+        }
+      })
+
+      sum_average_old = sum_average_old / this.verticalData.length
+      average_old_modal.forEach((item) => {
+        item.classDataSum = item.classDataSum / this.verticalData.length
+        item.percent = item.classDataSum / sum_average_others
+      })
+      console.log(average_old_modal, sum_average_old)
+
+      /**
+       * 下面针对不同的数据生成模板
+       * 边界问题：无我，只有一年我
+       */
+
       this.changeAnalyze()
     },
     initVertical() {
@@ -523,11 +618,6 @@ export default {
         return a.taskYear - b.taskYear
       })
       for (let i = 0; i < v_dataSource.length; i++) {
-        data_.push({
-          year: v_dataSource[i].taskYear,
-          class_type: '总和',
-          value: this.verticalData[i].sumEmission,
-        })
         for (let j = 0; j < v_dataSource[i].children.length; j++) {
           data_.push({
             year: v_dataSource[i].taskYear,
@@ -535,6 +625,11 @@ export default {
             value: v_dataSource[i].children[j].classDataSum,
           })
         }
+        data_.push({
+          year: v_dataSource[i].taskYear,
+          class_type: '总和',
+          value: this.verticalData[i].sumEmission,
+        })
       }
       const spec = {
         type: 'line',
