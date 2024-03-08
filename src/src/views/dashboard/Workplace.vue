@@ -274,9 +274,26 @@
               <div
                 id="lottie_ai_aiAnalyze"
                 style="width: 100%; transform: translateX(10px) translateY(10px)"
-                v-show="isAnalysizing"
+                v-show="ana.isAnalysizing"
+                class="animate__fadeIn animate__animated"
               ></div>
+              <div
+                style="margin-bottom: 20px; text-align: center; color: #4263eb"
+                v-show="ana.isAnalysizing"
+                class="animate__fadeIn animate__animated"
+              >
+                正在智能分析数据中
+              </div>
               <aiAnalyzeLottie></aiAnalyzeLottie>
+
+              <!-- 文本测试 -->
+              <div v-show="!ana.isAnalysizing" style="margin-bottom: 30px" class="animate__fadeIn animate__animated">
+                <div style="font-size: 18px; font-weight: 700; color: #4263eb">{{ ana.msgs[ana.nowType].title }}</div>
+                <div style="margin-top: 10px">
+                  {{ ana.msgLiushi }}
+                  <div class="cursor" v-show="ana.noChange == true && ana.isAnalysizing == false"></div>
+                </div>
+              </div>
               <div style="display: flex">
                 <a-button
                   shape="round"
@@ -305,7 +322,12 @@
                   >去交易市场逛逛</a-button
                 >
               </div>
-              <a-button shape="circle" style="border-radius: 999px; border: none; float: right" icon="sync"
+              <a-button
+                type="text"
+                style="border-radius: 999px; border: none; float: right; margin-top: 10px"
+                icon="sync"
+                @click="changeAnalyze"
+                :disabled="ana.noChange"
                 >换个维度</a-button
               >
             </div>
@@ -361,7 +383,29 @@ export default {
       horizontalData: null,
       hasMy: true,
 
-      isAnalysizing: true,
+      ana: {
+        isAnalysizing: true,
+        msgLiushi: '',
+        nowType: 2,
+        noChange: false,
+        msgs: [
+          {
+            title: '维度一：横向对比',
+            describe:
+              '根据横向对比分析，该企业在同行业内温室气体排放表现相对优秀。相较于其他同类企业，该企业不仅在排放量上显著低于行业平均水平，而且在环保措施和节能减排技术应用方面也处于领先地位。这一成就不仅有助于企业降低运营成本，提高市场竞争力，同时也展现了企业对履行社会责任的坚定承诺和对可持续发展的深入践行。在日益强调绿色发展和低碳经济的今天，该企业的这一表现无疑为行业树立了标杆，也为其他企业提供了值得借鉴的经验。',
+          },
+          {
+            title: '维度二：纵向对比',
+            describe:
+              '通过纵向对比分析，我们发现该企业在历史碳排放数据上的表现呈现出明显的改善和下降趋势。与过去几年相比，该企业的碳排放量有了显著的减少，这充分展示了企业在环保领域的努力和成效。企业能够在减少碳排放方面取得进展，不仅有助于保护环境，减少温室气体排放，也为企业在绿色经济中的长远发展奠定了坚实的基础。因此，该企业的这一积极变化是值得肯定的，同时也为其他企业树立了减排降碳的榜样。',
+          },
+          {
+            title: '维度三：模块分布对比',
+            describe:
+              '经过对各模块数据的细致分析和行业对比，我们得出结论：该企业在碳排放的各个细分领域与同行业平均水平大致相当，没有出现显著的差异。进一步分析显示，企业各模块的排放量占比分布合理，没有出现某个特定模块的碳排放异常偏高或偏低的情况。总之，该企业在碳排放管理上已经展现出一定的稳健性，但仍需不断探索和实践，以期在日益严峻的环境保护要求下，不断提升自身的绿色竞争力，实现可持续发展。',
+          },
+        ],
+      },
     }
   },
   computed: {
@@ -410,6 +454,31 @@ export default {
     this.fetchData()
   },
   methods: {
+    changeAnalyze() {
+      this.ana.isAnalysizing = true
+      // this.nowType从0-5中随机选取一个，且不能与之前的重复
+      this.ana.nowType = (this.ana.nowType + 1) % this.ana.msgs.length
+      // console.log('nowType', this.ana.nowType, (this.ana.nowType + 1) % this.ana.msgs.length)
+      this.ana.noChange = true
+      this.ana.msgLiushi = ''
+
+      setTimeout(() => {
+        this.ana.isAnalysizing = false
+        // this.ana.msgLiushi = this.ana.msgs[this.ana.nowType].describe
+        let index = 0
+        let timer
+        timer = setInterval(() => {
+          if (index < this.ana.msgs[this.ana.nowType].describe.length) {
+            this.ana.msgLiushi += this.ana.msgs[this.ana.nowType].describe.charAt(index)
+            index++
+          } else {
+            this.ana.noChange = false
+            clearInterval(timer)
+            timer = null
+          }
+        }, 40)
+      }, 1000)
+    },
     checkUserHasBind() {
       if (this.userInfo.BindStatus != 'PASS') {
         this.$router.push({ path: '/bind' })
@@ -446,6 +515,7 @@ export default {
       this.initHorizontal()
       this.initVertical()
       this.initPie()
+      this.changeAnalyze()
     },
     initVertical() {
       let data_ = []
@@ -948,6 +1018,30 @@ export default {
   /* 100% {
     background-position: 150% 50%;
   } */
+}
+
+.cursor {
+  position: relative;
+  left: 10px;
+  top: 5px;
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  background-color: #d0bfff;
+  border-radius: 10px;
+  animation: cursorBlink 0.5s infinite;
+}
+/* 实现一个闪烁效果的动画 */
+@keyframes cursorBlink {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 </style>
 
