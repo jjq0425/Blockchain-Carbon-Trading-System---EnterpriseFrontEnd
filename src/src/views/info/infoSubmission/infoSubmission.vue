@@ -77,7 +77,7 @@
     <template>
       <!-- 开始卡片 -->
 
-      <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 0">
+      <a-card :bordered="false" class="animate__animated animate__fadeIn" v-show="NowStep == 0">
         <a-skeleton active :paragraph="{ rows: 8 }" v-show="dataLoading"> </a-skeleton>
         <task-comfirm ref="taskComfirm" v-show="!dataLoading"></task-comfirm>
       </a-card>

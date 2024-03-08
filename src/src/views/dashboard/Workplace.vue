@@ -447,6 +447,7 @@ export default {
 
       // Just for the convenience of console debugging, DO NOT COPY!
       window['vchart'] = vchart
+      // 打印一串helloworld
     },
     initHorizontal() {
       let noMyEnterpriseIdx = 1

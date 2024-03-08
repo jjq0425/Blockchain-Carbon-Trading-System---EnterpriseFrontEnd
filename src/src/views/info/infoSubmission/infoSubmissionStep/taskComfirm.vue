@@ -14,7 +14,7 @@
       v-if="taskInfo.auditStatus === 'REFUSE'"
     />
 
-    <a-descriptions title="企业信息" style="margin: 20px auto; width: 90%">
+    <a-descriptions title="企业信息" style="margin: 20px auto; width: 90%" id="taskInfo">
       <a-descriptions-item label="企业名"> {{ enterpriseInfo.enterpriseName }} </a-descriptions-item>
       <a-descriptions-item label="企业组织机构代码"> {{ enterpriseInfo.enterpriseID }} </a-descriptions-item>
       <a-descriptions-item label="企业类型"> {{ enterpriseInfo.enterpriseCharacter }} </a-descriptions-item>
@@ -70,7 +70,7 @@
       </a-descriptions-item>
     </a-descriptions>
 
-    <a-form :form="form" style="max-width: 500px; margin: 40px auto 0" v-if="submitType != 'detail'">
+    <a-form :form="form" style="max-width: 500px; margin: 40px auto 0" v-show="submitType != 'detail'">
       <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol">
         <a-checkbox
           style="font-size: 16px; color: #1890ff"
@@ -185,6 +185,8 @@ export default {
   mounted() {
     this.enterpriseInfo = this.$store.state.user.info
     this.taskInfo = this.$route.params.task
+    // 点击一下页面
+
     // console.log(this.taskInfo)
   },
 }
