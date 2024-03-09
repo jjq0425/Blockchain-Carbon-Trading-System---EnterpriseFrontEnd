@@ -8,10 +8,11 @@
     :footer="null"
     @cancel="cancelHandel"
     destroyOnClose
+    :dialog-style="{ top: '220px' }"
   >
     <p style="color: black">为确保账号安全，此操作需要输入动态口令。</p>
     <p style="color: red; text-align: center; font-size: 13px" v-if="hasError">动态口令不正确，请重试</p>
-    <!-- <p style="color: #38d9a9; text-align: center; font-size: 13px">动态口令验证成功，正在提交信息</p> -->
+    <p style="color: #38d9a9; text-align: center; font-size: 13px" v-if="hasSuccess">动态口令验证成功，正在提交信息</p>
     <vue-auth-code-input
       ref="auth_code"
       @inputChange="handleAuthCodeChange"
@@ -63,6 +64,7 @@ export default {
     return {
       visible: false,
       hasError: false,
+      hasSuccess: false,
       ver_loading: false,
 
       id: null,
@@ -95,7 +97,7 @@ export default {
       // console.log(this.)
     },
     handleAuthCodeComplete(code, index) {
-      console.log('Auth_CodeComplete', code)
+      // console.log('Auth_CodeComplete', code)
       // 验证code是不是每一位都有数字，比如['','','','','','1']就不行
       if (code.every(Boolean)) {
         // this.$message.success('提交成功')
@@ -103,16 +105,26 @@ export default {
         this.$message.warning('请完整填写动态口令')
         return
       }
+      let codeStr = code.join('')
 
       this.AuthCodeDisabled(true)
       this.ver_loading = true
-
       setTimeout(() => {
-        this.ver_loading = false
-        this.clearAuthCode()
-        this.AuthCodeDisabled(false)
-        this.hasError = true
-      }, 1000)
+        if (codeStr == '111111') {
+          this.hasSuccess = true
+          this.ver_loading = false
+          this.$message.success('验证成功')
+          this.$emit('success')
+          setTimeout(() => {
+            this.close()
+          }, 500)
+        } else {
+          this.ver_loading = false
+          this.clearAuthCode()
+          this.AuthCodeDisabled(false)
+          this.hasError = true
+        }
+      }, 500)
     },
     AuthCodeDisabled(flag = true) {
       if (flag) {
@@ -127,10 +139,14 @@ export default {
     },
 
     open(flag = false) {
+      this.$message.info('TOTP功能开发中，请使用111111')
       this.visible = true
     },
     close() {
       this.id = null
+      this.hasError = false
+      this.hasSuccess = false
+      this.ver_loading = false
       this.visible = false
     },
     cancelHandel() {
@@ -171,7 +187,7 @@ export default {
           const img = window.URL.createObjectURL(data)
           this.model = true
           this.modelSrc = img
-          formData.APP或工具end('file', data, this.fileName)
+          // formData.APP或工具end('file', data, this.fileName)
           this.$http
             .post('https://www.mocky.io/v2/5cc8019d300000980a055e76', formData, {
               contentType: false,

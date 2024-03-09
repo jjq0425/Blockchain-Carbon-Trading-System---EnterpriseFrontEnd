@@ -211,6 +211,7 @@
       <!-- <video src="@/assets/pages/trade/tradeElse/tradeInBlockChain.mp4" loop autoplay style="width: 100%"></video> -->
     </div>
     <trading ref="trading"></trading>
+    <OneTimePwdAuth ref="OneTimePwdAuth" @success="submitLast"></OneTimePwdAuth>
   </page-header-wrapper>
 </template>
 
@@ -222,12 +223,14 @@ import { tradeTypeClass_CN, tradeTypeClass_EN } from '@/config/class/trade/trade
 import store from '@/store'
 import { enterpriseClassName_CN, enterpriseClassName_EN } from '@/config/class/enterpriseClass'
 import trading from '@/views/trade/myTrade/trading'
+import OneTimePwdAuth from '../account/settings/OneTimePwd/OneTimePwdAuth.vue'
 
 export default {
   name: 'CardList',
   components: {
     // pdfTest,
     trading,
+    OneTimePwdAuth,
   },
   data() {
     // this.tabList = [
@@ -322,32 +325,35 @@ export default {
     handleSubmit() {
       this.$refs.tradePublishForm.validate((valid) => {
         if (valid) {
-          this.dataLoading = true
-          let submitForm = JSON.parse(JSON.stringify(this.tradePublishForm))
-          submitForm.tradeID = this.tradeInfo.tradeID
-          this.$refs.trading.open()
-          MakeTrade(submitForm)
-            .then((res) => {
-              if (res.success) {
-                this.$message.success(this.$t('trade.makeTrade.info.successDeal'))
-                this.$refs.trading.close(true)
-                setTimeout(() => {
-                  this.dataLoading = false
-                  this.$router.go(-1)
-                }, 300)
-              } else {
-                this.$message.error(res.message)
-                this.dataLoading = false
-                this.$refs.trading.close(true)
-              }
-            })
-            .catch((err) => {
-              this.$message.error(this.$t('trade.makeTrade.info.failDeal'), err.response.data.message)
-              this.dataLoading = false
-              this.$refs.trading.close(true)
-            })
+          this.$refs.OneTimePwdAuth.open()
         }
       })
+    },
+    submitLast() {
+      this.dataLoading = true
+      let submitForm = JSON.parse(JSON.stringify(this.tradePublishForm))
+      submitForm.tradeID = this.tradeInfo.tradeID
+      this.$refs.trading.open()
+      MakeTrade(submitForm)
+        .then((res) => {
+          if (res.success) {
+            this.$message.success(this.$t('trade.makeTrade.info.successDeal'))
+            this.$refs.trading.close(true)
+            setTimeout(() => {
+              this.dataLoading = false
+              this.$router.go(-1)
+            }, 300)
+          } else {
+            this.$message.error(res.message)
+            this.dataLoading = false
+            this.$refs.trading.close(true)
+          }
+        })
+        .catch((err) => {
+          this.$message.error(this.$t('trade.makeTrade.info.failDeal'), err.response.data.message)
+          this.dataLoading = false
+          this.$refs.trading.close(true)
+        })
     },
   },
 }

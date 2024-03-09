@@ -6,6 +6,7 @@
     :confirmLoading="confirmLoading"
     :width="720"
     @cancel="cancelHandel"
+    :dialog-style="{ top: '20px' }"
     destroyOnClose
   >
     <template slot="footer">
@@ -58,7 +59,9 @@
           :codeLength="6"
         />
         <p style="color: red; text-align: center; font-size: 13px" v-if="hasError">动态口令不正确，请重试</p>
-        <p style="color: #12b886; text-align: center; font-size: 13px" v-if="hasVerSucess">动态口令验证成功</p>
+        <p style="color: #12b886; text-align: center; font-size: 13px" v-if="hasVerSucess">
+          动态口令验证成功，点击确认以设置
+        </p>
 
         <a-button
           type="primary"
@@ -98,6 +101,7 @@
 <script>
 import QrcodeVue from 'qrcode.vue'
 import VueAuthCodeInput from 'vue-auth-code-input'
+import * as OTPAuth from 'otpauth'
 
 export default {
   components: {
@@ -114,16 +118,36 @@ export default {
       isRecreate: false,
 
       secretKey: '6YWPT2G3RYB5DQGJ',
+      totp: null,
 
       id: null,
       confirmLoading: false,
     }
   },
   computed: {
+    enterpriseInfo() {
+      return this.$store.state.user.info
+    },
     qrcodeVal() {
-      return `otpauth://totp/碳盟链道:测试公司?secret=${this.secretKey}&issuer=碳盟链道`
+      return this.totp.toString()
       // 请替换测试公司！
     },
+  },
+  mounted() {
+    // js随机生成一段数字
+    // https://totp.danhersam.com/
+    var random = Math.floor(Math.random() * 100000000000)
+    this.secretKey = OTPAuth.Secret.fromUTF8(random.toString()).base32
+    let totp = new OTPAuth.TOTP({
+      issuer: '碳盟链道',
+      label: this.enterpriseInfo.enterpriseName,
+      algorithm: 'SHA1',
+      digits: 6,
+      period: 30,
+      secret: this.secretKey,
+    })
+    this.totp = totp
+    // console.log('11', totp.generate())
   },
   methods: {
     // 验证密码
@@ -152,15 +176,14 @@ export default {
         this.$message.warning('请完整填写动态口令')
         return
       }
-      console.log('1', codeStr)
+      // console.log('1', codeStr)
       this.AuthCodeDisabled(true)
       this.ver_loading = true
-
+      let result = this.totp.generate(codeStr) === codeStr
       setTimeout(() => {
         this.ver_loading = false
-
         this.AuthCodeDisabled(false)
-        if (codeStr == '111111') {
+        if (result) {
           this.hasError = false
           this.hasVerSucess = true
         } else {
@@ -169,7 +192,7 @@ export default {
           this.hasVerSucess = false
           // 以上三句，顺序不要换
         }
-      }, 1000)
+      }, 500)
     },
     AuthCodeDisabled(flag = true) {
       if (flag) {

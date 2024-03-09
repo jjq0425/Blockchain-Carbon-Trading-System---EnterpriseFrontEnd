@@ -193,6 +193,7 @@
         </a-button>
       </a-tooltip>
     </div>
+    <OneTimePwdAuth ref="OneTimePwdAuth" @success="submitLast"></OneTimePwdAuth>
   </page-header-wrapper>
 </template>
 
@@ -203,11 +204,13 @@ import { TradePublish } from '@/api/trade'
 import { tradeTypeClass_CN, tradeTypeClass_EN } from '@/config/class/trade/tradeTypeClass'
 import store from '@/store'
 import { enterpriseClassName_CN, enterpriseClassName_EN } from '@/config/class/enterpriseClass'
+import OneTimePwdAuth from '../account/settings/OneTimePwd/OneTimePwdAuth.vue'
 
 export default {
   name: 'CardList',
   components: {
     // pdfTest,
+    OneTimePwdAuth,
   },
   data() {
     // this.tabList = [
@@ -305,26 +308,29 @@ export default {
     handleSubmit() {
       this.$refs.tradePublishForm.validate((valid) => {
         if (valid) {
-          this.dataLoading = true
-          TradePublish(this.tradePublishForm)
-            .then((res) => {
-              if (res.success) {
-                this.$message.success('发布成功')
-                setTimeout(() => {
-                  this.$router.go(-1)
-                  this.dataLoading = false
-                }, 300)
-              } else {
-                this.$message.error(res.message)
-                this.dataLoading = false
-              }
-            })
-            .catch((err) => {
-              this.$message.error('发布失败')
-              this.dataLoading = false
-            })
+          this.$refs.OneTimePwdAuth.open()
         }
       })
+    },
+    submitLast() {
+      this.dataLoading = true
+      TradePublish(this.tradePublishForm)
+        .then((res) => {
+          if (res.success) {
+            this.$message.success('发布成功')
+            setTimeout(() => {
+              this.$router.go(-1)
+              this.dataLoading = false
+            }, 300)
+          } else {
+            this.$message.error(res.message)
+            this.dataLoading = false
+          }
+        })
+        .catch((err) => {
+          this.$message.error('发布失败')
+          this.dataLoading = false
+        })
     },
   },
 }
