@@ -85,7 +85,7 @@ export default {
         nodeAlign: 'left',
         nodeGap: 12,
         nodeWidth: 14,
-        minNodeHeight: 4,
+        minNodeHeight: 8,
         nodeKey: (datum) => datum.name,
 
         title: {
