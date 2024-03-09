@@ -20,6 +20,7 @@
   "info.infoSubmission.detailstep.No1.title": "基本信息",
   "info.infoSubmission.detailstep.No2.title": "数据列表",
   "info.infoSubmission.detailstep.No3.title": "报告下载",
+  "info.infoSubmission.detailstep.No4": "碳流分布",
   "info.infoSubmission.detailstep.header": "填报数据查询",
   "info.infoSubmission.footer.errorList.field.checkComfirm": "填报任务确认框",
   "info.infoSubmission.footer.errorList.field.fileListsTmp_report": "核算报告文件上传框",

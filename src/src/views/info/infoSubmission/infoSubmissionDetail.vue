@@ -51,6 +51,16 @@
             </div>
           </template> -->
         </a-step>
+        <a-step>
+          <template v-slot:title>
+            <span>{{ $t('info.infoSubmission.detailstep.No4') }}</span>
+          </template>
+          <!-- <template v-slot:description>
+            <div class="antd-pro-pages-profile-advanced-style-stepDescription">
+              {{ $t('info.infoSubmission.step.No3.describe') }}
+            </div>
+          </template> -->
+        </a-step>
       </a-steps>
     </a-card>
 
@@ -68,6 +78,10 @@
 
       <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 2">
         <reportANDsourceDownload ref="reportANDsourceDownload"></reportANDsourceDownload>
+      </a-card>
+
+      <a-card :bordered="false" class="animate__animated animate__slideInUp" v-show="NowStep == 3">
+        <sang-ji-graph ref="SangJiGraph"></sang-ji-graph>
       </a-card>
     </template>
 
@@ -122,12 +136,12 @@
         @click="ValidateGoToNextStep"
         icon="vertical-left"
         :disabled="dataLoading"
-        v-if="NowStep != 2"
+        v-if="NowStep != 3"
       >
         {{ $t('modal.btn.nextPage') }}</a-button
       >
 
-      <a-button style="margin-right: 20px" @click="closeAndBack" icon="close" v-if="NowStep == 2" type="danger">
+      <a-button style="margin-right: 20px" @click="closeAndBack" icon="close" v-if="NowStep == 3" type="danger">
         {{ $t('modal.btn.close') }}</a-button
       >
     </footer-tool-bar>
@@ -147,6 +161,7 @@ import dataSourceUpload from '@/views/info/infoSubmission/infoSubmissionStep/dat
 import reportPreviewAndUpload from '@/views/info/infoSubmission/infoSubmissionStep/reportPreviewAndUpload'
 import WaitForSuperviser from '@/views/info/infoSubmission/infoSubmissionStep/WaitForSuperviser'
 import reportANDsourceDownload from '@/views/info/infoSubmission/infoSubmissionStep/reportANDsourceDownload'
+import SangJiGraph from '@/views/info/infoSubmission/infoSubmissionStep/SangJiGraph'
 
 import { Submit, GetReport } from '@/api/info'
 
@@ -191,6 +206,7 @@ export default {
     reportPreviewAndUpload,
     WaitForSuperviser,
     reportANDsourceDownload,
+    SangJiGraph,
   },
   data() {
     return {
@@ -267,6 +283,9 @@ export default {
         this.goTonextPage()
       } else if (this.NowStep == 1) {
         this.$refs.reportANDsourceDownload.passSourceData(this.submitData, this.taskInfo, 'detail')
+        this.goTonextPage()
+      } else if (this.NowStep == 2) {
+        this.$refs.SangJiGraph.passSourceData(this.submitData)
         this.goTonextPage()
       }
     },

@@ -1336,7 +1336,7 @@ export default {
       vchart.renderSync()
 
       // Just for the convenience of console debugging, DO NOT COPY!
-      window['vchart'] = vchart
+      // window['vchart'] = vchart
     },
     initVertical() {
       let data_ = []
@@ -1378,7 +1378,7 @@ export default {
       vchart.renderSync()
 
       // Just for the convenience of console debugging, DO NOT COPY!
-      window['vchart'] = vchart
+      // window['vchart'] = vchart
       // 打印一串helloworld
     },
     initHorizontal() {
@@ -1514,7 +1514,7 @@ export default {
       vchart.renderSync()
 
       // Just for the convenience of console debugging, DO NOT COPY!
-      window['vchart'] = vchart
+      // window['vchart'] = vchart
     },
     initPie() {
       let data_class_my = []
@@ -1681,7 +1681,7 @@ export default {
       vchart.renderSync()
 
       // Just for the convenience of console debugging, DO NOT COPY!
-      window['vchart'] = vchart
+      // window['vchart'] = vchart
     },
   },
 }
