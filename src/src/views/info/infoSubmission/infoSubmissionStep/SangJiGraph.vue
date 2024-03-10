@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <a-result title="碳流图加载中" v-show="!isInit">
+      <a-result title="碳流图加载中" v-if="!isInit">
         <template #icon><a-icon type="loading" /> </template
       ></a-result>
     </div>

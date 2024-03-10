@@ -280,13 +280,17 @@ export default {
     async validate() {
       if (this.NowStep == 0) {
         this.$refs.emissionSubmit.passSourceData(this.submitData, 'detail')
+
         this.goTonextPage()
+        window.scrollTo(0, 0)
       } else if (this.NowStep == 1) {
         this.$refs.reportANDsourceDownload.passSourceData(this.submitData, this.taskInfo, 'detail')
         this.goTonextPage()
+        window.scrollTo(0, 0)
       } else if (this.NowStep == 2) {
         this.$refs.SangJiGraph.passSourceData(this.submitData)
         this.goTonextPage()
+        window.scrollTo(0, 0)
       }
     },
 
@@ -294,6 +298,7 @@ export default {
       this.$router.push({ name: 'AnnualSubmissionCenter' })
     },
     backTolastPage() {
+      window.scrollTo(0, 0)
       this.errors = []
       this.NowStep--
     },
