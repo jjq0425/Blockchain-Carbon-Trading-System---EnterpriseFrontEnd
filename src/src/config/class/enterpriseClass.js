@@ -8,6 +8,11 @@
  * @Description: 
  * 
  */
+/*
+ * @Author: jjq
+ * @Description: 
+ * 
+ */
 
 
 const enterpriseClassName_CN = {
@@ -38,7 +43,7 @@ const enterpriseClassName_EN = {
 
 }
 
-const enterpriseClassAllowed = [1, 6, 10, 3, 7, 8, 5, 2, 9]
+const enterpriseClassAllowed = [1, 6, 10, 3, 7, 8, 5, 2, 9, 4]
 export {
     enterpriseClassName_CN,
     enterpriseClassName_EN,
