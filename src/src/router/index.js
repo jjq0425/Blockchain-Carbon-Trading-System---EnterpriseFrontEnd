@@ -1,13 +1,4 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
+
 import Vue from 'vue'
 import Router from 'vue-router'
 import { constantRouterMap } from '@/config/router.config'
@@ -28,7 +19,7 @@ Vue.use(Router)
 const createRouter = () =>
   new Router({
     base: process.env.VUE_APP_STATIC_URL + '/',
-    mode: 'history',
+    mode: 'hash',
     routes: constantRouterMap
   })
 
