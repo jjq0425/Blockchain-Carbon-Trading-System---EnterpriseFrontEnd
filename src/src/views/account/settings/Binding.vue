@@ -10,7 +10,7 @@
   >
 
   </a-list> -->
-  <a-result status="success" title="您已经通过信息绑定审核" sub-title="如需更改信息，请点击左侧菜单栏进行更改">
+  <a-result status="success" :title="$t('account.Binding.title')" :sub-title="$t('account.Binding.subTitle')">
   </a-result>
 </template>
 

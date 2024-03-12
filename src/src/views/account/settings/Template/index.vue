@@ -20,18 +20,22 @@
       "
     >
       <div style="color: #134089; font-size: 12px">
-        设计个性化模板后，点击右侧按钮即可导出模板，在填报时进行导入，方便快捷。您也可以导入已有模板进行二次修改、二次编辑。
+        {{ $t('account.Template.header.description') }}
       </div>
       <div style="width: 30%; margin-left: 40px">
         <a-button-group>
           <a-tooltip>
-            <template slot="title"> 导出模板以便您下次填报时可直接使用 </template>
-            <a-button icon="cloud-download" @click="exportData"> 导出模板 </a-button>
+            <template slot="title"> {{ $t('account.Template.header.btn1.tooltip') }} </template>
+            <a-button icon="cloud-download" @click="exportData">
+              {{ $t('account.Template.header.btn1.des') }}
+            </a-button>
           </a-tooltip>
 
           <a-tooltip>
-            <template slot="title"> 将导出的模板/数据重新导入，然后您可以对模板进行修改 </template>
-            <a-button icon="cloud-upload" @click="importData" v-if="submitType != 'detail'"> 导入模板 </a-button>
+            <template slot="title"> {{ $t('account.Template.header.btn2.tooltip') }} </template>
+            <a-button icon="cloud-upload" @click="importData" v-if="submitType != 'detail'">
+              {{ $t('account.Template.header.btn2.des') }}
+            </a-button>
           </a-tooltip>
           <input type="file" @change="loadTextFromFile" id="txtUpload" style="display: none" />
         </a-button-group>
@@ -58,7 +62,7 @@
             "
           >
             <div v-if="currentFloor == -1">
-              <a-result title="加载中，请稍后">
+              <a-result :title="$t('modal.loading.inLoadingWait')">
                 <template #icon>
                   <a-icon type="loading" style="color: #339af0; font-size: 50px" />
                 </template>
@@ -66,7 +70,10 @@
             </div>
             <!-- 默认是第零层 -->
             <div v-if="currentFloor == 0">
-              <a-result title="个性化填报模板" sub-title="设计后点击右上角导出模板即可在填报时使用">
+              <a-result
+                :title="$t('account.settings.menuMap.template')"
+                :sub-title="$t('account.Template.main.card.N1.subTitle')"
+              >
                 <template #icon>
                   <img
                     src="@/assets/pages/user/account/template/templateGuide.png"
@@ -78,7 +85,7 @@
             </div>
             <!-- 第一层被点击的时候 -->
             <div v-if="currentFloor == 1">
-              <a-result :title="`${Floor1Data.title}`" sub-title="您当前位于本模块">
+              <a-result :title="`${Floor1Data.title}`" :sub-title="$t('account.Template.main.card.N2.subTitle')">
                 <template #icon>
                   <a-icon type="smile" theme="twoTone" />
                 </template>
@@ -95,9 +102,15 @@
                   </a-button>
                   <a-tooltip>
                     <template #title>
-                      {{ Floor1Data.canAdd == true ? '点击向本模块添加子元素' : '本模块暂不支持新增子项目' }}
+                      {{
+                        Floor1Data.canAdd == true
+                          ? this.$t('account.Template.main.card.N2.btn.Add')
+                          : this.$t('account.Template.main.card.N2.btn.Noadd')
+                      }}
                     </template>
-                    <a-button type="primary" :disabled="!Floor1Data.canAdd" @click="addChild()"> 新增子结点 </a-button>
+                    <a-button type="primary" :disabled="!Floor1Data.canAdd" @click="addChild()">
+                      {{ $t('account.Template.main.card.N2.btn.val') }}
+                    </a-button>
                   </a-tooltip>
                 </template>
               </a-result>
@@ -318,7 +331,7 @@ export default {
         setTimeout(() => {
           this.treeData.push(zancun)
         }, 0)
-        this.$message.success('修改成功')
+        this.$message.success(this.$t('result.success.modifySuccess'))
         this.currentFloor = 0
       } else {
         let zancun = JSON.parse(JSON.stringify(this.treeData[0]))
@@ -327,7 +340,7 @@ export default {
         this.treeData = []
         this.ReinitTree(zancun)
 
-        this.$message.success('新增成功')
+        this.$message.success(this.$t('result.success.addSuccess'))
         this.currentFloor = 0
       }
       this.$forceUpdate()
@@ -341,7 +354,7 @@ export default {
       this.ReinitTree(zancun)
       //   zancun就是root
 
-      this.$message.success('删除成功')
+      this.$message.success(this.$t('result.success.deleteSuccess'))
       this.currentFloor = 0
 
       this.$forceUpdate()
@@ -406,7 +419,7 @@ export default {
     },
 
     async exportData() {
-      this.$message.loading({ content: '导出模板中...', key: 'exportData' })
+      this.$message.loading({ content: this.$t('modal.loading.exportTemplateLoading'), key: 'exportData' })
       let treeD = await this.transFormData()
       setTimeout(() => {
         // 需要1. 对classSort重新排序，2. 对dataNum等赋值 3. 进行改造，删除title、key、floor、parentIdx、idx字段
@@ -416,13 +429,16 @@ export default {
           type: 'text/plain;charset=utf-8',
         })
         saveAs(file)
-        this.$message.success({ content: '保存成功,请勿修改元数据', key: 'exportData' })
+        this.$message.success({
+          content: this.$t('result.success.exportTemplateSuccessAndNotModify'),
+          key: 'exportData',
+        })
       }, 500)
     },
     importData() {
       this.$confirm({
         title: this.$t('modal.notice.title'),
-        content: '注意！导入数据后将覆盖原有数据，确认继续吗？',
+        content: this.$t('modal.confirm.confirmDataFUGAI'),
         okType: 'danger',
         onOk() {
           document.getElementById('txtUpload').click()
@@ -439,16 +455,16 @@ export default {
       const file = e.target.files[0]
       let name = file.name.split('.').splice(-1).toString()
       if (name !== 'json') {
-        this.$message.warning({ content: '文件类型错误,请重新选择文件', key: 'importData' })
+        this.$message.warning({ content: this.$t('result.fail.file.fileTypeWrong'), key: 'importData' })
         return
       }
       const reader = new FileReader()
       if (typeof FileReader === 'undefined') {
-        this.$message.warning({ content: '您的浏览器不支持FileReader接口', key: 'importData' })
+        this.$message.warning({ content: this.$t('result.fail.file.fileApiWrong'), key: 'importData' })
         return
         // alert('您的浏览器不支持FileReader接口')
       }
-      this.$message.loading({ content: '数据解析中...', key: 'importData' })
+      this.$message.loading({ content: this.$t('modal.loading.dataPraseLoading'), key: 'importData' })
       e.target.value = '' //文件置空，传重复的文件也会导入
       setTimeout(() => {
         reader.onload = (e) => this.$emit('load', this.dealFile(e.target.result))
@@ -468,9 +484,9 @@ export default {
           this.initTree(true, res)
         }, 200)
 
-        this.$message.success({ content: '数据解析成功', key: 'importData' }, 1)
+        this.$message.success({ content: this.$t('result.success.file.praseSuccess'), key: 'importData' }, 1)
       } catch {
-        this.$message.warning({ content: '数据解析失败,请勿修改元数据', key: 'importData' })
+        this.$message.warning({ content: this.$t('result.fail.file.praseWrongNotModify'), key: 'importData' })
       }
       return
       // console.log(dcObj)

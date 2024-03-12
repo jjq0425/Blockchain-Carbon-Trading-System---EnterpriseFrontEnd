@@ -8,9 +8,13 @@
   "modal.btn.ok2": "ok",
   "modal.btn.return": "Return",
   "modal.btn.submit": "Submit",
+  "modal.confirm.confirmDataFUGAI": "Attention! After importing data, the original data will be overwritten. Are you sure to continue?",
   "modal.confirm.confirmSubmit.content": "Confirm submission of data? After submission, it will be unable to be modified",
   "modal.confirm.title": "Please confirm",
   "modal.detail.title": "Detail",
+  "modal.loading.dataPraseLoading": "Data parsing",
+  "modal.loading.exportTemplateLoading": "Exporting template ...",
+  "modal.loading.inLoadingWait": "Loading, please wait a moment",
   "modal.notice.title": "Notice",
   "modal.please.select": "Please select"
 }
