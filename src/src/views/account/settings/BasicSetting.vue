@@ -9,16 +9,24 @@
               v-model="form.enterpriseName"
               disabled
             />
-            <div style="font-size: 10px; color: grey; font-weight: bold">(企业名暂不允许更改)</div>
+            <div style="font-size: 10px; color: grey; font-weight: bold">
+              ({{ $t('account.basicSetting.form.enterpriseName.doNotModify') }})
+            </div>
           </a-form-model-item>
 
-          <a-form-model-item label="企业组织机构代码" prop="enterpriseID">
-            <a-input placeholder="请输入" v-model="form.enterpriseID" disabled />
-            <div style="font-size: 10px; color: grey; font-weight: bold">(企业组织机构代码暂不允许更改)</div>
+          <a-form-model-item :label="$t('account.basicSetting.enterpriseID.label')" prop="enterpriseID">
+            <a-input :placeholder="$t('form.basic-form.weight.placeholder')" v-model="form.enterpriseID" disabled />
+            <div style="font-size: 10px; color: grey; font-weight: bold">
+              ({{ $t('account.basicSetting.enterpriseID.doNotModify') }})
+            </div>
           </a-form-model-item>
 
-          <a-form-model-item label="企业地址" prop="enterprisePosition">
-            <a-textarea row="2" placeholder="请输入" v-model="form.enterprisePosition" />
+          <a-form-model-item :label="$t('account.basicSetting.enterprisePosition')" prop="enterprisePosition">
+            <a-textarea
+              row="2"
+              :placeholder="$t('form.basic-form.weight.placeholder')"
+              v-model="form.enterprisePosition"
+            />
           </a-form-model-item>
 
           <a-form-model-item :label="$t('account.settings.basic.profile')" prop="enterpriseDescription">
@@ -96,10 +104,16 @@ export default {
         enterpriseID: '',
       },
       rules: {
-        enterpriseName: [{ required: true, message: '请输入企业名称', trigger: 'blur' }],
-        enterprisePosition: [{ required: true, message: '请输入企业地址', trigger: 'blur' }],
-        enterpriseID: [{ required: true, message: '请输入企业组织机构代码', trigger: 'blur' }],
-        enterpriseDescription: [{ required: true, message: '请输入企业简介', trigger: 'blur' }],
+        enterpriseName: [
+          { required: true, message: this.$t('account.basicSetting.rule.enterpriseName'), trigger: 'blur' },
+        ],
+        enterprisePosition: [
+          { required: true, message: this.$t('account.basicSetting.rule.enterprisePosition'), trigger: 'blur' },
+        ],
+        enterpriseID: [{ required: true, message: this.$t('account.basicSetting.rule.enterpriseID'), trigger: 'blur' }],
+        enterpriseDescription: [
+          { required: true, message: this.$t('account.basicSetting.rule.enterpriseDescription'), trigger: 'blur' },
+        ],
       },
       submitLoading: false,
     }
@@ -132,7 +146,7 @@ export default {
           })
         } else {
           this.submitLoading = false
-          this.$message.warning('请补全信息后提交')
+          this.$message.warning(this.$t('result.fail.bu-quan-hou-ti-jiao'))
           return false
         }
       })

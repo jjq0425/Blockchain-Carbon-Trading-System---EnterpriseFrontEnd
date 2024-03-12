@@ -4,25 +4,47 @@
       <a-col :order="isMobile ? 2 : 1" :md="24" :lg="16">
         <a-form-model layout="vertical" :model="form" ref="BasicForm" :rules="rules">
           <div style="font-size: 18px; color: #108ee9; margin: 15px auto; width: 100%; font-weight: bold">
-            企业性质与行业
+            {{ $t('account.Moresetting.title.N1') }}
           </div>
 
-          <a-form-model-item label="企业性质" prop="enterpriseCharacter">
-            <a-select placeholder="请选择" style="min-width: 180px" v-model="form.enterpriseCharacter">
-              <a-select-option value="国营企业"> 国有企业 </a-select-option>
-              <a-select-option value="集体所有制"> 集体所有制 </a-select-option>
-              <a-select-option value="私营企业"> 私营企业 </a-select-option>
-              <a-select-option value="股份制企业"> 股份制企业 </a-select-option>
-              <a-select-option value="有限合伙企业"> 有限合伙企业 </a-select-option>
-              <a-select-option value="合资企业"> 合资企业 </a-select-option>
-              <a-select-option value="外商投资企业"> 外商投资企业 </a-select-option>
-              <a-select-option value="个人独资企业"> 个人独资企业 </a-select-option>
-              <a-select-option value="股份合作企业"> 股份合作企业 </a-select-option>
+          <a-form-model-item :label="$t('account.Moresetting.form.enterpriseCharacter')" prop="enterpriseCharacter">
+            <a-select
+              :placeholder="$t('modal.please.select')"
+              style="min-width: 180px"
+              v-model="form.enterpriseCharacter"
+            >
+              <a-select-option value="国营企业">
+                {{ $t('account.Moresetting.form.enterpriseCharacter_option.GuoYou') }}
+              </a-select-option>
+              <a-select-option value="集体所有制">
+                {{ $t('account.Moresetting.form.enterpriseCharacter_option.JiTiSuoYou') }}
+              </a-select-option>
+              <a-select-option value="私营企业">
+                {{ $t('account.Moresetting.form.enterpriseCharacter_option.SiYing') }}
+              </a-select-option>
+              <a-select-option value="股份制企业">
+                {{ $t('account.Moresetting.form.enterpriseCharacter_option.GuFen') }}
+              </a-select-option>
+              <a-select-option value="有限合伙企业">
+                {{ $t('account.Moresetting.form.enterpriseCharacter_option.YouXianHeHuo') }}
+              </a-select-option>
+              <a-select-option value="合资企业">
+                {{ $t('account.Moresetting.form.enterpriseCharacter_option.HeZi') }}
+              </a-select-option>
+              <a-select-option value="外商投资企业">
+                {{ $t('account.Moresetting.form.enterpriseCharacter_option.WaiShangeTouZi') }}
+              </a-select-option>
+              <a-select-option value="个人独资企业">
+                {{ $t('account.Moresetting.form.enterpriseCharacter_option.GeRenDuZi') }}
+              </a-select-option>
+              <a-select-option value="股份合作企业">
+                {{ $t('account.Moresetting.form.enterpriseCharacter_option.GuFenHeZuo') }}
+              </a-select-option>
             </a-select>
           </a-form-model-item>
 
-          <a-form-model-item label="企业所在行业" prop="enterpriseClass">
-            <a-select placeholder="请选择" style="min-width: 180px" v-model="form.enterpriseClass">
+          <a-form-model-item :label="$t('account.Moresetting.form.enterpriseClass')" prop="enterpriseClass">
+            <a-select :placeholder="$t('modal.please.select')" style="min-width: 180px" v-model="form.enterpriseClass">
               <template v-for="(item, index) in enterpriseClassNameOptions">
                 <template v-if="enterpriseClassAllowed.includes(index + 1)"
                   ><a-select-option :value="(index + 1).toString()" :key="(index + 1).toString()">
@@ -32,32 +54,38 @@
               </template>
             </a-select>
             <div style="font-size: 10px; font-weight: bold; color: grey">
-              不同行业对应碳排放报告内容不同，请务必选择正确。
+              {{ $t('account.Moresetting.title.notice.enterpriseClass') }}
             </div>
           </a-form-model-item>
 
           <div style="font-size: 18px; color: #108ee9; margin: 15px auto; width: 100%; font-weight: bold">
-            企业联系人信息
+            {{ $t('account.Moresetting.title.N2') }}
           </div>
 
-          <a-form-model-item label="企业法人姓名" prop="enterpriseLegelPerson">
-            <a-input placeholder="请输入" v-model="form.enterpriseLegelPerson">
+          <a-form-model-item :label="$t('account.Moresetting.form.enterpriseLegelPerson')" prop="enterpriseLegelPerson">
+            <a-input :placeholder="$t('form.basic-form.weight.placeholder')" v-model="form.enterpriseLegelPerson">
               <template #addonBefore>
                 <a-icon type="user" />
               </template>
             </a-input>
           </a-form-model-item>
 
-          <a-form-model-item label="企业填报负责人姓名" prop="enterpriseResponsiblePerson">
-            <a-input placeholder="请输入" v-model="form.enterpriseResponsiblePerson">
+          <a-form-model-item
+            :label="$t('account.Moresetting.form.enterpriseResponsiblePerson')"
+            prop="enterpriseResponsiblePerson"
+          >
+            <a-input :placeholder="$t('form.basic-form.weight.placeholder')" v-model="form.enterpriseResponsiblePerson">
               <template #addonBefore>
                 <a-icon type="user" />
               </template>
             </a-input>
           </a-form-model-item>
 
-          <a-form-model-item label="企业填报负责人邮箱" prop="enterpriseResponsibleEmail">
-            <a-input placeholder="请输入" v-model="form.enterpriseResponsibleEmail">
+          <a-form-model-item
+            :label="$t('account.Moresetting.form.enterpriseResponsibleEmail')"
+            prop="enterpriseResponsibleEmail"
+          >
+            <a-input :placeholder="$t('form.basic-form.weight.placeholder')" v-model="form.enterpriseResponsibleEmail">
               <template #addonBefore>
                 <a-icon type="mail" />
               </template>
@@ -131,13 +159,21 @@ export default {
         enterpriseClass: '1',
       },
       rules: {
-        enterpriseCharacter: [{ required: true, message: '请选择企业性质', trigger: 'blur' }],
-        enterpriseClass: [{ required: true, message: '请选择企业所在行业', trigger: 'blur' }],
-        enterpriseLegelPerson: [{ required: true, message: '请输入企业法人姓名', trigger: 'blur' }],
-        enterpriseResponsiblePerson: [{ required: true, message: '请输入企业填报负责人姓名', trigger: 'blur' }],
+        enterpriseCharacter: [
+          { required: true, message: this.$t('account.Moresetting.rule.enterpriseCharacter'), trigger: 'blur' },
+        ],
+        enterpriseClass: [
+          { required: true, message: this.$t('account.Moresetting.rule.enterpriseClass'), trigger: 'blur' },
+        ],
+        enterpriseLegelPerson: [
+          { required: true, message: this.$t('account.Moresetting.rule.enterpriseLegelPerson'), trigger: 'blur' },
+        ],
+        enterpriseResponsiblePerson: [
+          { required: true, message: this.$t('account.Moresetting.rule.enterpriseResponsiblePerson'), trigger: 'blur' },
+        ],
         enterpriseResponsibleEmail: [
-          { required: true, message: '请输入企业填报负责人邮箱', trigger: 'blur' },
-          { type: 'email', message: '请输入正确的邮箱', trigger: 'blur' },
+          { required: true, message: this.$t('account.Moresetting.rule.enterpriseResponsibleEmail'), trigger: 'blur' },
+          { type: 'email', message: this.$t('form.basic-form.email.RightEmailNeed'), trigger: 'blur' },
         ],
       },
       submitLoading: false,
@@ -192,7 +228,7 @@ export default {
           })
         } else {
           this.submitLoading = false
-          this.$message.warning('请补全信息后提交')
+          this.$message.warning(this.$t('result.fail.bu-quan-hou-ti-jiao'))
           return false
         }
       })

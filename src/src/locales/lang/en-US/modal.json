@@ -11,5 +11,6 @@
   "modal.confirm.confirmSubmit.content": "Confirm submission of data? After submission, it will be unable to be modified",
   "modal.confirm.title": "Please confirm",
   "modal.detail.title": "Detail",
-  "modal.notice.title": "Notice"
+  "modal.notice.title": "Notice",
+  "modal.please.select": "Please select"
 }

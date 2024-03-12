@@ -1,4 +1,5 @@
 {
+  "result.fail.bu-quan-hou-ti-jiao": "请补全信息后提交",
   "result.fail.error.btn-text": "返回修改",
   "result.fail.error.description": "请核对并修改以下信息后，再重新提交。",
   "result.fail.error.hint-btn1": "立即解冻",

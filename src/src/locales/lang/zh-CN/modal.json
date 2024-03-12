@@ -12,6 +12,7 @@
   "modal.confirm.title": "请确认",
   "modal.detail.title": "详情",
   "modal.notice.title": "提示",
+  "modal.please.select": "请选择",
   "result.success.getHistorySuccess": "获取历史数据成功",
   "result.success.submitSuccess": "提交成功！"
 }

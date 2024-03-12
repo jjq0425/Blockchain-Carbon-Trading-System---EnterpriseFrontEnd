@@ -1,4 +1,5 @@
 {
+  "result.fail.bu-quan-hou-ti-jiao": "Please complete the information before submitting",
   "result.fail.error.btn-text": "Return to modify",
   "result.fail.error.description": "Please check and modify the following information before resubmitting.",
   "result.fail.error.hint-btn1": "Thaw immediately",
