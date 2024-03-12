@@ -135,9 +135,11 @@
                   transform: translateY(5px);
                 "
               ></div>
-              <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">同业对标</div>
+              <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">
+                {{ $t('dashboard.data_analysis.tong-ye-dui-biao') }}
+              </div>
               <div style="display: inline-block; font-size: 12px; padding: 10px">
-                随机对等分析行业内四个企业碳排动态与表现
+                {{ $t('dashboard.data_analysis.describe.tong-ye-dui-biao') }}
               </div>
             </div>
 
@@ -159,15 +161,21 @@
                   transform: translateY(5px);
                 "
               ></div>
-              <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">往绩洞悉</div>
+              <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">
+                {{ $t('dashboard.data_analysis.wang-ji-dong-xi') }}
+              </div>
               <div style="display: inline-block; font-size: 12px; padding: 10px">
-                对本公司往昔碳排量数据进行纵向分析
+                {{ $t('dashboard.data_analysis.describe.wang-ji-dong-xi') }}
               </div>
             </div>
 
             <!-- 页面 -->
             <div id="vertical" style="width: 100%; height: 300px" v-show="hasMy"></div>
-            <a-result title="暂无您企业的任何填报数据" sub-title="填报后即可查看分析" v-show="!hasMy">
+            <a-result
+              :title="$t('dashboard.data_analysis.NoSubmit.title')"
+              :sub-title="$t('dashboard.data_analysis.NoSubmit.subTitle')"
+              v-show="!hasMy"
+            >
               <template #icon><img style="height: 200px" src="@/assets/default/EmptyInfo.png" /> </template
             ></a-result>
           </a-card>
@@ -188,41 +196,53 @@
                   transform: translateY(5px);
                 "
               ></div>
-              <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">交易动态</div>
-              <div style="display: inline-block; font-size: 12px; padding: 10px">展示企业碳交易的实时数据分析</div>
+              <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">
+                {{ $t('dashboard.data_analysis.jiao-yi-dong-tai') }}
+              </div>
+              <div style="display: inline-block; font-size: 12px; padding: 10px">
+                {{ $t('dashboard.data_analysis.describe.jiao-yi-dong-tai') }}
+              </div>
             </div>
 
             <!-- 页面 -->
             <div style="display: flex; justify-content: center">
               <div style="height: 250px">
                 <div style="font-weight: 900; font-size: 20px">
-                  您是典型的<span style="font-size: 28px" :style="{ color: tradeStatistic.color }">{{
-                    tradeStatistic.type
-                  }}</span
-                  >企业
+                  {{ $t('dashboard.data_analysis.content.jiaoyi.youAretypecal') }}&nbsp;<span
+                    style="font-size: 28px"
+                    :style="{ color: tradeStatistic.color }"
+                    >{{ tradeStatistic.type }}&nbsp;</span
+                  >{{ $t('dashboard.data_analysis.content.jiaoyi.enterprise') }}
                 </div>
                 <div style="margin-top: 10px">
                   <a-tag style="font-weight: bold" :color="'SALE' == 'SALE' ? '#0ca678' : '#f03e3e'">{{
-                    lang.includes('zh') ? tradeTypeClass_CN['SALE'] : tradeTypeClass_EN[item.tradeType]
+                    lang.includes('zh') ? tradeTypeClass_CN['SALE'] : tradeTypeClass_EN['SALE']
                   }}</a-tag>
                   <div>
-                    您一共发布了<span style="font-weight: bold; color: #3eb370; font-size: 16px">
+                    {{ $t('dashboard.data_analysis.content.jiaoyi.Publish.N1') }}&nbsp;<span
+                      style="font-weight: bold; color: #3eb370; font-size: 16px"
+                    >
                       {{ tradeStatistic.shougouNum_publish }} </span
-                    >个需求，达成<span style="font-weight: bold; color: #3eb370; font-size: 16px">
+                    >&nbsp;{{ $t('dashboard.data_analysis.content.jiaoyi.Publish.N2') }}&nbsp;<span
+                      style="font-weight: bold; color: #3eb370; font-size: 16px"
+                    >
                       {{ tradeStatistic.shougouNum_Order }} </span
-                    >他人出售订单
+                    >&nbsp;{{ $t('dashboard.data_analysis.content.jiaoyi.Publish.N3') }}
                   </div>
                 </div>
                 <div style="margin-top: 10px">
                   <a-tag style="font-weight: bold" :color="'SOLD' == 'SALE' ? '#0ca678' : '#f03e3e'">{{
-                    lang.includes('zh') ? tradeTypeClass_CN['SOLD'] : tradeTypeClass_EN[item.tradeType]
+                    lang.includes('zh') ? tradeTypeClass_CN['SOLD'] : tradeTypeClass_EN['SOLD']
                   }}</a-tag>
                   <div>
-                    您一共发布了<span style="font-weight: bold; color: #e83929; font-size: 16px">
+                    {{ $t('dashboard.data_analysis.content.jiaoyi.Publish.N1') }}&nbsp;<span
+                      style="font-weight: bold; color: #e83929; font-size: 16px"
+                    >
                       {{ tradeStatistic.shoumaiNum_publish }} </span
-                    >个交易，达成<span style="font-weight: bold; color: #e83929; font-size: 16px">
+                    >&nbsp;{{ $t('dashboard.data_analysis.content.jiaoyi.Sale.N2')
+                    }}<span style="font-weight: bold; color: #e83929; font-size: 16px">
                       {{ tradeStatistic.shoumaiNum_Order }} </span
-                    >他人收购订单
+                    >&nbsp;{{ $t('dashboard.data_analysis.content.jiaoyi.Sale.N3') }}
                   </div>
                 </div>
               </div>
@@ -230,8 +250,8 @@
             </div>
 
             <a-result
-              title="您暂未进行任何交易和订单发布"
-              sub-title="进行一次交易&发布一次交易后即可查看"
+              :title="$t('dashboard.data_analysis.NoSubmit.title_trade')"
+              :sub-title="$t('dashboard.data_analysis.NoSubmit.subTitle_trade')"
               v-show="!hasMyOrderAndTrade"
             >
               <template #icon><img style="height: 150px" src="@/assets/default/EmptyInfo.png" /> </template
@@ -279,7 +299,7 @@
             <div id="lottie_ai" style="width: 40%; transform: translateX(10px) translateY(10px)"></div>
             <aiLottie></aiLottie>
             <div style="">
-              <div style="font-size: 30px; color: black">智碳 AI</div>
+              <div style="font-size: 30px; color: black">{{ $t('dashboard.data_analysis.ai.title') }} AI</div>
               <div
                 style="
                   font-size: 40px;
@@ -289,7 +309,7 @@
                   -webkit-text-fill-color: transparent;
                 "
               >
-                领航员
+                {{ $t('dashboard.data_analysis.ai.subTitle') }}
               </div>
             </div>
           </div>
@@ -310,9 +330,11 @@
                 transform: translateY(5px);
               "
             ></div>
-            <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">排量分布</div>
+            <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">
+              {{ $t('dashboard.data_analysis.pie.title') }}
+            </div>
             <div style="display: inline-block; font-size: 12px; padding: 10px">
-              内圈为本企业各模块占比，外圈为其他企业平均各模块占比，您可以据此分析各模块是否健康。
+              {{ $t('dashboard.data_analysis.pie.subTitle') }}
             </div>
             <!-- 图 -->
             <div id="pie" style="width: 100%; height: 300px"></div>
@@ -333,7 +355,9 @@
                   transform: translateY(5px);
                 "
               ></div>
-              <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">智感评估</div>
+              <div style="display: inline-block; font-size: 24px; font-weight: bold; padding: 10px">
+                {{ $t('dashboard.data_analysis.zhi-gan-ping-gu.title') }}
+              </div>
               <!-- <div style="display: inline-block; font-size: 12px; padding: 10px">
                 随机对等分析行业内四个企业碳排动态与表现
               </div> -->
@@ -348,7 +372,7 @@
                 v-show="ana.isAnalysizing"
                 class="animate__fadeIn animate__animated"
               >
-                正在智能分析数据中
+                {{ $t('dashboard.data_analysis.zhi-gan-ping-gu.loading') }}
               </div>
               <aiAnalyzeLottie></aiAnalyzeLottie>
 
@@ -373,7 +397,7 @@
                       )
                     }
                   "
-                  >去问AI：如何减排</a-button
+                  >{{ $t('dashboard.data_analysis.zhi-gan-ping-gu.btn.N1') }}</a-button
                 >
                 <a-button
                   shape="round"
@@ -385,7 +409,7 @@
                       this.$router.push({ name: 'tradeMarket' })
                     }
                   "
-                  >去交易市场逛逛</a-button
+                  >{{ $t('dashboard.data_analysis.zhi-gan-ping-gu.btn.N2') }}</a-button
                 >
               </div>
               <a-button
@@ -393,7 +417,9 @@
                 style="border-radius: 999px; border: none; float: right; margin-top: 10px"
                 @click="changeAnalyze"
                 :disabled="ana.noChange"
-                ><a-icon type="sync" :spin="ana.noChange" />换个维度</a-button
+                ><a-icon type="sync" :spin="ana.noChange" />{{
+                  $t('dashboard.data_analysis.zhi-gan-ping-gu.btn.changeDemission')
+                }}</a-button
               >
             </div>
           </a-card>
@@ -1234,13 +1260,13 @@ export default {
 
       // console.log(data_)
       if (data_ <= 0.4) {
-        this.tradeStatistic.type = '收购型'
+        this.tradeStatistic.type = this.$t('dashboard.data_analysis.content.jiaoyi.EnterpriseType.shougou')
         this.tradeStatistic.color = '#20c997'
       } else if (data_ <= 0.6) {
-        this.tradeStatistic.type = '平衡型'
+        this.tradeStatistic.type = this.$t('dashboard.data_analysis.content.jiaoyi.EnterpriseType.pingheng')
         this.tradeStatistic.color = '#5c7cfa'
       } else {
-        this.tradeStatistic.type = '售卖型'
+        this.tradeStatistic.type = this.$t('dashboard.data_analysis.content.jiaoyi.EnterpriseType.shoumai')
         this.tradeStatistic.color = '#fd7e14'
       }
 

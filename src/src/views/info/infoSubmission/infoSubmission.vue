@@ -433,10 +433,12 @@ export default {
       this.$router.push({ name: 'AnnualSubmissionCenter' })
     },
     backTolastPage() {
+      window.scrollTo(0, 180)
       this.errors = []
       this.NowStep--
     },
     goTonextPage() {
+      window.scrollTo(0, 180)
       this.NowStep++
     },
     ValidateGoToNextStep() {

@@ -42,7 +42,7 @@
   "user.register.password.popover-message": "请至少输入 6 个字符。请不要使用简单的密码。",
   "user.register.register": "企业用户注册",
   "user.register.sign-in": "使用已有企业账户登录",
-  "user.register.userName.placeholder": "企业负责人电话",
+  "user.register.userName.placeholder": "企业账户名",
   "user.userName.required": "请输入企业账号",
   "user.verification-code.required": "请输入验证码！"
 }

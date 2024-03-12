@@ -92,7 +92,8 @@
           <div class="question_Card" style="padding: 20px">
             <div style="margin-bottom: 30px" v-for="(item, index) in qANDa" :key="index">
               <div style="font-weight: bold">
-                <span style="font-size: 16px; color: #438bfd">{{ $t('info.ReportGuide.question') }}：</span>{{ item.q }}
+                <span style="font-size: 16px; color: #438bfd">{{ $t('info.ReportGuide.question.qT') }}：</span
+                >{{ item.q }}
               </div>
               <div style="margin-top: 5px">
                 {{ item.a }}
