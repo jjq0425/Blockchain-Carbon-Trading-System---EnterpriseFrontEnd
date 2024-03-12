@@ -104,8 +104,8 @@
                     <template #title>
                       {{
                         Floor1Data.canAdd == true
-                          ? this.$t('account.Template.main.card.N2.btn.Add')
-                          : this.$t('account.Template.main.card.N2.btn.Noadd')
+                          ? $t('account.Template.main.card.N2.btn.Add')
+                          : $t('account.Template.main.card.N2.btn.Noadd')
                       }}
                     </template>
                     <a-button type="primary" :disabled="!Floor1Data.canAdd" @click="addChild()">
