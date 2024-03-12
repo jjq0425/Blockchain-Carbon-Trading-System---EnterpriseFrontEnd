@@ -15,6 +15,7 @@
   "modal.loading.dataPraseLoading": "Data parsing",
   "modal.loading.exportTemplateLoading": "Exporting template ...",
   "modal.loading.inLoadingWait": "Loading, please wait a moment",
+  "modal.loading.inSubmitLoadingWait": "Submitting, please wait a moment",
   "modal.notice.title": "Notice",
   "modal.please.select": "Please select"
 }

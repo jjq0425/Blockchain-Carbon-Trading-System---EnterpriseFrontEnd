@@ -19,7 +19,7 @@
 
     <template v-slot:menuHeaderRender>
       <div>
-        <img src="@/assets/logo.svg" />
+        <img src="@/assets/logo.png" style="width: 46px" />
         <h1 v-if="lang.includes('zh')">{{ title }}</h1>
         <!-- 标题测试 -->
         <h1 v-else style="font-size: 17px">CarbonChain</h1>

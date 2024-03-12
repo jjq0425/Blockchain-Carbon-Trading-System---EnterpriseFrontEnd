@@ -52,7 +52,7 @@
             <div class="top">
               <div class="header" style="padding-left: 50px">
                 <a href="/">
-                  <img src="~@/assets/logo.svg" class="logo" alt="logo" />
+                  <img src="~@/assets/logo.png" class="logo" alt="logo" />
                   <span class="title">碳盟链道 </span>
                   <img
                     class="logo"

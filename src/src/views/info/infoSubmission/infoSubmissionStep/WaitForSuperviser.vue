@@ -8,6 +8,11 @@
  * @Description: 
  * 
 -->
+<!--
+ * @Author: jjq
+ * @Description: 
+ * 
+-->
 <template>
   <a-card :bordered="false">
     <a-result status="success" :title="result.title" :sub-title="result.description">
@@ -16,25 +21,32 @@
         <a-button style="margin-left: 8px">{{ $t('result.success.btn-project') }}</a-button>
         <a-button style="margin-left: 8px">{{ $t('result.success.btn-print') }}</a-button>
       </template> -->
+      <template #icon>
+        <div id="dataSubmitSuccess" style="width: 50%; margin: 0 auto; margin-top: -120px"></div>
+      </template>
       <div class="content">
         <!-- <div style="font-size: 16px; color: rgba(0, 0, 0, 0.85); font-weight: 500; margin-bottom: 20px">
           {{ $t('result.success.operate-title') }}
         </div> -->
         <a-row style="margin-bottom: 16px">
           <a-col :span="12">
-            <span style="color: rgba(0, 0, 0, 0.85)">企业组织代码：</span>
+            <span style="color: rgba(0, 0, 0, 0.85)">{{ $t('account.basicSetting.enterpriseID.label') }}：</span>
             {{ enterpriseInfo.enterpriseID }}
           </a-col>
           <a-col :span="12">
-            <span style="color: rgba(0, 0, 0, 0.85)">企业名：</span>
+            <span style="color: rgba(0, 0, 0, 0.85)">{{ $t('account.settings.basic.EnterpriseName') }}：</span>
             {{ enterpriseInfo.enterpriseName }}
           </a-col>
           <a-col :span="12">
-            <span style="color: rgba(0, 0, 0, 0.85)">报告年度：</span>
+            <span style="color: rgba(0, 0, 0, 0.85)"
+              >{{ $t('info.infoSubmission.pages.waitForSuperviser.reportYear') }}：</span
+            >
             {{ taskInfo_.taskYear }}年度
           </a-col>
           <a-col :span="12">
-            <span style="color: rgba(0, 0, 0, 0.85)">提交时间：</span>
+            <span style="color: rgba(0, 0, 0, 0.85)"
+              >{{ $t('info.infoSubmission.pages.waitForSuperviser.submitTime') }}：</span
+            >
             {{ submitTime }}
           </a-col>
         </a-row>
@@ -49,6 +61,9 @@
   <script>
 import { baseMixin } from '@/store/app-mixin'
 import dayjs from 'dayjs'
+
+import lottie from 'lottie-web'
+import animationData from '@/assets/pages/info/infoSubmissionCenter/submitSuccessLottie.json' //这个json动画文件是UI给的
 
 const directionType = {
   horizontal: 'horizontal',
@@ -68,12 +83,14 @@ export default {
     return {
       taskInfo_: {},
       submitTime: '',
+
+      lottieHasLoad: false,
     }
   },
   computed: {
     result() {
       return {
-        title: this.$t('result.success.title') + ', 等待监管审核',
+        title: this.$t('result.success.title') + this.$t('info.infoSubmission.pages.waitForSuperviser.title2'),
         // description: this.$t('result.success.description'),
       }
     },
@@ -89,6 +106,20 @@ export default {
   methods: {
     passTaskInfo(taskInfo) {
       this.taskInfo_ = taskInfo
+
+      if (!this.lottieHasLoad) {
+        let animation = lottie.loadAnimation({
+          container: document.getElementById('dataSubmitSuccess'),
+          renderer: 'svg',
+          loop: false, //循环播放 true/number/false
+          autoplay: false,
+          animationData,
+        })
+        setTimeout(() => {
+          animation.play()
+        }, 1000)
+        this.lottieHasLoad = true
+      }
     },
   },
 }

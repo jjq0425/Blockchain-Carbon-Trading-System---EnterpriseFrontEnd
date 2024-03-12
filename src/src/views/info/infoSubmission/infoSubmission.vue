@@ -420,12 +420,13 @@ export default {
       }
     },
     SubmitDataNow() {
+      this.$message.loading({ content: this.$t('modal.loading.inSubmitLoadingWait'), key: 'subMitLoading' })
       Submit(this.submitData).then((res) => {
         if ((res.success = true)) {
-          this.$message.success(this.$t('result.success.submitSuccess'))
+          this.$message.success({ content: this.$t('result.success.submitSuccess'), key: 'subMitLoading' })
           this.goTonextPage()
         } else {
-          this.$message.error(this.$t('result.fail.submitErrorAndTryAgain'))
+          this.$message.error({ content: this.$t('result.fail.submitErrorAndTryAgain'), key: 'subMitLoading' })
         }
       })
     },
