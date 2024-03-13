@@ -12,6 +12,7 @@
   "result.fail.file.fileTypeWrong": "The file type is incorrect, please reselect the file",
   "result.fail.file.praseWrongNotModify": "Data parsing failed, please do not modify metadata",
   "result.fail.getError": "Data acquisition failed",
+  "result.fail.publishError": "Publish failed with errors",
   "result.fail.submitErrorAndTryAgain": "Submission failed! Please resubmit",
   "result.success.addSuccess": "Successfully added",
   "result.success.btn-print": "Print",

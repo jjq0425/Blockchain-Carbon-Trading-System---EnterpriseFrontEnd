@@ -1,7 +1,5 @@
 <template>
-  <page-header-wrapper
-    content="欢迎来到“交易发布”页面，我们专注于提供碳排放量交易服务。请根据表单信息完成填报。在这里，您可以放心地将交易信息上链至区块链，确保账单安全无忧。"
-  >
+  <page-header-wrapper :content="$t('trade.publish.header.title')">
     <!-- :tab-list="tabList"
     :tab-active-key="tabActiveKey"
     :tab-change="
@@ -43,7 +41,7 @@
           >
             <a-col :flex="1">
               <a-statistic
-                title="您当前剩余碳排量"
+                :title="$t('trade.market.header.infoCard.remainEmission')"
                 :value="enterpriseInfo.remainEmission.toFixed(2)"
                 style="margin-right: 50px"
               >
@@ -53,7 +51,11 @@
               </a-statistic>
             </a-col>
             <a-col :flex="1">
-              <a-statistic title="您当前剩余碳币" :value="enterpriseInfo.coCoin.toFixed(2)" style="margin-right: 50px">
+              <a-statistic
+                :title="$t('trade.market.header.infoCard.remainCoCoin')"
+                :value="enterpriseInfo.coCoin.toFixed(2)"
+                style="margin-right: 50px"
+              >
                 <!-- <template #suffix>
                   <a-icon type="like" />
                 </template> -->
@@ -63,10 +65,10 @@
         </a-col>
         <a-col :flex="10">
           <div style="margin-left: 50px; width: 600px">
-            <div style="font-size: 20px">交易提示</div>
-            <div>1. 为确保交易安全，请仔细核对您的交易信息。因误填造成的损失由您自行承担。</div>
+            <div style="font-size: 20px">{{ $t('trade.makeTrade.header.tips.title') }}</div>
+            <div>{{ $t('trade.publish.header.notice.N1') }}</div>
             <div>
-              2. 请您在发布交易时，详细描述交易内容，包括碳排放量、交易金额等信息，以便其他用户快速了解并参与交易。
+              {{ $t('trade.publish.header.notice.N2') }}
             </div>
           </div>
         </a-col>
@@ -82,14 +84,14 @@
         :wrapper-col="wrapperCol"
         style="margin-top: 40px"
       >
-        <a-form-model-item label="交易类型" prop="tradeType">
+        <a-form-model-item :label="$t('trade.market.header.filter.tradeType.label')" prop="tradeType">
           <a-radio-group v-model="tradePublishForm.tradeType">
-            <a-radio value="SOLD"> 出售碳排量 </a-radio>
-            <a-radio value="SALE"> 收购碳排量 </a-radio>
+            <a-radio value="SOLD"> {{ $t('trade.publish.content.tradeType.sold') }} </a-radio>
+            <a-radio value="SALE"> {{ $t('trade.publish.content.tradeType.sale') }} </a-radio>
           </a-radio-group>
         </a-form-model-item>
 
-        <a-form-model-item label="交易(出售/收购)量" prop="emission">
+        <a-form-model-item :label="$t('trade.publish.content.dealEmissionNum')" prop="emission">
           <a-input-number
             v-model="tradePublishForm.emission"
             :min="0.0001"
@@ -100,7 +102,7 @@
           <span style="margin-left: 10px; font-size: 10px; color: grey">tCO₂</span>
         </a-form-model-item>
 
-        <a-form-model-item label="交易(出售/收购)单价" prop="perEmission">
+        <a-form-model-item :label="$t('trade.publish.content.perEmission')" prop="perEmission">
           <a-input-number
             v-model="tradePublishForm.perEmission"
             :min="0.0001"
@@ -112,7 +114,7 @@
         </a-form-model-item>
 
         <a-form-model-item
-          label="所需碳币"
+          :label="$t('trade.publish.content.coCoinNeed')"
           v-show="tradePublishForm.tradeType == 'SALE'"
           :style="{
             color:
@@ -126,20 +128,26 @@
             style="color: red; font-weight: bold"
             v-if="(tradePublishForm.perEmission * tradePublishForm.emission).toFixed(2) > enterpriseInfo.coCoin"
           >
-            交易(收购)总价不能大于您当前剩余碳币量: {{ enterpriseInfo.coCoin }}，请调整交易量或单价
+            {{ $t('trade.publish.content.rule.saleNumNotBigRemainCoin') }}: {{ enterpriseInfo.coCoin }}，{{
+              $t('trade.publish.content.rule.pleaseChangeNumOrPrice')
+            }}
           </div>
         </a-form-model-item>
 
-        <a-form-model-item label="交易发布者(甲方)">
+        <a-form-model-item :label="$t('trade.publish.content.JIA')">
           {{ enterpriseInfo.enterpriseName }} ({{ enterpriseInfo.enterpriseID }})
         </a-form-model-item>
 
         <div style="width: 100%; text-align: center">
-          <a-button type="danger" style="color: white" @click="() => this.$router.go(-1)" :loading="dataLoading"
-            >返回</a-button
-          >
-          <a-button type="primary" style="color: white; margin-left: 10px" @click="handleSubmit" :loading="dataLoading"
-            >提交</a-button
+          <a-button type="danger" style="color: white" @click="() => this.$router.go(-1)" :loading="dataLoading">{{
+            $t('modal.btn.back')
+          }}</a-button>
+          <a-button
+            type="primary"
+            style="color: white; margin-left: 10px"
+            @click="handleSubmit"
+            :loading="dataLoading"
+            >{{ $t('form.basic-form.form.submit') }}</a-button
           >
         </div>
       </a-form-model>
@@ -227,13 +235,15 @@ export default {
         perEmission: null,
       },
       tradePublishRules: {
-        tradeType: [{ required: true, message: '请选择交易类型', trigger: 'change' }],
+        tradeType: [
+          { required: true, message: this.$t('trade.publish.content.rule.chooseTradeType'), trigger: 'change' },
+        ],
         emission: [
-          { required: true, message: '请输入交易(出售/收购)量', trigger: 'blur' },
+          { required: true, message: this.$t('trade.publish.content.rule.dealNumNeed'), trigger: 'blur' },
           { validator: this.validateEmission, trigger: 'change' },
         ],
         perEmission: [
-          { required: true, message: '请输入交易(出售/收购)单价', trigger: 'blur' },
+          { required: true, message: this.$t('trade.publish.content.rule.perEmissionNeed'), trigger: 'blur' },
           { validator: this.validatePerEmission, trigger: 'change' },
         ],
       },
@@ -267,18 +277,28 @@ export default {
     validateEmission(rule, val, callback) {
       if (this.tradePublishForm.tradeType === 'SOLD') {
         if (val <= 0) {
-          callback(new Error('交易(出售/收购)碳排量必须大于0'))
+          callback(new Error(this.$t('trade.publish.content.rule.dealNumLarge0')))
         } else if (val > this.enterpriseInfo.remainEmission) {
-          callback(new Error(`交易(出售)碳排量不能大于您当前剩余碳排放量: ${this.enterpriseInfo.remainEmission}`))
+          callback(
+            new Error(
+              `${this.$t('trade.publish.content.rule.dealNumNoBigRemainEmission')}: ${
+                this.enterpriseInfo.remainEmission
+              }`
+            )
+          )
         } else {
           callback()
         }
       } else {
         if (val <= 0) {
-          callback(new Error('交易(出售/收购)量必须大于0'))
+          callback(new Error(this.$t('trade.publish.content.rule.dealNumLarge0_2')))
         } else if (val * this.tradePublishForm.perEmission > this.enterpriseInfo.coCoin) {
           callback(
-            new Error(`交易(收购)总价不能大于您当前剩余碳币量: ${this.enterpriseInfo.coCoin}，请调整交易量或单价`)
+            new Error(
+              `${this.$t('trade.publish.content.rule.saleNumNotBigRemainCoin')}: ${
+                this.enterpriseInfo.coCoin
+              }，${this.$t('trade.publish.content.rule.pleaseChangeNumOrPrice')}`
+            )
           )
         } else {
           callback()
@@ -288,17 +308,21 @@ export default {
     validatePerEmission(rule, val, callback) {
       if (this.tradePublishForm.tradeType === 'SALE') {
         if (val <= 0) {
-          callback(new Error('交易(出售/收购)单价必须大于0'))
+          callback(new Error(this.$t('trade.publish.content.rule.perEmissionLarge0')))
         } else if (val * this.tradePublishForm.emission > this.enterpriseInfo.coCoin) {
           callback(
-            new Error(`交易(收购)总价不能大于您当前剩余碳币量: ${this.enterpriseInfo.coCoin}，请调整交易量或单价`)
+            new Error(
+              `${this.$t('trade.publish.content.rule.saleNumNotBigRemainCoin')}: ${
+                this.enterpriseInfo.coCoin
+              }，${this.$t('trade.publish.content.rule.pleaseChangeNumOrPrice')}`
+            )
           )
         } else {
           callback()
         }
       } else {
         if (val <= 0) {
-          callback(new Error('交易(出售/收购)单价必须大于0'))
+          callback(new Error(this.$t('trade.publish.content.rule.perEmissionLarge0')))
         } else {
           callback()
         }
@@ -317,7 +341,7 @@ export default {
       TradePublish(this.tradePublishForm)
         .then((res) => {
           if (res.success) {
-            this.$message.success('发布成功')
+            this.$message.success(this.$t('result.success.publishSuccess'))
             setTimeout(() => {
               this.$router.go(-1)
               this.dataLoading = false
@@ -328,7 +352,7 @@ export default {
           }
         })
         .catch((err) => {
-          this.$message.error('发布失败')
+          this.$message.error(this.$t('result.fail.publishError'))
           this.dataLoading = false
         })
     },

@@ -1,4 +1,6 @@
 {
+  "result.fail.publishError": "发布失败",
+  "result.success.publishSuccess": "发布成功",
   "trade.blockChainSecurity": "碳贸区块链正在守卫您的交易安全",
   "trade.makeTrade.RequireDealNum": "请输入交易量",
   "trade.makeTrade.SecurityTips": "您正在进行交易，请注意网络环境安全",
@@ -55,5 +57,23 @@
   "trade.market.header.infoCard.remainEmission": "您当前剩余碳排量",
   "trade.myTrade.tab.header": "欢迎来到“我的交易”页面，这里是您查询之前发布和订购碳排放量交易的页面，您可以快速管理您的交易信息，让您轻松参与碳交易市场，实现低碳发展。",
   "trade.myTrade.tab.myOrder": "我的订单",
-  "trade.myTrade.tab.myPublish": "我的发布"
+  "trade.myTrade.tab.myPublish": "我的发布",
+  "trade.publish.content.JIA": "交易发布者(甲方)",
+  "trade.publish.content.coCoinNeed": "所需碳币",
+  "trade.publish.content.dealEmissionNum": "交易(出售/收购)量",
+  "trade.publish.content.perEmission": "交易(出售/收购)单价",
+  "trade.publish.content.rule.chooseTradeType": "请选择交易类型",
+  "trade.publish.content.rule.dealNumLarge0": "交易(出售/收购)碳排量必须大于0",
+  "trade.publish.content.rule.dealNumLarge0_2": "交易(出售/收购)量必须大于0",
+  "trade.publish.content.rule.dealNumNeed": "请输入交易(出售/收购)量",
+  "trade.publish.content.rule.dealNumNoBigRemainEmission": "交易(出售)碳排量不能大于您当前剩余碳排放量",
+  "trade.publish.content.rule.perEmissionLarge0": "交易(出售/收购)单价必须大于0",
+  "trade.publish.content.rule.perEmissionNeed": "请输入交易(出售/收购)单价",
+  "trade.publish.content.rule.pleaseChangeNumOrPrice": "请调整交易量或单价",
+  "trade.publish.content.rule.saleNumNotBigRemainCoin": "交易(收购)总价不能大于您当前剩余碳币量",
+  "trade.publish.content.tradeType.sale": "收购碳排量",
+  "trade.publish.content.tradeType.sold": "出售碳排量",
+  "trade.publish.header.notice.N1": "1. 为确保交易安全，请仔细核对您的交易信息。因误填造成的损失由您自行承担。",
+  "trade.publish.header.notice.N2": "2. 请您在发布交易时，详细描述交易内容，包括碳排放量、交易金额等信息，以便其他用户快速了解并参与交易。",
+  "trade.publish.header.title": "欢迎来到“交易发布”页面，我们专注于提供碳排放量交易服务。请根据表单信息完成填报。在这里，您可以放心地将交易信息上链至区块链，确保账单安全无忧。"
 }
