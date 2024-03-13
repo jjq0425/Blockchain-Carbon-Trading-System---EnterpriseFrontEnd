@@ -11,13 +11,21 @@
     <a-card :body-style="{ padding: '24px 32px' }" :bordered="false">
       <a-row>
         <a-col :sm="8" :xs="24">
-          <info title="共计发布数" :value="`${statistic.totoalNum} 个`" :bordered="true" />
+          <info
+            :title="$t('trade.myPublish.header.totalPublish')"
+            :value="`${statistic.totoalNum} ${this.$t('trade.myPublish.header.unitGE')}`"
+            :bordered="true"
+          />
         </a-col>
         <a-col :sm="8" :xs="24">
-          <info title="完结发布数" :value="`${statistic.successNum} 个`" :bordered="true" />
+          <info
+            :title="$t('trade.myPublish.header.finishPublish')"
+            :value="`${statistic.successNum} ${this.$t('trade.myPublish.header.unitGE')}`"
+            :bordered="true"
+          />
         </a-col>
         <a-col :sm="8" :xs="24">
-          <info title="剩余未成交易量" :value="`${statistic.remainDealNum} tCO₂`" />
+          <info :title="$t('trade.myPublish.header.remainDealNum')" :value="`${statistic.remainDealNum} tCO₂`" />
         </a-col>
       </a-row>
     </a-card>
@@ -25,10 +33,15 @@
       <a-icon slot="indicator" type="loading" style="font-size: 48px" spin />
       <a-card :bordered="false" style="margin-top: 24px">
         <div style="display: flex; justify-content: space-between; align-items: center">
-          <div>以下是由您发布的交易，点击表头按钮可以对表格进行筛选、排序。</div>
+          <div>{{ $t('trade.myPublish.table.describe') }}</div>
           <div>
-            <a-button type="primary" shape="round" style="border-radius: 9999px" icon="plus" @click="gotoTradePublish()"
-              >发布新交易</a-button
+            <a-button
+              type="primary"
+              shape="round"
+              style="border-radius: 9999px"
+              icon="plus"
+              @click="gotoTradePublish()"
+              >{{ $t('trade.myPublish.table.describe_btn') }}</a-button
             >
           </div>
         </div>
@@ -49,12 +62,16 @@
             }}</a-tag>
           </template>
 
-          <template slot="emissionTitle"> <a-icon type="gold" /> 剩余未成交易量 (tCO₂) </template>
+          <template slot="emissionTitle">
+            <a-icon type="gold" /> {{ $t('trade.myPublish.header.remainDealNum') }} (tCO₂)
+          </template>
           <template slot="emission" slot-scope="text, record">
             {{ record.emission.toFixed(2) }}
           </template>
 
-          <template slot="perEmissionTitle"> <a-icon type="pay-circle" /> 交易单价 </template>
+          <template slot="perEmissionTitle">
+            <a-icon type="pay-circle" /> {{ $t('trade.makeTrade.info.perPrice') }}
+          </template>
           <template slot="perEmission" slot-scope="text, record">
             {{ record.perEmission.toFixed(2) }}
           </template>
@@ -62,7 +79,11 @@
           <template slot="tradeStatus" slot-scope="text, record">
             <a-badge
               :status="record.tradeStatus == 'YES' ? 'success' : 'processing'"
-              :text="record.tradeStatus == 'YES' ? '已完结' : '进行中'"
+              :text="
+                record.tradeStatus == 'YES'
+                  ? $t('trade.myPublish.table.content.tradeStatus.YES')
+                  : $t('trade.myPublish.table.content.tradeStatus.NO')
+              "
             ></a-badge>
           </template>
 
@@ -72,7 +93,7 @@
           </template>
 
           <template slot="action" slot-scope="text, record">
-            <a @click="openTradeDetail(record)"> 详情</a>
+            <a @click="openTradeDetail(record)"> {{ $t('modal.detail.title') }}</a>
           </template>
         </a-table>
         <div
@@ -141,17 +162,17 @@ export default {
           scopedSlots: { customRender: 'index' },
         },
         {
-          title: '交易类型',
+          title: this.$t('trade.market.header.filter.tradeType.label'),
           dataIndex: 'tradeType',
           key: 'tradeType',
           scopedSlots: { customRender: 'tradeType' },
           filters: [
             {
-              text: '出售碳排量',
+              text: this.$t('trade.publish.content.tradeType.sold'),
               value: 'SOLD',
             },
             {
-              text: '收购碳排量',
+              text: this.$t('trade.publish.content.tradeType.sale'),
               value: 'SALE',
             },
           ],
@@ -175,34 +196,34 @@ export default {
           sorter: (a, b) => a.perEmission - b.perEmission,
         },
         {
-          title: '交易状态',
+          title: this.$t('trade.myPublish.table.content.tradeStatus.title'),
           dataIndex: 'tradeStatus',
           key: 'tradeStatus',
           scopedSlots: { customRender: 'tradeStatus' },
           filters: [
             {
-              text: '已完结',
+              text: this.$t('trade.myPublish.table.content.tradeStatus.YES'),
               value: 'YES',
             },
             {
-              text: '进行中',
+              text: this.$t('trade.myPublish.table.content.tradeStatus.NO'),
               value: 'NO',
             },
           ],
           onFilter: (value, record) => record.tradeStatus.indexOf(value) >= 0,
         },
         {
-          title: '成交次数',
+          title: this.$t('trade.myPublish.table.content.orderNum.title'),
           dataIndex: 'orderNum',
           key: 'orderNum',
           scopedSlots: { customRender: 'orderNum' },
           filters: [
             {
-              text: '暂无成交',
+              text: this.$t('trade.myPublish.table.content.orderNum.Noorder'),
               value: '0',
             },
             {
-              text: '非0成交',
+              text: this.$t('trade.myPublish.table.content.orderNum.hasOrder'),
               value: '1',
             },
           ],
@@ -211,7 +232,7 @@ export default {
           sorter: (a, b) => a.orderID.length - b.orderID.length,
         },
         {
-          title: '操作',
+          title: this.$t('trade.myPublish.table.content.action.title'),
           // dataIndex: 'orderNum',
           key: 'action',
           scopedSlots: { customRender: 'action' },

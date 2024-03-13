@@ -1,5 +1,5 @@
 <template>
-  <page-header-wrapper content="本页面展示了您的交易详细信息。在这里，您能够清晰地追踪您的交易历史。">
+  <page-header-wrapper :content="$t('trade.tradeDetail.header')">
     <!-- :tab-list="tabList"
     :tab-active-key="tabActiveKey"
     :tab-change="
@@ -57,31 +57,44 @@
       <a-divider dashed></a-divider>
 
       <a-form-model :label-col="labelCol" :wrapper-col="wrapperCol" style="margin-top: 40px">
-        <a-form-model-item label="甲方">
-          {{ tradeInfo.publishName }}({{ enterpriseInfo.enterpriseID }}) <a-tag color="cyan"> 您 </a-tag>
+        <a-form-model-item :label="$t('trade.makeTrade.info.JIA')">
+          {{ tradeInfo.publishName }}({{ enterpriseInfo.enterpriseID }})
+          <a-tag color="cyan"> {{ $t('user.YOU') }}</a-tag>
         </a-form-model-item>
 
-        <a-form-model-item label="交易类型" prop="tradeType">
+        <a-form-model-item :label="$t('trade.market.header.filter.tradeType.label')" prop="tradeType">
           <a-radio-group v-model="tradeInfo.tradeType" disabled>
-            <a-radio value="SOLD"> 甲方向乙方出售碳排量 </a-radio>
-            <a-radio value="SALE"> 甲方向乙方收购碳排量 </a-radio>
+            <a-radio value="SOLD"> {{ $t('trade.makeTrade.info.tradeType.JIAsoldToYI') }} </a-radio>
+            <a-radio value="SALE"> {{ $t('trade.makeTrade.info.tradeType.JIArequireFromYI') }} </a-radio>
           </a-radio-group>
         </a-form-model-item>
 
-        <a-form-model-item label="交易单价"> {{ tradeInfo.perEmission.toFixed(2) }} 碳币/tCO₂ </a-form-model-item>
+        <a-form-model-item :label="$t('trade.makeTrade.info.perPrice')">
+          {{ tradeInfo.perEmission.toFixed(2) }} {{ $t('trade.makeTrade.info.coCoin') }}/tCO₂
+        </a-form-model-item>
 
-        <a-form-model-item :label="`甲方剩余${tradeInfo.tradeType == 'SOLD' ? '库存' : '需求'}量`">
+        <a-form-model-item
+          :label="`${this.$t('trade.makeTrade.info.JIARremain')}${
+            tradeInfo.tradeType == 'SOLD' ? $t('trade.market.card.stock') : $t('trade.market.card.need')
+          }`"
+        >
           {{ tradeInfo.emission.toFixed(2) }} tCO₂
         </a-form-model-item>
 
-        <a-form-model-item :label="`交易状态`">
+        <a-form-model-item :label="$t('trade.myPublish.table.content.tradeStatus.title')">
           <a-badge
             :status="tradeInfo.tradeStatus == 'YES' ? 'success' : 'processing'"
-            :text="tradeInfo.tradeStatus == 'YES' ? '已完结' : '进行中'"
+            :text="
+              tradeInfo.tradeStatus == 'YES'
+                ? $t('trade.myPublish.table.content.tradeStatus.YES')
+                : $t('trade.myPublish.table.content.tradeStatus.NO')
+            "
           ></a-badge>
         </a-form-model-item>
 
-        <a-form-model-item :label="`成交订单量`"> {{ tradeInfo.orderID.length }} (如下表) </a-form-model-item>
+        <a-form-model-item :label="$t('trade.tradeDetail.content.orderIDLenth.label')">
+          {{ tradeInfo.orderID.length }} {{ $t('trade.tradeDetail.content.orderIDLenth.likeTable') }}
+        </a-form-model-item>
       </a-form-model>
 
       <!-- 表格 -->
@@ -112,12 +125,16 @@
             </div>
           </template>
 
-          <template slot="dealNumTitle"> <a-icon type="gold" /> 交易量 (tCO₂) </template>
+          <template slot="dealNumTitle">
+            <a-icon type="gold" /> {{ $t('trade.myOrder.table.content.dealNum') }} (tCO₂)
+          </template>
           <template slot="dealNum" slot-scope="text, record">
             {{ record.dealNum.toFixed(2) }}
           </template>
 
-          <template slot="sum"> <a-icon type="money-collect" /> 总金额 </template>
+          <template slot="sum">
+            <a-icon type="money-collect" /> {{ $t('trade.myOrder.table.content.sumCoin') }}
+          </template>
           <template slot="sum" slot-scope="text, record">
             <span style="font-weight: bold"> {{ (record.dealNum * tradeInfo.perEmission).toFixed(2) }}</span>
           </template>
@@ -127,13 +144,15 @@
           </template>
 
           <template slot="action" slot-scope="text, record">
-            <a @click="openOrderDetail(record)"> 详情</a>
+            <a @click="openOrderDetail(record)"> {{ $t('modal.detail.title') }}</a>
           </template>
         </a-table>
       </a-spin>
 
       <div style="width: 100%; text-align: center; margin-bottom: 50px; margin-top: 20px">
-        <a-button type="danger" style="color: white" @click="() => this.$router.go(-1)">返回</a-button>
+        <a-button type="danger" style="color: white" @click="() => this.$router.go(-1)">{{
+          $t('modal.btn.back')
+        }}</a-button>
       </div>
 
       <!-- 交易发布表单 -->
@@ -196,7 +215,7 @@ export default {
         },
 
         {
-          title: '乙方',
+          title: this.$t('trade.makeTrade.info.YI'),
           dataIndex: 'purchaseName',
           key: 'purchaseName',
           // slots: { title: 'publishName' },
@@ -220,7 +239,7 @@ export default {
           sorter: (a, b) => a.perEmission * a.dealNum - b.perEmission * b.dealNum,
         },
         {
-          title: '成交时间',
+          title: this.$t('trade.myOrder.table.content.orderTime'),
 
           key: 'orderTime',
           scopedSlots: { customRender: 'orderTime' },
@@ -228,7 +247,7 @@ export default {
         },
 
         {
-          title: '操作',
+          title: this.$t('trade.myPublish.table.content.action.title'),
           // dataIndex: 'orderNum',
           key: 'action',
           scopedSlots: { customRender: 'action' },
@@ -295,11 +314,23 @@ export default {
         .then(() => {
           // console.log(this.myOrderListSource)
           this.dataLoading = false
-          this.$message.success('获取订单信息成功，当前共有' + this.myOrderListSource.length + '个已成交订单')
+          if (this.lang.includes('zh')) {
+            this.$message.success('获取订单信息成功，当前共有' + this.myOrderListSource.length + '个已成交订单')
+          } else {
+            this.$message.success(
+              'Successfully obtained order information, currently there are ' +
+                this.myOrderListSource.length +
+                ' orders in total'
+            )
+          }
         })
         .catch((err) => {
           this.dataLoading = false
-          this.$message.error('获取订单信息失败,请检查网络后重试')
+          if (this.lang.includes('zh')) {
+            this.$message.error('获取订单信息失败,请检查网络后重试')
+          } else {
+            this.$message.error('Failed to obtain order information, please check the network and try again')
+          }
         })
     },
     handleTableChange(pagination) {

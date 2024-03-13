@@ -7,10 +7,18 @@
     <a-card :body-style="{ padding: '24px 32px' }" :bordered="false">
       <a-row>
         <a-col :sm="12" :xs="36">
-          <info title="我的订单数" :value="`${statistic.totoalNum} 个`" :bordered="true" />
+          <info
+            :title="$t('trade.myOrder.header.totalNum')"
+            :value="`${statistic.totoalNum} ${this.$t('trade.myPublish.header.unitGE')}`"
+            :bordered="true"
+          />
         </a-col>
         <a-col :sm="12" :xs="36">
-          <info title="累计成交量" :value="`${statistic.sumEmission} tCO₂`" :bordered="true" />
+          <info
+            :title="$t('trade.myOrder.header.sumEmission')"
+            :value="`${statistic.sumEmission} tCO₂`"
+            :bordered="true"
+          />
         </a-col>
       </a-row>
     </a-card>
@@ -20,7 +28,7 @@
       <a-card :bordered="false" style="margin-top: 24px">
         <!-- 以下是由您的订单，点击表头按钮可以对表格进行筛选、排序。 -->
         <div style="display: flex; justify-content: space-between; align-items: center">
-          <div>以下是由您的订单，点击表头按钮可以对表格进行筛选、排序</div>
+          <div>{{ $t('trade.myOrder.table.describe') }}</div>
           <div>
             <a-button
               type="primary"
@@ -28,7 +36,7 @@
               style="border-radius: 9999px"
               icon="shopping-cart"
               @click="gotoTradeMarket()"
-              >去交易市场逛逛</a-button
+              >{{ $t('dashboard.data_analysis.zhi-gan-ping-gu.btn.N2') }}</a-button
             >
           </div>
         </div>
@@ -63,12 +71,16 @@
             </div>
           </template>
 
-          <template slot="dealNumTitle"> <a-icon type="gold" /> 交易量 (tCO₂) </template>
+          <template slot="dealNumTitle">
+            <a-icon type="gold" /> {{ $t('trade.myOrder.table.content.dealNum') }} (tCO₂)
+          </template>
           <template slot="dealNum" slot-scope="text, record">
             {{ record.dealNum.toFixed(2) }}
           </template>
 
-          <template slot="perEmissionTitle"> <a-icon type="pay-circle" /> 交易单价 </template>
+          <template slot="perEmissionTitle">
+            <a-icon type="pay-circle" /> {{ $t('trade.makeTrade.info.perPrice') }}
+          </template>
           <template slot="perEmission" slot-scope="text, record">
             {{ record.perEmission.toFixed(2) }}
           </template>
@@ -82,7 +94,7 @@
           </template>
 
           <template slot="action" slot-scope="text, record">
-            <a @click="openOrderDetail(record)"> 详情</a>
+            <a @click="openOrderDetail(record)"> {{ $t('modal.detail.title') }}</a>
           </template>
         </a-table>
         <div
@@ -156,17 +168,17 @@ export default {
           scopedSlots: { customRender: 'index' },
         },
         {
-          title: '交易类型',
+          title: this.$t('trade.market.header.filter.tradeType.label'),
           dataIndex: 'tradeType',
           key: 'tradeType',
           scopedSlots: { customRender: 'tradeType' },
           filters: [
             {
-              text: '出售碳排量',
+              text: this.$t('trade.publish.content.tradeType.sold'),
               value: 'SOLD',
             },
             {
-              text: '收购碳排量',
+              text: this.$t('trade.publish.content.tradeType.sale'),
               value: 'SALE',
             },
           ],
@@ -174,7 +186,7 @@ export default {
           onFilter: (value, record) => record.tradeType.indexOf(value) >= 0,
         },
         {
-          title: '甲方',
+          title: this.$t('trade.makeTrade.info.JIA'),
           dataIndex: 'publishName',
           key: 'publishName',
           // slots: { title: 'publishName' },
@@ -199,14 +211,14 @@ export default {
           sorter: (a, b) => a.perEmission - b.perEmission,
         },
         {
-          title: '总金额',
+          title: this.$t('trade.myOrder.table.content.sumCoin'),
 
           key: 'sum',
           scopedSlots: { customRender: 'sum' },
           sorter: (a, b) => a.perEmission * a.dealNum - b.perEmission * b.dealNum,
         },
         {
-          title: '成交时间',
+          title: this.$t('trade.myOrder.table.content.orderTime'),
 
           key: 'orderTime',
           scopedSlots: { customRender: 'orderTime' },
@@ -215,7 +227,7 @@ export default {
         },
 
         {
-          title: '操作',
+          title: this.$t('trade.myPublish.table.content.action.title'),
           // dataIndex: 'orderNum',
           key: 'action',
           scopedSlots: { customRender: 'action' },
