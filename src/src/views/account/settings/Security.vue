@@ -7,7 +7,7 @@
   <div>
     <OneTimePwdAuth ref="OneTimePwdAuthModal" />
     <OneTimePwdCreate ref="OneTimePwdCreateModal" />
-    <OneTimePwdSetting ref="OneTimePwdSettingModal" @Recreate="recreate" />"
+    <OneTimePwdSetting ref="OneTimePwdSettingModal" @Recreate="recreate" />
     <a-list itemLayout="horizontal" :dataSource="data_">
       <a-list-item slot="renderItem" slot-scope="item, index" :key="index">
         <a-list-item-meta>
@@ -30,6 +30,8 @@
 import OneTimePwdAuth from './OneTimePwd/OneTimePwdAuth'
 import OneTimePwdCreate from './OneTimePwd/OneTimePwdCreate'
 import OneTimePwdSetting from './OneTimePwd/OneTimePwdSetting'
+
+import store from '@/store'
 export default {
   components: {
     OneTimePwdAuth,
@@ -39,48 +41,52 @@ export default {
   data() {
     return {
       data_: [
+        // {
+        //   title: this.$t('account.settings.security.password'),
+        //   description: this.$t('account.settings.security.password-description'),
+        //   value: '强',
+        //   actions: {
+        //     title: this.$t('account.settings.security.modify'),
+        //     callback: () => {
+        //       this.$message.info('This is a normal message')
+        //     },
+        //   },
+        // },
+        // {
+        //   title: this.$t('account.settings.security.phone'),
+        //   description: this.$t('account.settings.security.phone-description'),
+        //   value: '138****8293',
+        //   actions: {
+        //     title: this.$t('account.settings.security.modify'),
+        //     callback: () => {
+        //       this.$message.success('This is a message of success')
+        //     },
+        //   },
+        // },
+        // {
+        //   title: this.$t('account.settings.security.question'),
+        //   description: this.$t('account.settings.security.question-description'),
+        //   value: '',
+        //   actions: {
+        //     title: this.$t('account.settings.security.set'),
+        //     callback: () => {
+        //       this.$message.error('This is a message of error')
+        //     },
+        //   },
+        // },
         {
-          title: this.$t('account.settings.security.password'),
-          description: this.$t('account.settings.security.password-description'),
-          value: '强',
-          actions: {
-            title: this.$t('account.settings.security.modify'),
-            callback: () => {
-              this.$message.info('This is a normal message')
-            },
-          },
-        },
-        {
-          title: this.$t('account.settings.security.phone'),
-          description: this.$t('account.settings.security.phone-description'),
-          value: '138****8293',
-          actions: {
-            title: this.$t('account.settings.security.modify'),
-            callback: () => {
-              this.$message.success('This is a message of success')
-            },
-          },
-        },
-        {
-          title: this.$t('account.settings.security.question'),
-          description: this.$t('account.settings.security.question-description'),
-          value: '',
-          actions: {
-            title: this.$t('account.settings.security.set'),
-            callback: () => {
-              this.$message.error('This is a message of error')
-            },
-          },
-        },
-        {
-          title: this.$t('account.settings.security.email'),
+          title: this.$t('account.Moresetting.form.enterpriseResponsibleEmail'),
+          // this.$t('account.settings.security.email')
           description: this.$t('account.settings.security.email-description'),
-          value: 'ant***sign.com',
+          value:
+            this.$store.state.user.info.enterpriseResponsibleEmail +
+            '  ' +
+            this.$t('account.security.enterpriseEmail.modifyNotice'),
           actions: {
-            title: this.$t('account.settings.security.modify'),
-            callback: () => {
-              this.$message.warning('This is message of warning')
-            },
+            // title: this.$t('account.settings.security.modify'),
+            // callback: () => {
+            //   this.$message.warning('This is message of warning')
+            // },
           },
         },
         {
@@ -98,6 +104,11 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    enterpriseInfo() {
+      return this.$store.state.user.info
+    },
   },
   methods: {
     recreate() {
