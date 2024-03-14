@@ -104,7 +104,12 @@ const user = {
             // console.log("User.js>>ROLE", role, result)
             result.enterpriseClassName_CN = enterpriseClassName_CN[result.enterpriseClass]
             result.enterpriseClassName_EN = enterpriseClassName_EN[result.enterpriseClass]
-            result.BindStatus = 'PASS'
+            if (result.auditStatus != null) {
+              result.BindStatus = result.auditStatus
+            } else {
+              result.BindStatus = 'PASS'
+            }
+
 
             commit('SET_ROLES', role)
             commit('SET_INFO', result)

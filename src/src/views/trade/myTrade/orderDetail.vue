@@ -1,7 +1,21 @@
+<!--
+ * @Author: jjq
+ * @Description: 
+ * 
+-->
 <template>
   <a-modal v-model="visible" :title="$t('modal.detail.title')" :width="900" :dialog-style="{ top: '30px' }">
     <template slot="footer">
       <a-button key="back" @click="close()" type="danger"> {{ $t('modal.btn.close') }} </a-button>
+      <a-button
+        key="track"
+        @click="trackOrderTXID()"
+        type="primary"
+        style="background: linear-gradient(135deg, #ce9ffc, #7367f0); border: none; color: white"
+        icon="code"
+      >
+        {{ $t('trade.trackBlock.title') }}
+      </a-button>
       <!-- <a-button key="submit" type="primary" :loading="loading" @click="handleOk"> Submit </a-button> -->
     </template>
 
@@ -92,11 +106,14 @@
         </span>
       </div>
     </div>
+    <orderTrackTXID ref="orderTrackTXID"></orderTrackTXID>
   </a-modal>
 </template>
 
 <script>
 import dayjs from 'dayjs'
+
+import orderTrackTXID from './orderTrackTXID.vue'
 export default {
   data() {
     return {
@@ -106,6 +123,9 @@ export default {
 
       orderInfo: {},
     }
+  },
+  components: {
+    orderTrackTXID,
   },
   methods: {
     open(orderInfo) {
@@ -120,6 +140,10 @@ export default {
     computedDay(ts) {
       let date = parseInt(ts) * 1000
       return dayjs(date).format('YYYY-MM-DD HH:mm')
+    },
+    trackOrderTXID() {
+      let txID = this.orderInfo.orderID
+      this.$refs.orderTrackTXID.open(txID)
     },
   },
   computed: {

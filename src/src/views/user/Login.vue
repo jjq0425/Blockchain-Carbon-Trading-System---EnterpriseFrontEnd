@@ -208,7 +208,7 @@
 
       <div
         class="login_lang_change"
-        @click="ChangeLanguage"
+        @click="goTosupervisor"
         style="text-align: center; cursor: pointer; color: #134089; float: right"
       >
         <span>{{ $t('user.login.gotoSuperviser') }}</span>
@@ -284,8 +284,8 @@ export default {
     // this.requiredTwoStepCaptcha = true
     this.$nextTick(() => {
       this.form.setFieldsValue({
-        username: '唐芳',
-        password: 'mxhvuqxlf',
+        username: 'test_jjq',
+        password: 'test_jjq',
       })
     })
     // 设置全局禁止滚动
@@ -448,6 +448,9 @@ export default {
         description: ((err.response || {}).data || {}).message || '请求出现错误，请稍后再试',
         duration: 4,
       })
+    },
+    goTosupervisor() {
+      window.open('http://8.137.108.102:8081/#/login')
     },
   },
 }

@@ -205,8 +205,15 @@
             </div>
 
             <!-- 页面 -->
+            <a-result
+              :title="$t('dashboard.data_analysis.NoSubmit.title_trade')"
+              :sub-title="$t('dashboard.data_analysis.NoSubmit.subTitle_trade')"
+              v-if="!hasMyOrderAndTrade"
+            >
+              <template #icon><img style="height: 150px" src="@/assets/default/EmptyInfo.png" /> </template
+            ></a-result>
             <div style="display: flex; justify-content: center">
-              <div style="height: 250px">
+              <div style="height: 250px" v-show="hasMyOrderAndTrade">
                 <div style="font-weight: 900; font-size: 20px">
                   {{ $t('dashboard.data_analysis.content.jiaoyi.youAretypecal') }}&nbsp;<span
                     style="font-size: 28px"
@@ -246,16 +253,8 @@
                   </div>
                 </div>
               </div>
-              <div id="trade" style="width: 400px; align-self: top"></div>
+              <div id="trade" style="width: 400px; align-self: top" v-show="hasMyOrderAndTrade"></div>
             </div>
-
-            <a-result
-              :title="$t('dashboard.data_analysis.NoSubmit.title_trade')"
-              :sub-title="$t('dashboard.data_analysis.NoSubmit.subTitle_trade')"
-              v-show="!hasMyOrderAndTrade"
-            >
-              <template #icon><img style="height: 150px" src="@/assets/default/EmptyInfo.png" /> </template
-            ></a-result>
           </a-card>
         </a-col>
         <a-col style="padding: 0 12px" :xl="8" :lg="24" :md="24" :sm="24" :xs="24">
@@ -640,6 +639,7 @@ export default {
       // })
     },
     async fetchData() {
+      this.hasMyOrderAndTrade = false
       await vertical().then((res) => {
         this.verticalData = res.data.datas
         this.hasMy = res.data.hasMy
@@ -649,15 +649,15 @@ export default {
       })
       await MyPublishTradeList().then((res) => {
         this.publishTradeData = res.data.tradeListEnterprise
-        if (this.publishTradeData.length == 0) {
-          this.hasMyOrderAndTrade = false
+        if (this.publishTradeData.length != 0) {
+          this.hasMyOrderAndTrade = true
         }
       })
 
       await MyOrderList().then((res) => {
         this.orderData = res.data.orderListEnterprise
-        if (this.orderData.length == 0) {
-          this.hasMyOrderAndTrade = false
+        if (this.orderData.length != 0) {
+          this.hasMyOrderAndTrade = true
         }
       })
 
@@ -1357,9 +1357,10 @@ export default {
           align: 'center',
         },
       }
-
-      const vchart = new VChart(spec, { dom: 'trade' })
-      vchart.renderSync()
+      if (this.hasMyOrderAndTrade) {
+        const vchart = new VChart(spec, { dom: 'trade' })
+        vchart.renderSync()
+      }
 
       // Just for the convenience of console debugging, DO NOT COPY!
       // window['vchart'] = vchart

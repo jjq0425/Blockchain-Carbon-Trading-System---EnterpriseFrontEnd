@@ -334,7 +334,8 @@ export default {
         .then((res) => {
           if (res.success) {
             this.page.pageNow = 1
-            this.dataSource = res.data.tradeListEnterprise
+            this.dataSource = res.data.tradeListEnterprise || res.data.tradeList
+
             if (needFilter) {
               setTimeout(() => {
                 this.filterData()
