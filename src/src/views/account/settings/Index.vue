@@ -34,11 +34,7 @@
             <a-menu-item key="/account/more">
               <router-link :to="{ name: 'MoreSettings' }"> {{ $t('account.settings.menuMap.more') }} </router-link>
             </a-menu-item>
-            <a-menu-item key="/account/binding">
-              <router-link :to="{ name: 'BindingSettings' }">
-                {{ $t('account.settings.menuMap.binding') }}
-              </router-link>
-            </a-menu-item>
+
             <a-menu-item key="/account/template">
               <router-link :to="{ name: 'TemplateSettings' }">
                 {{ $t('account.settings.menuMap.template') }}
@@ -47,6 +43,11 @@
             <a-menu-item key="/account/security">
               <router-link :to="{ name: 'SecuritySettings' }">
                 {{ $t('account.settings.menuMap.security') }}
+              </router-link>
+            </a-menu-item>
+            <a-menu-item key="/account/binding">
+              <router-link :to="{ name: 'BindingSettings' }">
+                {{ $t('account.settings.menuMap.binding') }}
               </router-link>
             </a-menu-item>
             <!-- <a-menu-item key="/account/custom">

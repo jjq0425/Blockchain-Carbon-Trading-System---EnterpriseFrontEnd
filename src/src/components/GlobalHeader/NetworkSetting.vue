@@ -29,8 +29,11 @@
         >
           Mock服务地址</a-button
         >
-        <a-button @click="SetNewServerDefault('http://8.137.108.102:8080')" style="margin-right: 20px">
-          测试环境（http://8.137.108.102:8080）</a-button
+        <a-button @click="SetNewServerDefault('https://8.137.108.102:8080')" style="margin-right: 20px">
+          测试环境（https://8.137.108.102:8080）</a-button
+        >
+        <a-button @click="SetNewServerDefault('http://8.137.108.102:8081/auth/login')" style="margin-right: 20px">
+          区块链浏览器（https://8.137.108.102:8081）</a-button
         >
         <div style="font-size: 10px; color: grey">服务器地址必须以http://或者https://开头！并且结尾不能包含/</div>
       </a-form-item>
@@ -127,9 +130,14 @@ export default {
       request({
         url: testUrl,
         method: 'post',
+
         timeout: 1000,
         data: {
-          testInfo: '这是测试消息₂³',
+          // testInfo: '这是测试消息₂³',
+
+          user: 'exploreradmin',
+          password: 'exploreradminpw',
+          network: 'org1-network',
         },
         NetworkSetting: true,
       })

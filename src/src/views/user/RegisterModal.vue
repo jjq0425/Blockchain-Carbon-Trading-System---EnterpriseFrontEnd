@@ -311,7 +311,7 @@ export default {
             .then((res) => {
               this.registerBtn = false
               if (res.success) {
-                this.$message.success('注册成功:' + this.form.getFieldsValue().userName)
+                this.$message.success(this.$t('user.register.registerSuccess') + this.form.getFieldsValue().userName)
                 this.closeModal()
               } else {
                 this.$message.error(res.message)

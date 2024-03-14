@@ -58,7 +58,7 @@
   "account.settings.basic.phone-message": "Please input your phone!",
   "account.settings.basic.profile": "Enterprise profile",
   "account.settings.basic.profile-message": "Please input the enterprise profile!",
-  "account.settings.basic.profile-placeholder": "Brief introduction to yourself",
+  "account.settings.basic.profile-placeholder": "Brief introduction",
   "account.settings.binding.alipay": "Binding Alipay",
   "account.settings.binding.alipay-description": "Currently unbound Alipay account",
   "account.settings.binding.bind": "Bind",

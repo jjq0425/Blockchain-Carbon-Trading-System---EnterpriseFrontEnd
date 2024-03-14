@@ -39,10 +39,10 @@
                     right: 10px;
                   "
                 >
-                  👋请绑定企业信息
+                  👋{{ $t('user.bind.header.title') }}
                 </div>
                 <a-alert
-                  message="您的绑定信息被审核驳回，请根据审核要求认真重新填写提交信息，感谢您的配合"
+                  :message="$t('user.bind.header.refuse')"
                   type="warning"
                   show-icon
                   banner
@@ -50,7 +50,7 @@
                   v-show="BindStatus == 'REFUSE'"
                 />
                 <a-alert
-                  message="请仔细填写所有信息，其将作为您企业碳排放报告的重要组成。提交后耐心等待审核。"
+                  :message="$t('user.bind.header.wait')"
                   type="info"
                   show-icon
                   banner
@@ -60,7 +60,7 @@
               </div>
             </div>
 
-            <div class="FormDiv">
+            <div class="FormDiv" style="max-height: 500px; overflow-y: scroll">
               <div
                 v-if="BindStatus == 'REFUSE'"
                 style="
@@ -73,63 +73,102 @@
                 "
               >
                 <div style="padding-bottom: 2px; border-bottom: 1px dashed grey">
-                  <span style="font-weight: bold; border: 0px dashed grey">审核意见：</span>
+                  <span style="font-weight: bold; border: 0px dashed grey"
+                    >{{ $t('user.bind.header.auditOption') }}：</span
+                  >
                   {{ RefuseStr }}
                 </div>
               </div>
               <a-form :form="form" :label-col="{ span: 6 }" :wrapper-col="{ span: 15 }" style="margin-top: 20px">
                 <a-row type="flex">
                   <a-col :flex="2"
-                    ><a-form-item label="企业名">
+                    ><a-form-item :label="$t('account.settings.basic.EnterpriseName')">
                       <a-input
-                        placeholder="请输入企业名"
-                        v-decorator="['enterpriseName', { rules: [{ required: true, message: '请输入企业名' }] }]"
+                        :placeholder="$t('user.bind.form.placeholder.enterpriseName')"
+                        v-decorator="[
+                          'enterpriseName',
+                          {
+                            rules: [{ required: true, message: `${$t('user.bind.form.placeholder.enterpriseName')}` }],
+                          },
+                        ]"
                       />
                     </a-form-item>
-                    <a-form-item label="企业地址">
+                    <a-form-item :label="$t('account.basicSetting.enterprisePosition')">
                       <a-textarea
                         :autosize="{ minRows: 3, maxRows: 3 }"
-                        placeholder="请输入企业地址"
-                        v-decorator="['enterprisePosition', { rules: [{ required: true, message: '请输入企业地址' }] }]"
+                        :placeholder="$t('account.basicSetting.rule.enterprisePosition')"
+                        v-decorator="[
+                          'enterprisePosition',
+                          {
+                            rules: [
+                              { required: true, message: `${$t('account.basicSetting.rule.enterprisePosition')}` },
+                            ],
+                          },
+                        ]"
                       />
                     </a-form-item>
-                    <a-form-item label="企业组织机构代码">
+                    <a-form-item :label="$t('account.basicSetting.enterpriseID.label')">
                       <a-input
-                        placeholder="请输入组织机构代码"
-                        v-decorator="['enterpriseID', { rules: [{ required: true, message: '请输入组织机构代码' }] }]"
+                        :placeholder="$t('account.basicSetting.rule.enterpriseID')"
+                        v-decorator="[
+                          'enterpriseID',
+                          { rules: [{ required: true, message: `${$t('account.basicSetting.rule.enterpriseID')}` }] },
+                        ]"
                       />
                       <div style="font-size: 10px; font-weight: bold; color: grey; margin-bottom: -10px">
-                        请注意：组织机构代码非常重要，若审核通过将不允许更改！
+                        {{ $t('user.bind.form.notice.enterpriseID') }}
                       </div>
                     </a-form-item>
-                    <a-form-item label="企业性质">
+                    <a-form-item :label="$t('account.Moresetting.form.enterpriseCharacter')">
                       <a-select
                         v-decorator="[
                           'enterpriseCharacter',
-                          { rules: [{ required: true, message: '请选择企业性质' }] },
+                          {
+                            rules: [
+                              { required: true, message: `${$t('account.Moresetting.rule.enterpriseCharacter')}` },
+                            ],
+                          },
                         ]"
-                        placeholder="请选择"
+                        :placeholder="$t('modal.please.select')"
                         style="min-width: 180px"
                       >
-                        <a-select-option value="国营企业"> 国有企业 </a-select-option>
-                        <a-select-option value="集体所有制"> 集体所有制 </a-select-option>
-                        <a-select-option value="私营企业"> 私营企业 </a-select-option>
-                        <a-select-option value="股份制企业"> 股份制企业 </a-select-option>
-                        <a-select-option value="有限合伙企业"> 有限合伙企业 </a-select-option>
-                        <a-select-option value="合资企业"> 合资企业 </a-select-option>
-                        <a-select-option value="外商投资企业"> 外商投资企业 </a-select-option>
-                        <a-select-option value="个人独资企业"> 个人独资企业 </a-select-option>
-                        <a-select-option value="股份合作企业"> 股份合作企业 </a-select-option>
+                        <a-select-option value="国营企业">
+                          {{ $t('account.Moresetting.form.enterpriseCharacter_option.GuoYou') }}
+                        </a-select-option>
+                        <a-select-option value="集体所有制">
+                          {{ $t('account.Moresetting.form.enterpriseCharacter_option.JiTiSuoYou') }}
+                        </a-select-option>
+                        <a-select-option value="私营企业">
+                          {{ $t('account.Moresetting.form.enterpriseCharacter_option.SiYing') }}
+                        </a-select-option>
+                        <a-select-option value="股份制企业">
+                          {{ $t('account.Moresetting.form.enterpriseCharacter_option.GuFen') }}
+                        </a-select-option>
+                        <a-select-option value="有限合伙企业">
+                          {{ $t('account.Moresetting.form.enterpriseCharacter_option.YouXianHeHuo') }}
+                        </a-select-option>
+                        <a-select-option value="合资企业">
+                          {{ $t('account.Moresetting.form.enterpriseCharacter_option.HeZi') }}
+                        </a-select-option>
+                        <a-select-option value="外商投资企业">
+                          {{ $t('account.Moresetting.form.enterpriseCharacter_option.WaiShangeTouZi') }}
+                        </a-select-option>
+                        <a-select-option value="个人独资企业">
+                          {{ $t('account.Moresetting.form.enterpriseCharacter_option.GeRenDuZi') }}
+                        </a-select-option>
+                        <a-select-option value="股份合作企业">
+                          {{ $t('account.Moresetting.form.enterpriseCharacter_option.GuFenHeZuo') }}
+                        </a-select-option>
                       </a-select>
                     </a-form-item>
 
-                    <a-form-item label="企业所在行业">
+                    <a-form-item :label="$t('account.Moresetting.form.enterpriseClass')">
                       <a-select
                         v-decorator="[
                           'enterpriseClass',
-                          { rules: [{ required: true, message: '请选择企业所在行业' }] },
+                          { rules: [{ required: true, message: `${$t('account.Moresetting.rule.enterpriseClass')}` }] },
                         ]"
-                        placeholder="请选择"
+                        :placeholder="$t('modal.please.select')"
                         style="min-width: 180px"
                       >
                         <!-- <a-select-option value="1"> 发电 </a-select-option>
@@ -143,17 +182,21 @@
                         </template>
                       </a-select>
                       <div style="font-size: 10px; font-weight: bold; color: grey">
-                        不同行业对应碳排放报告内容不同，请务必选择正确。
+                        {{ $t('account.Moresetting.title.notice.enterpriseClass') }}
                       </div>
                     </a-form-item>
                   </a-col>
                   <a-col :flex="3"
-                    ><a-form-item label="企业法人">
+                    ><a-form-item :label="$t('user.bind.form.label.enterpriseLegelPerson')">
                       <a-input
-                        placeholder="请输入法人姓名"
+                        :placeholder="$t('account.Moresetting.rule.enterpriseLegelPerson')"
                         v-decorator="[
                           'enterpriseLegelPerson',
-                          { rules: [{ required: true, message: '请输入企业法人姓名' }] },
+                          {
+                            rules: [
+                              { required: true, message: `${$t('account.Moresetting.rule.enterpriseLegelPerson')}` },
+                            ],
+                          },
                         ]"
                       >
                         <template #addonBefore>
@@ -161,12 +204,19 @@
                         </template>
                       </a-input>
                     </a-form-item>
-                    <a-form-item label="企业填报负责人">
+                    <a-form-item :label="$t('user.bind.form.label.enterpriseResponsiblePerson')">
                       <a-input
-                        placeholder="请输入企业填报负责人姓名"
+                        :placeholder="$t('account.Moresetting.rule.enterpriseResponsiblePerson')"
                         v-decorator="[
                           'enterpriseResponsiblePerson',
-                          { rules: [{ required: true, message: '请输入企业填报负责人姓名' }] },
+                          {
+                            rules: [
+                              {
+                                required: true,
+                                message: `${$t('account.Moresetting.rule.enterpriseResponsiblePerson')}`,
+                              },
+                            ],
+                          },
                         ]"
                       >
                         <template #addonBefore>
@@ -174,15 +224,18 @@
                         </template>
                       </a-input>
                     </a-form-item>
-                    <a-form-item label="填报负责人邮箱">
+                    <a-form-item :label="$t('user.bind.form.label.enterpriseResponsibleEmail')">
                       <a-input
-                        placeholder="请输入企业填报负责人邮箱"
+                        :placeholder="$t('account.Moresetting.rule.enterpriseResponsibleEmail')"
                         v-decorator="[
                           'enterpriseResponsibleEmail',
                           {
                             rules: [
-                              { required: true, message: '请输入企业填报负责人邮箱' },
-                              { type: 'email', message: '请输入正确的邮箱格式' },
+                              {
+                                required: true,
+                                message: `${$t('account.Moresetting.rule.enterpriseResponsibleEmail')}`,
+                              },
+                              { type: 'email', message: `${$t('form.basic-form.email.RightEmailNeed')}` },
                             ],
                           },
                         ]"
@@ -192,15 +245,19 @@
                         </template>
                       </a-input>
                     </a-form-item>
-                    <a-form-item label="企业简介">
+                    <a-form-item :label="$t('account.settings.basic.profile-placeholder')">
                       <a-textarea
                         :autosize="{ minRows: 9, maxRows: 9 }"
                         size="large"
-                        placeholder="请输入企业简介"
+                        :placeholder="$t('account.basicSetting.rule.enterpriseDescription')"
                         :maxLength="300"
                         v-decorator="[
                           'enterpriseDescription',
-                          { rules: [{ required: true, message: '请输入企业简介' }] },
+                          {
+                            rules: [
+                              { required: true, message: `${$t('account.basicSetting.rule.enterpriseDescription')}` },
+                            ],
+                          },
                         ]"
                       />
                     </a-form-item>
@@ -216,7 +273,7 @@
                 :disabled="bindloading"
                 @click="backToLogin()"
               >
-                返回登录页
+                {{ $t('user.bind.footer.btn.returnLogin') }}
               </a-button>
               <a-button
                 type="primary"
@@ -224,7 +281,7 @@
                 @click="submitBind"
                 :loading="bindloading"
               >
-                提交绑定信息
+                {{ $t('user.bind.footer.btn.submitBind') }}
               </a-button>
             </div>
 
@@ -260,16 +317,18 @@
                     right: 10px;
                   "
                 >
-                  👋绑定信息审核中...
+                  👋{{ $t('user.bind.audit.title') }}
                 </div>
               </div>
             </div>
-            <a-result title="您的信息仍在审核中" sub-title="审核需要一定时间，请您耐心等待！感谢您的理解与支持！">
+            <a-result :title="$t('user.bind.audit.result.title')" :sub-title="$t('user.bind.audit.result.subTitle')">
               <template #icon>
                 <a-icon type="clock-circle" theme="filled" style="color: #108ee9; margin-bottom: 30px" />
               </template>
               <template #extra>
-                <a-button key="console" type="primary" @click="backToLogin()"> 返回登录页 </a-button>
+                <a-button key="console" type="primary" @click="backToLogin()">
+                  {{ $t('user.bind.footer.btn.returnLogin') }}
+                </a-button>
               </template>
             </a-result>
           </div>
@@ -349,15 +408,15 @@ export default {
           Bind(TMP)
             .then((res) => {
               this.bindloading = false
-              this.$message.success('绑定信息提交成功，等待审核')
+              this.$message.success(this.$t('user.bind.footer.btn.result.successSubmit'))
               this.bindAudit = true
             })
             .catch((err) => {
               this.bindloading = false
-              this.$message.error('绑定信息提交失败' + err.response.data.message)
+              this.$message.error(this.$t('user.bind.footer.btn.result.errorSubmit') + err.response.data.message)
             })
         } else {
-          this.$message.warning('请补全信息')
+          this.$message.warning(this.$t('result.fail.bu-quan-hou-ti-jiao'))
           this.bindloading = false
         }
       })
@@ -377,20 +436,20 @@ export default {
     })
     if (this.BindStatus == 'AUDIT') {
       this.$notification.open({
-        message: '绑定审核中',
-        description: '您的绑定信息正在审核中，请耐心等待',
+        message: this.$t('user.bind.notification.audit.message'),
+        description: this.$t('user.bind.notification.audit.des'),
         icon: <a-icon type="smile" style="color: #108ee9" />,
       })
     } else if (this.BindStatus == 'WAIT') {
       this.$notification.open({
-        message: '请绑定企业信息',
-        description: '请您绑定企业相关信息',
+        message: this.$t('user.bind.header.title'),
+        description: this.$t('user.bind.notification.wait.des'),
         icon: <a-icon type="link" style="color: #fd7e14" />,
       })
     } else if (this.BindStatus == 'REFUSE') {
       this.$notification.open({
-        message: '绑定审核未通过',
-        description: '您的绑定信息审核未通过，请重新绑定',
+        message: this.$t('user.bind.notification.refuse.message'),
+        description: this.$t('user.bind.notification.refuse.des'),
         icon: <a-icon type="exclamation-circle" style="color: #f5222d" />,
       })
     }
