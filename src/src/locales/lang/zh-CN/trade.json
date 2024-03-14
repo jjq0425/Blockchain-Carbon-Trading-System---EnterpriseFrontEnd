@@ -58,6 +58,7 @@
   "trade.market.header.infoCard.remainEmission": "您当前剩余碳排量",
   "trade.myOrder.header.sumEmission": "累计成交量",
   "trade.myOrder.header.totalNum": "我的订单数",
+  "trade.myOrder.table.content.btn.qu-kuai-su-yuan": "区块溯源",
   "trade.myOrder.table.content.dealNum": "交易量",
   "trade.myOrder.table.content.orderTime": "成交时间",
   "trade.myOrder.table.content.sumCoin": "总金额",

@@ -57,6 +57,7 @@
   "trade.market.header.infoCard.remainEmission": "Remain CO₂ Emission",
   "trade.myOrder.header.sumEmission": "Accumulated trading volume",
   "trade.myOrder.header.totalNum": "My order count",
+  "trade.myOrder.table.content.btn.qu-kuai-su-yuan": "Block trace",
   "trade.myOrder.table.content.dealNum": "Transaction volume",
   "trade.myOrder.table.content.orderTime": "Transaction time",
   "trade.myOrder.table.content.sumCoin": "Total amount",
@@ -96,6 +97,7 @@
   "trade.publish.header.notice.N1": "1. To ensure transaction security, please carefully check your transaction information. Any losses caused by incorrect filling shall be borne by you.",
   "trade.publish.header.notice.N2": "2. Please provide a detailed description of the transaction content, including carbon emissions, transaction amount, and other information, when publishing the transaction, so that other users can quickly understand and participate in the transaction.",
   "trade.publish.header.title": "Welcome to the \"Trading Release\" page, where we focus on providing carbon emission trading services. Please complete the form based on the information provided. Here, you can confidently upload transaction information to the blockchain to ensure the security of your bills.",
+  "trade.trackBlock.title": "Block trace",
   "trade.tradeDetail.content.orderIDLenth.label": "Transaction order volume",
   "trade.tradeDetail.content.orderIDLenth.likeTable": "(As shown in the table below)",
   "trade.tradeDetail.header": "This page displays your transaction details. Here, you can clearly track your transaction history."

@@ -95,6 +95,9 @@
 
           <template slot="action" slot-scope="text, record">
             <a @click="openOrderDetail(record)"> {{ $t('modal.detail.title') }}</a>
+            <a style="margin-left: 10px" @click="trackOrderTXID(record.orderID)">{{
+              $t('trade.myOrder.table.content.btn.qu-kuai-su-yuan')
+            }}</a>
           </template>
         </a-table>
         <div
@@ -125,6 +128,7 @@
       </a-card>
     </a-spin>
     <orderDetail ref="orderDetailRef"></orderDetail>
+    <orderTrackTXID ref="orderTrackTXID"></orderTrackTXID>
   </div>
 </template>
 
@@ -137,6 +141,7 @@ import dayjs from 'dayjs'
 import { tradeTypeClass_CN, tradeTypeClass_EN } from '@/config/class/trade/tradeTypeClass'
 
 import orderDetail from '@/views/trade/myTrade/orderDetail.vue'
+import orderTrackTXID from './orderTrackTXID.vue'
 
 export default {
   name: 'PreviousReports',
@@ -144,6 +149,7 @@ export default {
     STable,
     info,
     orderDetail,
+    orderTrackTXID,
   },
   data() {
     return {
@@ -274,6 +280,10 @@ export default {
     },
     gotoTradeMarket() {
       this.$router.push({ name: 'tradeMarket' })
+    },
+    trackOrderTXID(orderID) {
+      let txID = orderID
+      this.$refs.orderTrackTXID.open(txID)
     },
   },
   computed: {

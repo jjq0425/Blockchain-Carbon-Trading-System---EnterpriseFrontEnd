@@ -14,20 +14,52 @@
 
       <div v-else style="padding: 10px 20px">
         <a-descriptions>
-          <a-descriptions-item label="交易事务哈希" :span="3">{{ txDetail.txhash }} </a-descriptions-item>
+          <a-descriptions-item label="交易事务哈希" :span="3"
+            ><span style="font-family: 'Consolas', Menlo, Courier, monospace; color: #134089">{{
+              txDetail.txhash
+            }}</span>
+          </a-descriptions-item>
           <a-descriptions-item label="有效载荷哈希" :span="3">
-            {{ txDetail.payload_proposal_hash }}
+            <span style="font-family: 'Consolas', Menlo, Courier, monospace; color: #134089">
+              {{ txDetail.payload_proposal_hash }}</span
+            >
           </a-descriptions-item>
           <a-descriptions-item label="链码名"> {{ txDetail.chaincodename }} </a-descriptions-item>
           <a-descriptions-item label="通道名">{{ txDetail.channelname }} </a-descriptions-item>
-          <a-descriptions-item label="交易事务时间">{{ txDetail.channelname }} </a-descriptions-item>
-          <a-descriptions-item label="MSP创建者ID"> {{ txDetail.creator_msp_id }} </a-descriptions-item>
-          <a-descriptions-item label="背书组织ID" :span="2"> {{ txDetail.endorser_msp_id }} </a-descriptions-item>
+          <a-descriptions-item label="交易事务时间">{{ createdtPrase(txDetail.createdt) }} </a-descriptions-item>
+          <a-descriptions-item label="MSP创建者代号">
+            <a-tag color="purple">
+              {{ txDetail.creator_msp_id }}
+            </a-tag>
+          </a-descriptions-item>
+          <a-descriptions-item label="背书组织代号" :span="2">
+            <span v-for="(item, index) in endorser_msp_id_tags(txDetail.endorser_msp_id)" :key="index">
+              <a-tag color="purple">
+                {{ item }}
+              </a-tag>
+            </span>
+          </a-descriptions-item>
           <!-- <a-descriptions-item label="Usage Time" :span="2"> 2019-04-24 18:00:00 </a-descriptions-item> -->
 
-          <a-descriptions-item label="交易事务类型"> 背书交易 </a-descriptions-item>
-          <a-descriptions-item label="验证状态" :span="2">
-            <a-badge status="processing" text="Running" />
+          <a-descriptions-item label="交易事务类型" :span="2">
+            背书交易
+            <a-tooltip placement="topLeft">
+              <template slot="title">
+                <span>此交易事务已获得特定组织节点的背书，以确保其符合规定的有效性和安全性标准。 </span>
+              </template>
+              <span style="padding-bottom: 2px; border-bottom: 1px dashed #495057; cursor: pointer"
+                >ENDORSER_TRANSACTION</span
+              >
+            </a-tooltip>
+          </a-descriptions-item>
+          <a-descriptions-item label="验证状态">
+            <!-- <a-badge
+              status="success"
+              text="已验证"
+              style="padding: 5px 15px; margin-top: 10px; border-radius: 9999px; background: rgba(32, 201, 151, 0.05)"
+            /> -->
+            <a-tag color="#20c997" style="border-radius: 999px" v-if="lang.includes('zh')"> 已验证 ( VALID ) </a-tag>
+            <a-tag color="#20c997" style="border-radius: 999px" v-else> Valid </a-tag>
           </a-descriptions-item>
 
           <!-- <a-descriptions-item label="读取操作流" :span="3"> </a-descriptions-item>
@@ -84,6 +116,11 @@
 <script>
 import { bElogin, bETransactionDetail, bEcurChannel } from '@/api/blockExplore'
 import JsonViewer from 'vue-json-viewer'
+import store from '@/store'
+import dayjs from 'dayjs'
+
+import utc from 'dayjs/plugin/utc'
+
 export default {
   data() {
     return {
@@ -100,17 +137,26 @@ export default {
   components: {
     JsonViewer,
   },
+  computed: {
+    lang() {
+      return this.$store.state.app.lang
+    },
+  },
   methods: {
+    createdtPrase(createdt) {
+      dayjs.extend(utc)
+      return dayjs.utc(createdt).local().format('YYYY-MM-DD HH:mm')
+    },
     open(orderID) {
       //   console.log('a')
       this.loadingData = true
       this.visible = true
       this.orderID = orderID
-      //   this.login()
+      this.login()
 
-      setTimeout(() => {
-        this.test()
-      }, 1000)
+      // setTimeout(() => {
+      //   this.test()
+      // }, 1000)
     },
     test() {
       this.txDetail = {
@@ -212,8 +258,21 @@ export default {
     fetchData() {
       bETransactionDetail(this.bE.bEcurrentChannel, this.orderID, this.bE.bEtoken).then((res) => {
         this.txDetail = res.row
-        this.loadingData = false
+        setTimeout(() => {
+          this.loadingData = false
+        }, 700)
       })
+    },
+    endorser_msp_id_tags(endorser_msp_id) {
+      let regex = /"([^"]*)"/g // 正则表达式匹配引号内的内容
+
+      let result2 = []
+      let match
+      while ((match = regex.exec(endorser_msp_id))) {
+        result2.push(match[1]) // 将匹配到的内容添加到数组中
+      }
+
+      return result2
     },
   },
 }
@@ -224,7 +283,7 @@ export default {
   background-image: url('https://www.yunphant.com/static/media/home_banner.22da5480.jpg');
   background-color: #d0ebff;
   background-repeat: no-repeat;
-  background-size: 60%;
+  background-size: 80%;
   background-position: 100% 100%;
 }
 /deep/ .ant-modal-header {
