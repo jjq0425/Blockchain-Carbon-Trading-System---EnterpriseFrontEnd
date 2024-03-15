@@ -106,6 +106,7 @@ import VueAuthCodeInput from 'vue-auth-code-input'
 import * as OTPAuth from 'otpauth'
 import { SetTotp } from '@/api/login'
 import request from '@/utils/request'
+import Initializer from '@/core/bootstrap'
 
 export default {
   components: {
@@ -140,17 +141,6 @@ export default {
   mounted() {
     // js随机生成一段数字
     // https://totp.danhersam.com/
-    var random = Math.floor(Math.random() * 100000000000)
-    this.secretKey = OTPAuth.Secret.fromUTF8(random.toString()).base32
-    let totp = new OTPAuth.TOTP({
-      issuer: '碳盟链道',
-      label: this.enterpriseInfo.enterpriseName,
-      algorithm: 'SHA1',
-      digits: 6,
-      period: 30,
-      secret: this.secretKey,
-    })
-    this.totp = totp
     // console.log('11', totp.generate())
   },
   methods: {
@@ -235,8 +225,22 @@ export default {
           this.$message.error('复制失败，请手动复制')
         })
     },
+    InitTotp() {
+      var random = Math.floor(Math.random() * 100000000000)
+      this.secretKey = OTPAuth.Secret.fromUTF8(random.toString()).base32
+      let totp = new OTPAuth.TOTP({
+        issuer: '碳盟链道',
+        label: this.enterpriseInfo.enterpriseName,
+        algorithm: 'SHA1',
+        digits: 6,
+        period: 30,
+        secret: this.secretKey,
+      })
+      this.totp = totp
+    },
 
     open(isRecreateflag = false) {
+      this.InitTotp()
       this.visible = true
       this.id = null
       this.hasError = false
