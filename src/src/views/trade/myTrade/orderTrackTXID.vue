@@ -6,6 +6,7 @@
     :dialog-style="{ top: '20px' }"
     closeable
     :footer="null"
+    class="orderTrackTXID"
   >
     <div style="min-height: 300px">
       <a-result title="区块交易事务溯源中..." v-if="loadingData">
@@ -287,9 +288,9 @@ export default {
   background-position: 100% 100%;
 }
 /deep/ .ant-modal-header {
-  background: #d0ebff no-repeat 50% / cover;
+  background: #d0ebff no-repeat 50% / cover !important;
   /* 将图片左移动 */
-  background-position: 10% 10%;
+  background-position: 10% 10% !important;
 }
 /deep/ .ant-modal-title {
   color: #134089;

@@ -28,6 +28,7 @@
 
     <a-card :bordered="false" style="width: 100%">
       <!-- 筛选区域 -->
+
       <a-row type="flex">
         <div
           style="
@@ -99,13 +100,18 @@
 
       <!-- 表格 -->
       <a-spin :spinning="dataLoading">
+        <img
+          style="height: 180px; position: absolute; right: 120px; top: -120px; z-index: 1"
+          src="	https://static.dash.cloudflare.com/500ce3afb5d424f5a49f.svg"
+          class="tableImg"
+        />
         <a-table
           :columns="columns"
           :data-source="myOrderListSource"
           :pagination="pagination"
           @change="handleTableChange"
           rowKey="orderID"
-          style="width: 70%; margin: 5px auto"
+          style="width: 70%; margin: 5px auto; z-index: 100"
         >
           <template slot="index" slot-scope="text, record, index">{{
             (currentPage - 1) * pageSize + Number(index) + 1
@@ -145,6 +151,9 @@
 
           <template slot="action" slot-scope="text, record">
             <a @click="openOrderDetail(record)"> {{ $t('modal.detail.title') }}</a>
+            <a style="margin-left: 10px" @click="trackOrderTXID(record.orderID)">{{
+              $t('trade.myOrder.table.content.btn.qu-kuai-su-yuan')
+            }}</a>
           </template>
         </a-table>
       </a-spin>
@@ -160,6 +169,7 @@
 
     <div>
       <orderDetail ref="orderDetailRef"></orderDetail>
+      <orderTrackTXID ref="orderTrackTXID"></orderTrackTXID>
       <!-- <video src="@/assets/pages/trade/tradeElse/tradeInBlockChain.mp4" loop autoplay style="width: 100%"></video> -->
     </div>
   </page-header-wrapper>
@@ -176,12 +186,14 @@ import dayjs from 'dayjs'
 import orderDetail from '@/views/trade/myTrade/orderDetail.vue'
 
 // import trading from '@/views/trade/myTrade/trading.vue'
+import orderTrackTXID from './orderTrackTXID.vue'
 
 export default {
   name: 'CardList',
   components: {
     // pdfTest,
     orderDetail,
+    orderTrackTXID,
     // trading,
   },
   data() {
@@ -343,6 +355,10 @@ export default {
     openOrderDetail(record) {
       this.$refs.orderDetailRef.open(record, true)
     },
+    trackOrderTXID(orderID) {
+      let txID = orderID
+      this.$refs.orderTrackTXID.open(txID)
+    },
   },
 }
 </script>
@@ -419,5 +435,32 @@ export default {
   border-radius: 2px;
   width: 100%;
   height: 188px;
+}
+</style>
+
+
+<style scoped>
+/deep/ .ant-form-item-label {
+  font-weight: 600;
+}
+/deep/ .ant-table {
+  z-index: 100;
+  background: white;
+}
+
+.tableImg {
+  animation: tableImg 3s ease-in-out infinite;
+}
+/*让tableImg旋转并上升，动画 */
+@keyframes tableImg {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  0% {
+    transform: translateY(0px);
+  }
 }
 </style>

@@ -98,7 +98,7 @@
   "trade.publish.header.notice.N1": "1. 为确保交易安全，请仔细核对您的交易信息。因误填造成的损失由您自行承担。",
   "trade.publish.header.notice.N2": "2. 请您在发布交易时，详细描述交易内容，包括碳排放量、交易金额等信息，以便其他用户快速了解并参与交易。",
   "trade.publish.header.title": "欢迎来到“交易发布”页面，我们专注于提供碳排放量交易服务。请根据表单信息完成填报。在这里，您可以放心地将交易信息上链至区块链，确保账单安全无忧。",
-  "trade.trackBlock.title": "区块溯源凭证",
+  "trade.trackBlock.title": "区块交易事务溯源凭证",
   "trade.tradeDetail.content.orderIDLenth.label": "成交订单量",
   "trade.tradeDetail.content.orderIDLenth.likeTable": "(如下表)",
   "trade.tradeDetail.header": "本页面展示了您的交易详细信息。在这里，您能够清晰地追踪您的交易历史。"
