@@ -337,11 +337,13 @@ export default {
       })
     },
     submitLast() {
+      this.$message.loading({ content: this.$t('modal.loading.tradePublishLoading') + '...', key: 'tradePublish' })
       this.dataLoading = true
+
       TradePublish(this.tradePublishForm)
         .then((res) => {
           if (res.success) {
-            this.$message.success(this.$t('result.success.publishSuccess'))
+            this.$message.success({ content: this.$t('result.success.publishSuccess'), key: 'tradePublish' })
             setTimeout(() => {
               this.$router.go(-1)
               this.dataLoading = false

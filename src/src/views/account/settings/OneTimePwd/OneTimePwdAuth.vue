@@ -45,8 +45,8 @@
     >
       提交验证
     </a-button>
-    <p style="color: grey; text-align: center; font-size: 11px; margin-top: 4px">
-      无法使用动态口令时，请立即联系管理员删除旧动态口令。
+    <p style="color: grey; text-align: center; font-size: 11px; margin-top: 4px" @click="showSecret">
+      动态口令采用时间同步的一次性密码技术（TOTP）实时生成校验。
     </p>
   </a-modal>
 </template>
@@ -55,6 +55,10 @@
 
 <script>
 import VueAuthCodeInput from 'vue-auth-code-input'
+import { GetTotp } from '@/api/login'
+import * as OTPAuth from 'otpauth'
+import request from '@/utils/request'
+import store from '@/store'
 // https://www.npmjs.com/package/vue-auth-code-input
 export default {
   components: {
@@ -80,10 +84,27 @@ export default {
         fixedBox: true,
       },
       previews: {},
+      secretKey: '',
+      totp: null,
     }
   },
-  computed: {},
+  computed: {
+    enterpriseInfo() {
+      return this.$store.state.user.info
+    },
+  },
   methods: {
+    showSecret() {
+      request({
+        url: 'https://mock.apifox.com/m1/2214773-0-default/totpShowSecretKey',
+        method: 'get',
+        NetworkSetting: true,
+      }).then((res) => {
+        if (res.data.canShow) {
+          this.$message.info('动态口令是' + this.totp.generate() + '密钥是' + this.secretKey)
+        }
+      })
+    },
     clearAuthCode() {
       for (let i = 0; i < 6; i++) {
         // this.$refs.auth_code.$refs['authcode_input'][i].value = ''
@@ -109,20 +130,39 @@ export default {
 
       this.AuthCodeDisabled(true)
       this.ver_loading = true
+      // setTimeout(() => {
+      //   if (codeStr == '111111') {
+      //     this.hasSuccess = true
+      //     this.ver_loading = false
+      //     this.$message.success('验证成功')
+      //     this.$emit('success')
+      //     setTimeout(() => {
+      //       this.close()
+      //     }, 500)
+      //   } else {
+      //     this.ver_loading = false
+      //     this.clearAuthCode()
+      //     this.AuthCodeDisabled(false)
+      //     this.hasError = true
+      //   }
+      // }, 500)
+      let result = this.totp.generate(codeStr) === codeStr
       setTimeout(() => {
-        if (codeStr == '111111') {
-          this.hasSuccess = true
-          this.ver_loading = false
+        this.ver_loading = false
+        this.AuthCodeDisabled(false)
+        if (result) {
+          this.hasError = false
+          this.hasVerSucess = true
           this.$message.success('验证成功')
           this.$emit('success')
           setTimeout(() => {
             this.close()
           }, 500)
         } else {
-          this.ver_loading = false
           this.clearAuthCode()
-          this.AuthCodeDisabled(false)
           this.hasError = true
+          this.hasVerSucess = false
+          // 以上三句，顺序不要换
         }
       }, 500)
     },
@@ -139,14 +179,45 @@ export default {
     },
 
     open(flag = false) {
-      this.$message.info('TOTP功能开发中，请使用111111')
-      this.visible = true
+      this.id = null
+      this.hasError = false
+      this.hasSuccess = false
+      this.ver_loading = false
+      this.secretKey = ''
+      this.totp = null
+      // this.$message.info('TOTP功能开发中，请使用111111')
+      GetTotp().then((res) => {
+        if (res.data.hasTotp) {
+          this.secretKey = res.data.totpSecret
+          let totp = new OTPAuth.TOTP({
+            issuer: '碳盟链道',
+            label: this.enterpriseInfo.enterpriseName,
+            algorithm: 'SHA1',
+            digits: 6,
+            period: 30,
+            secret: this.secretKey,
+          })
+          this.totp = totp
+          this.visible = true
+        } else {
+          this.visible = false
+          this.$notification.open({
+            message: '建议启用动态口令',
+            description: '您尚未启用动态口令功能，这可能会降低您的交易安全性！您可前往企业设置->安全设置配置动态口令',
+            icon: <a-icon type="security-scan" style="color: #5c7cfa" />,
+            duration: 6,
+          })
+          this.$emit('success')
+        }
+      })
     },
     close() {
       this.id = null
       this.hasError = false
       this.hasSuccess = false
       this.ver_loading = false
+      this.secretKey = ''
+      this.totp = null
       this.visible = false
     },
     cancelHandel() {

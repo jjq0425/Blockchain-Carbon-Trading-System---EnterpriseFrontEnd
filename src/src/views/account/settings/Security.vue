@@ -7,7 +7,7 @@
   <div>
     <OneTimePwdAuth ref="OneTimePwdAuthModal" />
     <OneTimePwdCreate ref="OneTimePwdCreateModal" />
-    <OneTimePwdSetting ref="OneTimePwdSettingModal" @Recreate="recreate" />
+    <OneTimePwdSetting ref="OneTimePwdSettingModal" @Recreate="recreate" @initCreate="initCreate" />
     <a-list itemLayout="horizontal" :dataSource="data_">
       <a-list-item slot="renderItem" slot-scope="item, index" :key="index">
         <a-list-item-meta>
@@ -113,6 +113,9 @@ export default {
   methods: {
     recreate() {
       this.$refs.OneTimePwdCreateModal.open(true)
+    },
+    initCreate() {
+      this.$refs.OneTimePwdCreateModal.open(false)
     },
   },
 }

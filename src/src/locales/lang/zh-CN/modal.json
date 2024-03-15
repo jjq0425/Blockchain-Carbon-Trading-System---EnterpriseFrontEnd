@@ -16,6 +16,7 @@
   "modal.loading.exportTemplateLoading": "导出模板中...",
   "modal.loading.inLoadingWait": "加载中，请稍后",
   "modal.loading.inSubmitLoadingWait": "提交中，请稍等",
+  "modal.loading.tradePublishLoading": "信息提交中",
   "modal.notice.title": "提示",
   "modal.please.select": "请选择",
   "result.success.getHistorySuccess": "获取历史数据成功",

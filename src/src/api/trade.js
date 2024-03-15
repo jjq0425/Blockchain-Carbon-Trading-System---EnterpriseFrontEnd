@@ -21,6 +21,7 @@ const tradeApi = {
     OrderDetail: '/public/order',
 
 
+
 }
 
 export function TradeList() {

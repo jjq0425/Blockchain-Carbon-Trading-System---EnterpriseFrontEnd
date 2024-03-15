@@ -30,6 +30,10 @@ const userApi = {
   Bind: '/user/enterpriseInfoBind',
   InfoSet: '/user/enterpriseInfoSet',
 
+  // TOTP
+  GetToTP: '/user/getTotp',
+  SetToTP: '/user/setTotp',
+
 
 
 
@@ -116,6 +120,29 @@ export function register(parameter) {
     url: userApi.Register,
     method: 'post',
     data: parameter
+  })
+}
+
+
+// TOTP
+export function SetTotp(secret) {
+  return request({
+    url: userApi.SetToTP,
+    method: 'post',
+    data: {
+      token: localStorage.getItem('ACCESS_TOKEN'),
+      totpSecret: secret
+    }
+  })
+}
+
+export function GetTotp() {
+  return request({
+    url: userApi.GetToTP,
+    method: 'post',
+    data: {
+      token: localStorage.getItem('ACCESS_TOKEN'),
+    }
   })
 }
 

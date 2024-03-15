@@ -11,16 +11,16 @@
   >
     <p style="color: black">{{ $t('account.settings.security.otp-description') }}</p>
 
-    <p style="color: #339af0; font-size: 17px; font-weight: bold; width: auto">无法使用动态口令?</p>
+    <p style="color: #339af0; font-size: 17px; font-weight: bold; width: auto">动态口令是什么?</p>
 
-    <p>若已经无法使用动态口令，或者动态密钥已经泄露，请立即联系管理员删除旧动态口令！</p>
+    <p>
+      TOTP利用时间同步生成动态六位数字密码，为用户登录提供一次性且仅在特定时间窗口内有效的验证，增强了双因素认证的安全性，技术广泛应用于双因素认证（2FA）中，作为第二层验证手段，有效保护用户账户免受恶意攻击和密码泄露的威胁。
+    </p>
 
     <p style="color: #339af0; font-size: 17px; font-weight: bold; width: auto">我想重置动态密钥</p>
     <a-alert style="margin-bottom: 10px" message="重置成功后，过去设置的动态口令将全部失效。" banner />
 
-    <p>
-      请输入身份验证APP或工具显示的6位动态口令，以验证您的身份。若已无法使用动态口令，请立即联系管理员删除旧动态口令
-    </p>
+    <p>请输入身份验证APP或工具显示的6位动态口令，以验证您的身份。</p>
 
     <p style="color: red; text-align: center; font-size: 13px" v-if="hasError">动态口令不正确，请重试</p>
     <!-- <p style="color: #12b886; text-align: center; font-size: 13px" v-if="hasVerSucess">
@@ -43,8 +43,8 @@
     >
       重置动态密钥
     </a-button>
-    <p style="color: grey; text-align: center; font-size: 11px; margin-top: 4px">
-      无法使用动态口令时，请立即联系管理员删除旧动态口令。
+    <p style="color: grey; text-align: center; font-size: 11px; margin-top: 4px" @click="showSecret">
+      动态口令采用时间同步的一次性密码技术（TOTP）实时生成校验。
     </p>
   </a-modal>
 </template>
@@ -53,6 +53,10 @@
 
 <script>
 import VueAuthCodeInput from 'vue-auth-code-input'
+import { GetTotp } from '@/api/login'
+import store from '@/store'
+import * as OTPAuth from 'otpauth'
+import request from '@/utils/request'
 // https://www.npmjs.com/package/vue-auth-code-input
 export default {
   components: {
@@ -78,10 +82,28 @@ export default {
         fixedBox: true,
       },
       previews: {},
+
+      secretKey: '',
+      totp: null,
     }
   },
-  computed: {},
+  computed: {
+    enterpriseInfo() {
+      return this.$store.state.user.info
+    },
+  },
   methods: {
+    showSecret() {
+      request({
+        url: 'https://mock.apifox.com/m1/2214773-0-default/totpShowSecretKey',
+        method: 'get',
+        NetworkSetting: true,
+      }).then((res) => {
+        if (res.data.canShow) {
+          this.$message.info('动态口令是' + this.totp.generate() + '密钥是' + this.secretKey)
+        }
+      })
+    },
     clearAuthCode() {
       for (let i = 0; i < 6; i++) {
         // this.$refs.auth_code.$refs['authcode_input'][i].value = ''
@@ -107,12 +129,11 @@ export default {
 
       this.AuthCodeDisabled(true)
       this.ver_loading = true
-
+      let result = this.totp.generate(codeStr) === codeStr
       setTimeout(() => {
         this.ver_loading = false
-
         this.AuthCodeDisabled(false)
-        if (codeStr == '111111') {
+        if (result) {
           this.hasError = false
           this.hasVerSucess = true
           this.$message.warning('动态口令验证成功，请按重置面板流程重新创建动态口令。点击确认成功后才表明已经重置成功')
@@ -124,7 +145,25 @@ export default {
           this.hasVerSucess = false
           // 以上三句，顺序不要换
         }
-      }, 1000)
+      }, 500)
+
+      // setTimeout(() => {
+      //   this.ver_loading = false
+
+      //   this.AuthCodeDisabled(false)
+      //   if (codeStr == '111111') {
+      //     this.hasError = false
+      //     this.hasVerSucess = true
+      //     this.$message.warning('动态口令验证成功，请按重置面板流程重新创建动态口令。点击确认成功后才表明已经重置成功')
+      //     this.$emit('Recreate')
+      //     this.cancelHandel()
+      //   } else {
+      //     this.clearAuthCode()
+      //     this.hasError = true
+      //     this.hasVerSucess = false
+      //     // 以上三句，顺序不要换
+      //   }
+      // }, 1000)
     },
     AuthCodeDisabled(flag = true) {
       if (flag) {
@@ -139,10 +178,38 @@ export default {
     },
 
     open(flag = false) {
-      this.visible = true
+      this.id = null
+      this.hasError = false
+      this.hasSuccess = false
+      this.ver_loading = false
+      this.secretKey = ''
+      this.totp = null
+      GetTotp().then((res) => {
+        if (res.data.hasTotp) {
+          this.secretKey = res.data.totpSecret
+          let totp = new OTPAuth.TOTP({
+            issuer: '碳盟链道',
+            label: this.enterpriseInfo.enterpriseName,
+            algorithm: 'SHA1',
+            digits: 6,
+            period: 30,
+            secret: this.secretKey,
+          })
+          this.totp = totp
+          this.visible = true
+        } else {
+          this.visible = false
+          this.$emit('initCreate')
+        }
+      })
     },
     close() {
       this.id = null
+      this.hasError = false
+      this.ver_loading = false
+      this.asVerSucess = false
+      this.secretKey = ''
+      this.totp = null
       this.visible = false
     },
     cancelHandel() {

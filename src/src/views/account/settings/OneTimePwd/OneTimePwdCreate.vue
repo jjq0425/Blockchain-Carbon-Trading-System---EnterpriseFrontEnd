@@ -50,7 +50,9 @@
         <span style="color: #339af0; font-size: 22px; font-weight: bold; width: auto">2.</span>
         <p style="color: black; font-size: 13px; margin-bottom: 50px">
           请输入身份验证APP或工具显示的6位动态口令以验证是否配置正确
-          <span style="color: grey; font-size: 11px">(注：单个口令有效期30秒，过时需重新生成。)</span>
+          <span style="color: grey; font-size: 11px" @click="showSecret()"
+            >(注：单个口令有效期30秒，过时需重新生成。)</span
+          >
         </p>
         <vue-auth-code-input
           ref="Auth_codeCreate"
@@ -102,6 +104,8 @@
 import QrcodeVue from 'qrcode.vue'
 import VueAuthCodeInput from 'vue-auth-code-input'
 import * as OTPAuth from 'otpauth'
+import { SetTotp } from '@/api/login'
+import request from '@/utils/request'
 
 export default {
   components: {
@@ -150,6 +154,17 @@ export default {
     // console.log('11', totp.generate())
   },
   methods: {
+    showSecret() {
+      request({
+        url: 'https://mock.apifox.com/m1/2214773-0-default/totpShowSecretKey',
+        method: 'get',
+        NetworkSetting: true,
+      }).then((res) => {
+        if (res.data.canShow) {
+          this.$message.info('动态口令是' + this.totp.generate() + '密钥是' + this.secretKey)
+        }
+      })
+    },
     // 验证密码
     clearAuthCode() {
       for (let i = 0; i < 6; i++) {
@@ -221,12 +236,19 @@ export default {
         })
     },
 
-    open(flag = false) {
+    open(isRecreateflag = false) {
       this.visible = true
-      this.isRecreate = flag
+      this.id = null
+      this.hasError = false
+      this.hasSuccess = false
+      this.ver_loading = false
+      this.isRecreate = isRecreateflag
     },
     close() {
       this.id = null
+      this.hasError = false
+      this.hasSuccess = false
+      this.ver_loading = false
       this.visible = false
     },
     cancelHandel() {
@@ -238,13 +260,23 @@ export default {
         this.needVer = true
         return
       } else {
-        if (this.isRecreate) {
-          this.$message.success('重置成功')
-        } else {
-          this.$message.success('创建成功')
-        }
-        // this.$message.success('创建成功')
-        this.close()
+        SetTotp(this.secretKey)
+          .then((res) => {
+            if (res.success) {
+              if (this.isRecreate) {
+                this.$message.success('重置成功')
+              } else {
+                this.$message.success('创建成功')
+              }
+              // this.$message.success('创建成功')
+              this.close()
+            } else {
+              this.$message.error('设置失败，请重新设置')
+            }
+          })
+          .catch(() => {
+            this.$message.error('设置失败，请重新设置')
+          })
       }
     },
   },
