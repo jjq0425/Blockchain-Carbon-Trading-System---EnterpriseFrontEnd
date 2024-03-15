@@ -74,7 +74,7 @@
             读取操作流
           </div>
           <json-viewer
-            :value="txDetail.write_set"
+            :value="txDetail.read_set"
             :expand-depth="5"
             boxed
             sort
