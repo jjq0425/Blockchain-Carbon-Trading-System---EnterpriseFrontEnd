@@ -9,7 +9,7 @@
         </span>
       </div>
 
-      <div class="user-layout-content" style="margin-top: 0px">
+      <div class="user-layout-content" style="margin-top: -25px">
         <div style="display: flex; justify-content: center; align-items: center">
           <div
             class="user-layout-content-inner"
@@ -60,7 +60,7 @@
               </div>
             </div>
 
-            <div class="FormDiv" style="max-height: 500px; overflow-y: scroll">
+            <div class="FormDiv" style="max-height: 520px; overflow-y: scroll">
               <div
                 v-if="BindStatus == 'REFUSE'"
                 style="
@@ -268,7 +268,7 @@
 
             <div style="display: flex">
               <a-button
-                style="margin-left: 44%; transform: translateX(-50%)"
+                style="margin-left: 40%; transform: translateX(-50%)"
                 icon="vertical-right"
                 :disabled="bindloading"
                 @click="backToLogin()"
@@ -283,6 +283,24 @@
               >
                 {{ $t('user.bind.footer.btn.submitBind') }}
               </a-button>
+              <a-tooltip>
+                <template slot="title"> 基于AI能力智能提取营业执照信息，解放双手 </template>
+                <a-button
+                  @click="openAIOCR"
+                  class="aiShadow"
+                  :disabled="bindloading"
+                  style="
+                    margin-left: 30px;
+                    transform: translateX(-50%);
+
+                    color: white;
+                    border: none;
+                  "
+                  icon="chrome"
+                >
+                  营业执照AI识别
+                </a-button>
+              </a-tooltip>
             </div>
 
             <!-- <router-view /> -->
@@ -335,6 +353,7 @@
         </div>
       </div>
     </div>
+    <AIOCR ref="AIOCR"></AIOCR>
   </div>
 </template>
 
@@ -348,12 +367,15 @@ import { Bind } from '@/api/login'
 
 import { enterpriseClassName_CN, enterpriseClassName_EN, enterpriseClassAllowed } from '@/config/class/enterpriseClass'
 
+import AIOCR from '@/components/aiOCR/AIOCR.vue'
+
 export default {
   name: 'BindLayout',
   components: {
     SelectLang,
     Carousel,
     NetworkSetting,
+    AIOCR,
   },
   data() {
     return {
@@ -367,7 +389,6 @@ export default {
       enterpriseClassName_EN: enterpriseClassName_EN,
       enterpriseClassAllowed: enterpriseClassAllowed,
 
-      BindStatus: '',
       RefuseStr: '',
     }
   },
@@ -421,19 +442,26 @@ export default {
         }
       })
     },
+    /**
+     * aiocr相关
+     */
+    openAIOCR() {
+      this.$refs.AIOCR.open('YYZZ')
+    },
   },
   mounted() {
     // 设置全局禁止滚动
     document.body.style.overflow = 'hidden'
     document.body.classList.add('userLayout')
     store.dispatch('GetInfo').then((res) => {
-      console.log('res', res)
-      this.BindStatus = res.data.auditStatus
+      // console.log('res', res)
+      // this.BindStatus = res.data.auditStatus
 
       if (this.BindStatus == 'REFUSE') {
         this.RefuseStr = res.data.auditOpinion
       }
     })
+
     if (this.BindStatus == 'AUDIT') {
       this.$notification.open({
         message: this.$t('user.bind.notification.audit.message'),
@@ -588,6 +616,23 @@ export default {
 <style scoped>
 .body {
   overflow: hidden;
+}
+
+.aiShadow {
+  box-shadow: 0 0 8px rgba(243, 240, 255, 0.95);
+  background-color: #b18df8;
+  animation: shadowChaneg 3s infinite;
+}
+@keyframes shadowChaneg {
+  0% {
+    background-color: #b18df8;
+  }
+  50% {
+    background-color: #9968f8;
+  }
+  100% {
+    background-color: #b18df8;
+  }
 }
 </style>
 

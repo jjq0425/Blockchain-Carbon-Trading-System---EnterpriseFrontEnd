@@ -724,28 +724,31 @@ export default {
       // console.log('sum_average_others', average_others_modal, sum_average_others, sum_average_me, average_me_modal)
 
       //纵向数据
-      let sum_average_old = 0
-      let average_old_modal = JSON.parse(JSON.stringify(this.verticalData[0].children))
-      average_old_modal.forEach((item) => {
-        item.classDataSum = 0
-      })
-      this.verticalData.forEach((item) => {
-        // console.log('1', item)
-        sum_average_old += item.sumEmission
-        for (let i = 0; i < item.children.length; i++) {
-          for (let j = 0; j < average_old_modal.length; j++) {
-            if (item.children[i].className == average_old_modal[j].className) {
-              average_old_modal[j].classDataSum += item.children[i].classDataSum
+      if (this.hasMy) {
+        let sum_average_old = 0
+
+        let average_old_modal = JSON.parse(JSON.stringify(this.verticalData[0].children))
+        average_old_modal.forEach((item) => {
+          item.classDataSum = 0
+        })
+        this.verticalData.forEach((item) => {
+          // console.log('1', item)
+          sum_average_old += item.sumEmission
+          for (let i = 0; i < item.children.length; i++) {
+            for (let j = 0; j < average_old_modal.length; j++) {
+              if (item.children[i].className == average_old_modal[j].className) {
+                average_old_modal[j].classDataSum += item.children[i].classDataSum
+              }
             }
           }
-        }
-      })
+        })
 
-      sum_average_old = sum_average_old / this.verticalData.length
-      average_old_modal.forEach((item) => {
-        item.classDataSum = item.classDataSum / this.verticalData.length
-        item.percent = item.classDataSum / sum_average_others
-      })
+        sum_average_old = sum_average_old / this.verticalData.length
+        average_old_modal.forEach((item) => {
+          item.classDataSum = item.classDataSum / this.verticalData.length
+          item.percent = item.classDataSum / sum_average_others
+        })
+      }
       // console.log(average_old_modal, sum_average_old)
 
       /**
@@ -1366,6 +1369,7 @@ export default {
       // window['vchart'] = vchart
     },
     initVertical() {
+      if (!this.hasMy) return
       let data_ = []
       let v_dataSource = this.verticalData.sort((a, b) => {
         return a.taskYear - b.taskYear

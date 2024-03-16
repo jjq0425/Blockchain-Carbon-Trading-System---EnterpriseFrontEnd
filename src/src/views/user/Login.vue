@@ -419,8 +419,14 @@ export default {
         })
       })
       */
+      //  获取当前链接的query有无redirect
+      let redirect = '/'
+      if (this.$route.query?.redirect) {
+        redirect = this.$route.query.redirect
+      }
       setTimeout(() => {
-        this.$router.push({ name: 'index' })
+        // this.$router.push({ name: 'index' })
+        this.$router.push({ path: redirect })
         // 延迟 1 秒显示欢迎信息
         if (this.$store.state.app.lang.includes('zh')) {
           setTimeout(() => {
