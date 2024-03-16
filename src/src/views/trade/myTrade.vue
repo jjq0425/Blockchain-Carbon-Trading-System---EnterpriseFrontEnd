@@ -3,6 +3,11 @@
  * @Description: 
  * 
 -->
+<!--
+ * @Author: jjq
+ * @Description: 
+ * 
+-->
 
 
 <template>
@@ -60,11 +65,11 @@ export default {
   },
   data() {
     this.tabList = [
-      { key: 'myPublish', tab: this.$t('trade.myTrade.tab.myPublish') },
       { key: 'myOrder', tab: this.$t('trade.myTrade.tab.myOrder') },
+      { key: 'myPublish', tab: this.$t('trade.myTrade.tab.myPublish') },
     ]
     return {
-      tabActiveKey: 'myPublish',
+      tabActiveKey: 'myOrder',
     }
   },
   methods: {
@@ -72,7 +77,7 @@ export default {
     handleSubmit(e) {},
     tabChange(key) {
       if (key == null || key == undefined) {
-        key = 'myPublish'
+        key = 'myOrder'
       }
       this.tabActiveKey = key
       if (key === 'myPublish') {

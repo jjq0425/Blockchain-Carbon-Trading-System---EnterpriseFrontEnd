@@ -153,7 +153,7 @@ export const asyncRouterMap = [
           {
             path: '/trade/myTrade',
             name: 'myTrade',
-            redirect: "/trade/myTrade/myPublish",
+            redirect: "/trade/myTrade/myOrder",
             component: () => import('@/views/trade/myTrade'),
             meta: { title: 'menu.trade.myTrade', keepAlive: true, permission: ['trade'] },
             hideChildrenInMenu: true,
