@@ -48,7 +48,7 @@
                 识别结果仅本模块 {{ className }} 使用，跨模块发票请分别上传。
               </p>
               <p style="margin-top: 10px; font-size: 12px; color: grey; font-weight: bold">
-                如有多张发票，请逐个完成扫描，数据将会累加
+                如有多张发票，请逐个完成扫描和核对，数据将会累加
               </p>
             </template>
           </div>
