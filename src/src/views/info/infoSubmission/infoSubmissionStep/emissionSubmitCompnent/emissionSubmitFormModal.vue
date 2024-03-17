@@ -391,8 +391,8 @@ export default {
     },
   },
   methods: {
-    open(editType, record, needActivityFactorEditDeep = false, needEmissionFactorEditDeep = false) {
-      this.visible = true
+    open(editType, record, needActivityFactorEditDeep = false, needEmissionFactorEditDeep = false, visible = true) {
+      this.visible = visible
       this.type = editType
       if (editType == 'edit') {
         this.title = '编辑项目'
@@ -431,6 +431,10 @@ export default {
       this.record = {}
       this.emissionForm = {}
       this.visible = false
+    },
+    handleOkNovisible() {
+      this.$emit('dataUpdateFinish', this.type, this.emissionForm)
+      this.close()
     },
 
     handleOk() {

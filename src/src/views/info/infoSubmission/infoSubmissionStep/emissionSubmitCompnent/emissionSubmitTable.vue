@@ -8,6 +8,7 @@
       :pagination="false"
       bordered
       :scroll="{ x: 'max-content', y: 400 }"
+      :customRow="customRow_OCR"
     >
       <template slot="index" slot-scope="text, record, index">
         {{ index + 1 }}
@@ -112,6 +113,9 @@
       ref="emissionSubmitFormModal"
       @dataUpdateFinish="dataUpdateFinish"
     ></emissionSubmitFormModal>
+
+    <AIOCR ref="AIOCR" @OCRfinish="OCRfinish"></AIOCR>
+    <aiOCRFinishChoose ref="aiOCRFinishChoose" @ocr_update="ocr_update"></aiOCRFinishChoose>
   </div>
 </template>
 
@@ -119,14 +123,20 @@
 import { ConstructColumns } from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/parserTable.js'
 import emissionSubmitFormModal from '@/views/info/infoSubmission/infoSubmissionStep/emissionSubmitCompnent/emissionSubmitFormModal.vue'
 
+import AIOCR from '@/components/aiOCR/AIOCR.vue'
+import aiOCRFinishChoose from './aiOCRFinishChoose.vue'
+
 import {
   infoSubmitTableDataSourceClass_CN,
   infoSubmitTableDataSourceClass_EN,
 } from '@/config/class/infoSubmitTableDataSourceClass.js'
+import aiOCRFinishChooseVue from './aiOCRFinishChoose.vue'
 export default {
   name: 'emissionSubmitTable',
   components: {
     emissionSubmitFormModal,
+    AIOCR,
+    aiOCRFinishChoose,
   },
   props: {
     classdata: {
@@ -166,6 +176,8 @@ export default {
 
       infoSubmitTableDataSourceClass_CN: infoSubmitTableDataSourceClass_CN,
       infoSubmitTableDataSourceClass_EN: infoSubmitTableDataSourceClass_EN,
+
+      NOW_OCR_RENDER_ROW: -1,
     }
   },
   computed: {
@@ -319,7 +331,7 @@ export default {
     // 子组件传回信息(信息计算)
     dataUpdateFinish(TYEP, data) {
       if (TYEP == 'edit') {
-        console.log('111', data)
+        // console.log('111', data)
         this.tableData[data.classSort - 1] = data
         this.$forceUpdate()
       } else {
@@ -336,6 +348,91 @@ export default {
       this.classdata.classDataSum = parseFloat(sum.toFixed(6))
       this.$emit('dataUpdate', this.tableIdx, this.classdata)
       this.$forceUpdate()
+    },
+    /**
+     * OCR相关
+     */
+    openAIOCR() {
+      this.$refs.AIOCR.open('FP', this.classdata.className)
+      // this.$refs.AIOCR.OCR_FP_moni()
+    },
+    OCRfinish(data, type) {
+      if (type == 'FP') {
+        this.$refs.aiOCRFinishChoose.open(data, this.tableData, this.classdata.className)
+      }
+    },
+    ocr_update(IdxNeedUpdate, OCRdataSource) {
+      // for (let i = 0; i < IdxNeedUpdate.length; i++) {
+      //   let idx = parseInt(IdxNeedUpdate[i])
+      //   this.classdata.children[idx] = OCRdataSource[idx]
+      //   this.$refs.emissionSubmitFormModal.open('edit', this.classdata.children[idx], false, false, false)
+      //   setTimeout(() => {
+      //     this.$refs.emissionSubmitFormModal.reConclude(1, 1)
+      //   }, 20)
+      //   setTimeout(() => {
+      //     this.$refs.emissionSubmitFormModal.handleOkNovisible()
+      //   }, 80)
+      //   this.$forceUpdate()
+      // }
+      let updateTimes = 0
+      if (IdxNeedUpdate.length > 0) {
+        this.$notification.open({
+          message: '发票结果导入中...',
+          description: '识别数据正在导入至表格中',
+          icon: <a-icon type="chrome" style="color:#12b886" />,
+          style: {
+            // background: `linear-gradient(135deg,white ,#a5d8ff 50%,#dbe4ff )`,
+            background: `url('https://xinghuo.xfyun.cn/static/media/n-hover-bg.971eecbfea9dbd3797f7.png')`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+          },
+          key: 'OCR_LOADONG',
+        })
+      }
+
+      let timer = setInterval(() => {
+        if (updateTimes < IdxNeedUpdate.length) {
+          let idx = parseInt(IdxNeedUpdate[updateTimes])
+          this.NOW_OCR_RENDER_ROW = idx
+          this.classdata.children[idx] = OCRdataSource[idx]
+          this.$refs.emissionSubmitFormModal.open('edit', this.classdata.children[idx], false, false, false)
+          setTimeout(() => {
+            this.$refs.emissionSubmitFormModal.reConclude(1, 1)
+          }, 20)
+          setTimeout(() => {
+            this.$refs.emissionSubmitFormModal.handleOkNovisible()
+          }, 80)
+          this.$forceUpdate()
+        } else {
+          clearInterval(timer)
+          this.NOW_OCR_RENDER_ROW = -1
+          if (IdxNeedUpdate.length > 0) {
+            this.$notification.open({
+              message: '发票结果已导入',
+              description: '识别数据已导入至表格中并完成碳核算，请确认',
+              icon: <a-icon type="chrome" style="color:#12b886" />,
+              style: {
+                // background: `linear-gradient(135deg,white ,#a5d8ff 50%,#dbe4ff )`,
+                background: `url('https://xinghuo.xfyun.cn/static/media/n-hover-bg.971eecbfea9dbd3797f7.png')`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+              },
+              key: 'OCR_LOADONG',
+            })
+          }
+        }
+        updateTimes++
+      }, 450)
+    },
+    customRow_OCR(record, index) {
+      return {
+        // 自定义属性，也就是官方文档中的props，可通过条件来控制样式
+        style: {
+          // background: index == this.NOW_OCR_RENDER_ROW ? 'linear-gradient(95deg,#e7f5ff,#f3f0ff)' : '',
+          background: index == this.NOW_OCR_RENDER_ROW ? '#f3f0ff' : '',
+          transition: 'all .3s ease-in-out',
+        },
+      }
     },
 
     // // OLD

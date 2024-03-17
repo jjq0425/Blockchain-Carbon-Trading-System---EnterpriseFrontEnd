@@ -37,9 +37,20 @@
             <p style="margin-top: 10px; font-size: 20px; color: #495057">请上传待识别的图片</p>
           </div>
           <div style="width: 100%; text-align: center">
-            <p style="margin-top: 10px; font-size: 12px; color: grey">
+            <p style="margin-top: 10px; font-size: 12px; color: grey" v-if="ocrType == 'YYZZ'">
               为保证识别效果，当前场景只允许上传营业执照，包括拍照版、扫描版
             </p>
+            <template v-else-if="ocrType == 'FP'">
+              <p style="margin-top: 10px; font-size: 12px; color: grey">
+                为保证识别效果，当前场景只允许上传相关增值税发票，包括拍照版、扫描版，
+              </p>
+              <p style="margin-top: 10px; font-size: 12px; color: grey">
+                识别结果仅本模块 {{ className }} 使用，跨模块发票请分别上传。
+              </p>
+              <p style="margin-top: 10px; font-size: 12px; color: grey; font-weight: bold">
+                如有多张发票，请逐个完成扫描，数据将会累加
+              </p>
+            </template>
           </div>
         </div>
         <div
@@ -75,7 +86,12 @@
 
       <div style="display: flex; justify-content: space-between; margin-top: 10px" v-if="previewImg != null">
         <a-tooltip>
-          <template slot="title"> 为保证识别效果，当前场景只允许上传营业执照，包括拍照版、扫描版 </template>
+          <template slot="title">
+            <p v-if="ocrType == 'YYZZ'">为保证识别效果，当前场景只允许上传营业执照，包括拍照版、扫描版</p>
+            <p v-else-if="ocrType == 'FP'">
+              为保证识别效果，当前场景只允许上传相关增值税发票，包括拍照版、扫描版，识别结果仅本模块使用
+            </p>
+          </template>
           <a-button
             type="text"
             style="border-radius: 999px; border: none; background: transparent"
@@ -108,6 +124,7 @@ export default {
 
       previewImg: null,
       ocrType: 'YYZZ',
+      className: '', //模块名，专用于数据上传，发票验证
       submitting: false,
 
       baiduOCRToken: '',
@@ -120,11 +137,12 @@ export default {
     },
   },
   methods: {
-    open(type) {
+    open(type, className = '') {
       this.ocrType = type
       this.submitting = false
       this.baiduOCRToken = ''
       this.previewImg = null
+      this.className = className
 
       this.visible = true
     },
@@ -197,29 +215,31 @@ export default {
         if (CLIENTres.data.data.client_token != '') {
           if (this.ocrType == 'YYZZ') {
             this.OCR_YYZZ(CLIENTres.data.data.client_token)
+          } else if (this.ocrType == 'FP') {
+            this.OCR_FP(CLIENTres.data.data.client_token)
           }
         } else {
           this.$message.warning('当前AI能力不开放调用，采用模拟数据，请联系JJQ')
 
           if (this.ocrType == 'YYZZ') {
             this.OCR_YYZZ_moni()
+          } else if (this.ocrType == 'FP') {
+            this.OCR_FP_moni()
           }
           return
         }
       })
     },
     OCR_YYZZ(client_token) {
-      console.log(this.previewImg)
+      // console.log(this.previewImg)
       // 将previreImg转为BASE64
 
       //   构造一个form对象
-      var form = new FormData()
+      let form = new FormData()
       form.append('image', this.previewImg)
 
       axios({
-        url:
-          'https://aip.baidubce.com/rest/2.0/ocr/v1/business_license?access_token=' +
-          '24.d76f493ac001d021f157366db67d1dbd.2592000.1713236052.282335-56799265',
+        url: 'https://aip.baidubce.com/rest/2.0/ocr/v1/business_license?access_token=' + client_token,
         method: 'post',
 
         headers: {
@@ -227,7 +247,7 @@ export default {
         },
         data: form,
       }).then((OCRRes) => {
-        let OCR_RES = CORRES.data
+        let OCR_RES = OCRRes.data
 
         setTimeout(() => {
           this.submitting = false
@@ -401,6 +421,176 @@ export default {
         }, 1000)
         setTimeout(() => {
           this.$emit('OCRfinish', OCR_RES, 'YYZZ')
+        }, 1200)
+      }, 1500)
+    },
+    /**
+     * fap
+     */
+    OCR_FP(client_token) {
+      // console.log(this.previewImg)
+      // 将previreImg转为BASE64
+
+      //   构造一个form对象
+      let form = new FormData()
+      form.append('image', this.previewImg)
+
+      axios({
+        url: 'https://aip.baidubce.com/rest/2.0/ocr/v1/vat_invoice?access_token=' + client_token,
+        method: 'post',
+
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        data: form,
+      }).then((OCRRes) => {
+        let OCR_RES = OCRRes.data
+
+        setTimeout(() => {
+          this.submitting = false
+          this.close()
+        }, 1000)
+        setTimeout(() => {
+          this.$emit('OCRfinish', OCR_RES, 'FP')
+        }, 1200)
+        this.submitting = false
+      })
+    },
+    OCR_FP_moni() {
+      setTimeout(() => {
+        let CORRES = {
+          words_result_num: 46,
+          words_result: {
+            InvoiceNumDigit: '',
+            CommodityUnit: [
+              {
+                row: '1',
+                word: '升',
+              },
+              {
+                row: '2',
+                word: '升',
+              },
+            ],
+            PurchaserAddress: '湘潭市南湖区云塘街道389号52523730',
+            SheetNum: '第三联：发票联',
+            CommodityType: [
+              {
+                row: '1',
+                word: '92号车用汽油VT',
+              },
+              {
+                row: '2',
+                word: '95号车用汽油VI',
+              },
+            ],
+            TotalAmount: '10382.59',
+            Checker: '赵华',
+            PurchaserBank: '中国农业银行湘潭车站路支行18192101040003851',
+            Agent: '否',
+            Password:
+              '4251-274*2+72870</4-+475*944>0+7+8<285241<9>8-7+6/7839<*1+31++28+07</47>36445*6/-**342750<*880+-',
+            InvoiceTypeOrg: '湖南增值税专用发票',
+            InvoiceCodeConfirm: '430',
+            TotalTax: '1349.74',
+            ServiceType: '交通',
+            CommodityTaxRate: [
+              {
+                row: '1',
+                word: '13%',
+              },
+              {
+                row: '2',
+                word: '13%',
+              },
+            ],
+            CommodityTax: [
+              {
+                row: '1',
+                word: '656.14',
+              },
+              {
+                row: '2',
+                word: '693.60',
+              },
+            ],
+            SellerBank: '中国建设银行股份有限公司湘潭广源支行43050163670800000260',
+            Remarks: '4868463',
+            SellerAddress: '湘潭韶山东路568#0731-58261675',
+            NoteDrawer: '肖幼',
+            InvoiceTag: '成品油',
+            InvoiceNumConfirm: '0680760',
+            OnlinePay: '2法',
+            Payee: '周金花',
+            CommodityName: [
+              {
+                row: '1',
+                word: '*汽油*车用油',
+              },
+              {
+                row: '2',
+                word: '*汽油*车用油',
+              },
+            ],
+            CommodityVehicleType: [],
+            InvoiceCode: '4300204130',
+            AmountInWords: '壹万壹仟柒叁拾贰圆叁角叁分',
+            AmountInFiguers: '11732.33',
+            City: '',
+            InvoiceType: '专用发票',
+            CommodityEndDate: [],
+            PurchaserName: '湘潭市水利水电勘测设计院有限公司',
+            InvoiceDate: '2021年10月20日',
+            CommodityNum: [
+              {
+                row: '1',
+                word: '824.07',
+              },
+              {
+                row: '2',
+                word: '817.1',
+              },
+            ],
+            PurchaserRegisterNum: '91430300184711279E',
+            MachineCode: '',
+            CommodityPlateNum: [],
+            CheckCode: '',
+            SellerRegisterNum: '914303007170577687',
+            CommodityPrice: [
+              {
+                row: '1',
+                word: '6.1246860097',
+              },
+              {
+                row: '2',
+                word: '6.5297026068',
+              },
+            ],
+            CommodityStartDate: [],
+            SellerName: '中国石化销售股份有限公司湖南湘潭石油分公司',
+            CommodityAmount: [
+              {
+                row: '1',
+                word: '5047.17',
+              },
+              {
+                row: '2',
+                word: '5335.42',
+              },
+            ],
+            Province: '湖南省',
+            InvoiceNum: '807600',
+          },
+          log_id: '1769278837058628769',
+        }
+        let OCR_RES = CORRES
+
+        setTimeout(() => {
+          this.submitting = false
+          this.close()
+        }, 1000)
+        setTimeout(() => {
+          this.$emit('OCRfinish', OCR_RES, 'FP')
         }, 1200)
       }, 1500)
     },

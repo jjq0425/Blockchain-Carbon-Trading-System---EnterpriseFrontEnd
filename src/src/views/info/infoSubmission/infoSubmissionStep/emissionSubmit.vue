@@ -92,10 +92,27 @@
             <template slot="title"> 将临时导出的数据重新导入，您也可以导入您自定义的模板 </template>
             <a-button icon="cloud-upload" @click="importData" v-if="submitType != 'detail'"> 导入数据 </a-button>
           </a-tooltip>
+
+          <a-tooltip>
+            <template slot="title"> 基于AI能力智能识别发票信息，一键提取，解放双手 </template>
+            <a-button
+              @click="openAIOCR"
+              class="aiShadow"
+              style="
+                margin-left: 30px;
+
+                color: white;
+                border: none;
+              "
+              icon="chrome"
+            >
+              发票数据AI识别
+            </a-button>
+          </a-tooltip>
           <input type="file" @change="loadTextFromFile" id="txtUpload" style="display: none" />
         </a-button-group>
       </div>
-      <a-tabs tab-position="top" default-active-key="0">
+      <a-tabs tab-position="top" default-active-key="tab_0" v-model="nowTab">
         <a-tab-pane
           v-for="(name, idx) in MainClassName.length"
           :key="`tab_${idx}`"
@@ -161,6 +178,7 @@ export default {
       }, // 用于存储数据源
       dataTemplate: null, // 用于存储数据模板
       MainClassName: [],
+      nowTab: 'tab_0',
 
       submitType: 'create',
 
@@ -330,6 +348,12 @@ export default {
       return
       // console.log(dcObj)
     },
+
+    openAIOCR() {
+      let ref = eval('this.$refs.emissionSubmitTableRef' + this.nowTab.split('_')[1])[0]
+
+      ref.openAIOCR('FP')
+    },
     // OLD
     // newMember() {
     //   const length = this.data.length
@@ -436,6 +460,25 @@ export default {
     margin-top: 0;
     margin-bottom: 12px;
     line-height: 22px;
+  }
+}
+</style>
+
+<style scoped>
+.aiShadow {
+  box-shadow: 0 0 8px rgba(243, 240, 255, 0.95);
+  background-color: #b18df8;
+  animation: shadowChaneg 3s infinite;
+}
+@keyframes shadowChaneg {
+  0% {
+    background-color: #b18df8;
+  }
+  50% {
+    background-color: #9968f8;
+  }
+  100% {
+    background-color: #b18df8;
   }
 }
 </style>
