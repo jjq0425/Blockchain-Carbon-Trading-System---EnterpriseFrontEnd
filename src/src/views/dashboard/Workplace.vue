@@ -725,9 +725,9 @@ export default {
 
       //纵向数据
       if (this.hasMy) {
-        let sum_average_old = 0
+        var sum_average_old = 0
 
-        let average_old_modal = JSON.parse(JSON.stringify(this.verticalData[0].children))
+        var average_old_modal = JSON.parse(JSON.stringify(this.verticalData[0].children))
         average_old_modal.forEach((item) => {
           item.classDataSum = 0
         })
