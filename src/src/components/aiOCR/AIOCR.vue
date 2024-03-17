@@ -13,6 +13,7 @@
     :maskClosable="false"
     :cancel="close"
     destroyOnClose
+    :closable="!submitting"
   >
     <div style="height: 500px; padding: 20px; overflow: hidden">
       <div
@@ -130,6 +131,7 @@ export default {
     close() {
       //   this.animation.destroy()
       //   this.animation = null
+      if (this.submitting) return
 
       setTimeout(() => {
         this.visible = false
@@ -185,7 +187,6 @@ export default {
       this.submitting = true
 
       setTimeout(() => {
-        this.submitting = false
         this.fetchOCRtoken()
         // this.closeLott()
       }, 500)
@@ -193,37 +194,215 @@ export default {
     fetchOCRtoken() {
       axios.get('https://mock.apifox.com/m1/2214773-0-default' + '/baiduOCR').then((CLIENTres) => {
         // console.log(CLIENTres)
-        if (CLIENTres.data.data.client_id != '' && CLIENTres.data.data.client_secret != '') {
+        if (CLIENTres.data.data.client_token != '') {
           if (this.ocrType == 'YYZZ') {
-            this.OCR_YYZZ(CLIENTres.data.data.client_id, CLIENTres.data.data.client_secret)
+            this.OCR_YYZZ(CLIENTres.data.data.client_token)
           }
         } else {
-          this.$message.error('当前AI能力不开放调用，请联系JJQ')
-          this.submitting = false
-          this.close()
+          this.$message.warning('当前AI能力不开放调用，采用模拟数据，请联系JJQ')
+
+          if (this.ocrType == 'YYZZ') {
+            this.OCR_YYZZ_moni()
+          }
           return
         }
       })
     },
-    OCR_YYZZ(client_id, client_secret) {
+    OCR_YYZZ(client_token) {
       console.log(this.previewImg)
       // 将previreImg转为BASE64
 
+      //   构造一个form对象
+      var form = new FormData()
+      form.append('image', this.previewImg)
+
       axios({
-        url: 'https://aip.baidubce.com/oauth/2.0/token',
+        url:
+          'https://aip.baidubce.com/rest/2.0/ocr/v1/business_license?access_token=' +
+          '24.d76f493ac001d021f157366db67d1dbd.2592000.1713236052.282335-56799265',
         method: 'post',
-        params: {
-          grant_type: 'client_credentials',
-          client_id: client_id,
-          client_secret: client_secret,
-        },
+
         headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
         },
-      }).then((tokenRes) => {
-        console.log(tokenRes)
+        data: form,
+      }).then((OCRRes) => {
+        let OCR_RES = CORRES.data
+
+        setTimeout(() => {
+          this.submitting = false
+          this.close()
+        }, 1000)
+        setTimeout(() => {
+          this.$emit('OCRfinish', OCR_RES, 'YYZZ')
+        }, 1200)
+        this.submitting = false
       })
+    },
+    OCR_YYZZ_moni() {
+      setTimeout(() => {
+        let CORRES = {
+          words_result: {
+            经营范围: {
+              location: {
+                top: 512,
+                left: 239,
+                width: 374,
+                height: 102,
+              },
+              words:
+                '一航项目:再生资源回收(除生产性废旧金属);物业管理;金属制品销售。(除依法须经批准的项目外,凭营业执照依法自主开展经营活动)许可项目:城市生活垃圾经营性服务:退路货物运输(不含危险货物)。(依法须经效准的项目,经租关部门批准后方可开展经营活动,具体经营项目以审批结采为准)',
+            },
+            组成形式: {
+              location: {
+                top: -1,
+                left: -1,
+                width: 0,
+                height: 0,
+              },
+              words: '无',
+            },
+            法人: {
+              location: {
+                top: 479,
+                left: 241,
+                width: 38,
+                height: 18,
+              },
+              words: '夏燕',
+            },
+            证件编号: {
+              location: {
+                top: -1,
+                left: -1,
+                width: 0,
+                height: 0,
+              },
+              words: '无',
+            },
+            注册资本: {
+              location: {
+                top: 399,
+                left: 782,
+                width: 120,
+                height: 17,
+              },
+              words: '100万元',
+            },
+            单位名称: {
+              location: {
+                top: 410,
+                left: 241,
+                width: 223,
+                height: 14,
+              },
+              words: '陕西威泽住环保科技有限公司',
+            },
+            有效期: {
+              location: {
+                top: 466,
+                left: 784,
+                width: 37,
+                height: 18,
+              },
+              words: '长期',
+            },
+            社会信用代码: {
+              location: {
+                top: 314,
+                left: 112,
+                width: 177,
+                height: 11,
+              },
+              words: '91610136MAB0QXTC10',
+            },
+            实收资本: {
+              location: {
+                top: -1,
+                left: -1,
+                width: 0,
+                height: 0,
+              },
+              words: '无',
+            },
+            有效期起始日期: {
+              location: {
+                top: -1,
+                left: -1,
+                width: 0,
+                height: 0,
+              },
+              words: '年月日',
+            },
+            核准日期: {
+              location: {
+                top: 715,
+                left: 877,
+                width: 159,
+                height: 16,
+              },
+              words: '2021年10月23日',
+            },
+            成立日期: {
+              location: {
+                top: 433,
+                left: 783,
+                width: 139,
+                height: 15,
+              },
+              words: '2021年02月23日',
+            },
+            税务登记号: {
+              location: {
+                top: -1,
+                left: -1,
+                width: 0,
+                height: 0,
+              },
+              words: '无',
+            },
+            地址: {
+              location: {
+                top: 499,
+                left: 785,
+                width: 282,
+                height: 13,
+              },
+              words: '陕西省西安市沪灞生态区百柳路62号',
+            },
+            登记机关: {
+              location: {
+                top: 593,
+                left: 944,
+                width: 126,
+                height: 118,
+              },
+              words: '浙国市市场巨餐件(()',
+            },
+            类型: {
+              location: {
+                top: 445,
+                left: 240,
+                width: 202,
+                height: 15,
+              },
+              words: '有限责任公司(自然人独资)',
+            },
+          },
+          direction: 0,
+          words_result_num: 16,
+          log_id: 1769196086197683922,
+        }
+        let OCR_RES = CORRES
+
+        setTimeout(() => {
+          this.submitting = false
+          this.close()
+        }, 1000)
+        setTimeout(() => {
+          this.$emit('OCRfinish', OCR_RES, 'YYZZ')
+        }, 1200)
+      }, 1500)
     },
   },
 }

@@ -82,7 +82,17 @@
               <a-form :form="form" :label-col="{ span: 6 }" :wrapper-col="{ span: 15 }" style="margin-top: 20px">
                 <a-row type="flex">
                   <a-col :flex="2"
-                    ><a-form-item :label="$t('account.settings.basic.EnterpriseName')">
+                    ><a-form-item
+                      :label="$t('account.settings.basic.EnterpriseName')"
+                      style="transition: all 0.3s ease-in-out; border-radius: 10px"
+                      :style="{
+                        boxShadow:
+                          NowOCR_IDX == 0
+                            ? '0 5px 15px 0 rgba(176, 191, 231, 0.35)'
+                            : '0 5px 15px 0 rgba(176, 191, 231, 0)',
+                        border: NowOCR_IDX == 0 ? ' 1px solid #9968f8' : '1px solid white',
+                      }"
+                    >
                       <a-input
                         :placeholder="$t('user.bind.form.placeholder.enterpriseName')"
                         v-decorator="[
@@ -93,7 +103,21 @@
                         ]"
                       />
                     </a-form-item>
-                    <a-form-item :label="$t('account.basicSetting.enterprisePosition')">
+                    <a-form-item
+                      :label="$t('account.basicSetting.enterprisePosition')"
+                      style="
+                        transition: all 0.5s ease-in-out;
+
+                        border-radius: 10px;
+                      "
+                      :style="{
+                        boxShadow:
+                          NowOCR_IDX == 1
+                            ? '0 5px 15px 0 rgba(176, 191, 231, 0.35)'
+                            : '0 5px 15px 0 rgba(176, 191, 231, 0)',
+                        border: NowOCR_IDX == 1 ? ' 1px solid #9968f8' : '1px solid white',
+                      }"
+                    >
                       <a-textarea
                         :autosize="{ minRows: 3, maxRows: 3 }"
                         :placeholder="$t('account.basicSetting.rule.enterprisePosition')"
@@ -107,7 +131,21 @@
                         ]"
                       />
                     </a-form-item>
-                    <a-form-item :label="$t('account.basicSetting.enterpriseID.label')">
+                    <a-form-item
+                      :label="$t('account.basicSetting.enterpriseID.label')"
+                      style="
+                        transition: all 0.5s ease-in-out;
+
+                        border-radius: 10px;
+                      "
+                      :style="{
+                        boxShadow:
+                          NowOCR_IDX == 2
+                            ? '0 5px 15px 0 rgba(176, 191, 231, 0.35)'
+                            : '0 5px 15px 0 rgba(176, 191, 231, 0)',
+                        border: NowOCR_IDX == 2 ? ' 1px solid #9968f8' : '1px solid white',
+                      }"
+                    >
                       <a-input
                         :placeholder="$t('account.basicSetting.rule.enterpriseID')"
                         v-decorator="[
@@ -119,7 +157,21 @@
                         {{ $t('user.bind.form.notice.enterpriseID') }}
                       </div>
                     </a-form-item>
-                    <a-form-item :label="$t('account.Moresetting.form.enterpriseCharacter')">
+                    <a-form-item
+                      :label="$t('account.Moresetting.form.enterpriseCharacter')"
+                      style="
+                        transition: all 0.5s ease-in-out;
+
+                        border-radius: 10px;
+                      "
+                      :style="{
+                        boxShadow:
+                          NowOCR_IDX == 3
+                            ? '0 5px 15px 0 rgba(176, 191, 231, 0.35)'
+                            : '0 5px 15px 0 rgba(176, 191, 231, 0)',
+                        border: NowOCR_IDX == 3 ? ' 1px solid #9968f8' : '1px solid white',
+                      }"
+                    >
                       <a-select
                         v-decorator="[
                           'enterpriseCharacter',
@@ -162,7 +214,21 @@
                       </a-select>
                     </a-form-item>
 
-                    <a-form-item :label="$t('account.Moresetting.form.enterpriseClass')">
+                    <a-form-item
+                      :label="$t('account.Moresetting.form.enterpriseClass')"
+                      style="
+                        transition: all 0.5s ease-in-out;
+
+                        border-radius: 10px;
+                      "
+                      :style="{
+                        boxShadow:
+                          NowOCR_IDX == 4
+                            ? '0 5px 15px 0 rgba(176, 191, 231, 0.35)'
+                            : '0 5px 15px 0 rgba(176, 191, 231, 0)',
+                        border: NowOCR_IDX == 4 ? ' 1px solid #9968f8' : '1px solid white',
+                      }"
+                    >
                       <a-select
                         v-decorator="[
                           'enterpriseClass',
@@ -187,7 +253,21 @@
                     </a-form-item>
                   </a-col>
                   <a-col :flex="3"
-                    ><a-form-item :label="$t('user.bind.form.label.enterpriseLegelPerson')">
+                    ><a-form-item
+                      :label="$t('user.bind.form.label.enterpriseLegelPerson')"
+                      style="
+                        transition: all 0.5s ease-in-out;
+
+                        border-radius: 10px;
+                      "
+                      :style="{
+                        boxShadow:
+                          NowOCR_IDX == 5
+                            ? '0 5px 15px 0 rgba(176, 191, 231, 0.35)'
+                            : '0 5px 15px 0 rgba(176, 191, 231, 0)',
+                        border: NowOCR_IDX == 5 ? ' 1px solid #9968f8' : '1px solid white',
+                      }"
+                    >
                       <a-input
                         :placeholder="$t('account.Moresetting.rule.enterpriseLegelPerson')"
                         v-decorator="[
@@ -284,7 +364,7 @@
                 {{ $t('user.bind.footer.btn.submitBind') }}
               </a-button>
               <a-tooltip>
-                <template slot="title"> 基于AI能力智能提取营业执照信息，解放双手 </template>
+                <template slot="title"> 基于AI能力智能识别营业执照信息，一键提取，解放双手 </template>
                 <a-button
                   @click="openAIOCR"
                   class="aiShadow"
@@ -353,7 +433,7 @@
         </div>
       </div>
     </div>
-    <AIOCR ref="AIOCR"></AIOCR>
+    <AIOCR ref="AIOCR" @OCRfinish="OCRfinish"></AIOCR>
   </div>
 </template>
 
@@ -390,6 +470,8 @@ export default {
       enterpriseClassAllowed: enterpriseClassAllowed,
 
       RefuseStr: '',
+
+      NowOCR_IDX: -1,
     }
   },
   mixins: [deviceMixin],
@@ -447,6 +529,141 @@ export default {
      */
     openAIOCR() {
       this.$refs.AIOCR.open('YYZZ')
+    },
+    enterpriseCharacter_OCR(word) {
+      if (word.includes('自然人独资')) {
+        return '个人独资企业'
+      } else if (word.includes('合伙')) {
+        return '有限合伙企业'
+      } else if (word.includes('个人')) {
+        return '个人独资企业'
+      } else if (word.includes('个体')) {
+        return '个人独资企业'
+      } else if (word.includes('股份')) {
+        return '股份制企业'
+      } else {
+        return ''
+      }
+    },
+    enterpriseClass_OCR(word) {
+      function containsAny(arr, str = word) {
+        for (let i = 0; i < arr.length; i++) {
+          if (str.includes(arr[i])) {
+            return true
+          }
+        }
+        return false
+      }
+      if (containsAny(['航空', '飞行', '飞机', '民航', '运输'])) {
+        return '10' // 与化学相关的先对比
+      } else if (containsAny(['输电', '供电', '电力供应'])) {
+        return '2'
+      } else if (containsAny(['电解铝', '惰性阴极', '惰性阳极', '铝电解'])) {
+        return '5'
+      } else if (containsAny(['镁', '电熔镁'])) {
+        return '6'
+      } else if (containsAny(['玻璃', '平板玻璃'])) {
+        return '7'
+      } else if (containsAny(['水泥', '混凝土'])) {
+        return '8'
+      } else if (containsAny(['陶瓷', '釉面'])) {
+        return '9'
+      } else if (containsAny(['金属', '钢'])) {
+        return '3'
+      } else if (containsAny(['化学', '化工', '中间体', '活性剂'])) {
+        return '4' // 与化学相关的先对比
+      } else if (containsAny(['发电'])) {
+        return '1'
+      } else {
+        return ''
+      }
+    },
+    OCRfinish(data, type) {
+      if (type == 'YYZZ') {
+        console.log(data)
+        /**
+         * 字段填充
+         */
+        let result = data.words_result
+        if (result != null) {
+          this.NowOCR_IDX = -1
+          let stepLabel = ['单位名称', '地址', '社会信用代码', '类型', '经营范围', '法人']
+          let setFeild = [
+            'enterpriseName',
+            'enterprisePosition',
+
+            'enterpriseID',
+            'enterpriseCharacter',
+            'enterpriseClass',
+            'enterpriseLegelPerson',
+          ]
+          let timer = setInterval(() => {
+            this.NowOCR_IDX++
+            if (this.NowOCR_IDX >= 6) {
+              this.NowOCR_IDX = -1
+              clearInterval(timer)
+            } else {
+              if (stepLabel[this.NowOCR_IDX] == '类型') {
+                this.form.setFieldsValue({
+                  enterpriseCharacter:
+                    result['类型'].words == '无' || result['类型'].words == null
+                      ? ''
+                      : this.enterpriseCharacter_OCR(result['类型'].words),
+                })
+              } else if (stepLabel[this.NowOCR_IDX] == '经营范围') {
+                this.form.setFieldsValue({
+                  [setFeild[this.NowOCR_IDX]]:
+                    result[stepLabel[this.NowOCR_IDX]].words == '无' || result[stepLabel[this.NowOCR_IDX]].words == null
+                      ? ''
+                      : this.enterpriseClass_OCR(result[stepLabel[this.NowOCR_IDX]].words),
+                })
+              } else {
+                this.form.setFieldsValue({
+                  [setFeild[this.NowOCR_IDX]]:
+                    result[stepLabel[this.NowOCR_IDX]].words == '无' || result[stepLabel[this.NowOCR_IDX]].words == null
+                      ? ''
+                      : result[stepLabel[this.NowOCR_IDX]].words,
+                })
+              }
+            }
+          }, 350)
+
+          // this.form.setFieldsValue({
+          //   enterpriseName:
+          //     result['单位名称'].words == '无' || result['单位名称'].words == null ? '' : result['单位名称'].words,
+          //   enterprisePosition:
+          //     result['地址'].words == '无' || result['地址'].words == null ? '' : result['地址'].words,
+
+          //   enterpriseLegelPerson:
+          //     result['法人'].words == '无' || result['法人'].words == null ? '' : result['法人'].words,
+          //   enterpriseID:
+          //     result['社会信用代码'].words == '无' || result['社会信用代码'].words == null
+          //       ? ''
+          //       : result['社会信用代码'].words,
+          //   enterpriseCharacter:
+          //     result['类型'].words == '无' || result['类型'].words == null
+          //       ? ''
+          //       : this.enterpriseCharacter_OCR(result['类型'].words),
+
+          //   enterpriseClass:
+          //     result['经营范围'].words == '无' || result['经营范围'].words == null
+          //       ? ''
+          //       : this.enterpriseClass_OCR(result['经营范围'].words),
+          // })
+
+          this.$notification.open({
+            message: '智能字段已填充完成',
+            description: '已自动为您填充相关匹配字段，请您核对。剩余字段需人工填写',
+            icon: <a-icon type="chrome" style="color:#12b886" />,
+            style: {
+              // background: `linear-gradient(135deg,white ,#a5d8ff 50%,#dbe4ff )`,
+              background: `url('https://xinghuo.xfyun.cn/static/media/n-hover-bg.971eecbfea9dbd3797f7.png')`,
+              backgroundSize: 'cover',
+              backgroundRepeat: 'no-repeat',
+            },
+          })
+        }
+      }
     },
   },
   mounted() {
