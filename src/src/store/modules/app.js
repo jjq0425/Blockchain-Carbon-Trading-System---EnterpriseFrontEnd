@@ -32,8 +32,8 @@ const app = {
     multiTab: true,
     lang: 'en-US',
     //BASEURL
-    baseUrl: 'https://mock.apifox.com/m1/2214773-0-default',
-    // baseUrl: 'https://8.137.108.102:8080',
+    // baseUrl: 'https://mock.apifox.com/m1/2214773-0-default',
+    baseUrl: 'https://8.137.108.102:8080',
     _antLocale: {}
   },
   mutations: {
