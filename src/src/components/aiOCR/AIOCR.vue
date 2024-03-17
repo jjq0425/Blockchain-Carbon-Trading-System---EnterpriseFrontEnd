@@ -98,6 +98,7 @@
 <script>
 import store from '@/store'
 // import aiOCRLottie from './aiOCRLottie.vue'
+import axios from 'axios'
 
 export default {
   data() {
@@ -107,6 +108,8 @@ export default {
       previewImg: null,
       ocrType: 'YYZZ',
       submitting: false,
+
+      baiduOCRToken: '',
     }
   },
   components: {},
@@ -119,6 +122,7 @@ export default {
     open(type) {
       this.ocrType = type
       this.submitting = false
+      this.baiduOCRToken = ''
       this.previewImg = null
 
       this.visible = true
@@ -126,7 +130,7 @@ export default {
     close() {
       //   this.animation.destroy()
       //   this.animation = null
-      this.$refs.aiOCRLottie.closeL()
+
       setTimeout(() => {
         this.visible = false
       }, 100)
@@ -137,7 +141,7 @@ export default {
     },
     // ◆图片选择框的 change 事件触发
     coverImgChangeHandler(e) {
-      console.log(e.target.files)
+      //   console.log(e.target.files)
 
       // 1.获取用户选择的文件对象
       const files = e.target.files
@@ -182,9 +186,44 @@ export default {
 
       setTimeout(() => {
         this.submitting = false
-
+        this.fetchOCRtoken()
         // this.closeLott()
-      }, 15000)
+      }, 500)
+    },
+    fetchOCRtoken() {
+      axios.get('https://mock.apifox.com/m1/2214773-0-default' + '/baiduOCR').then((CLIENTres) => {
+        // console.log(CLIENTres)
+        if (CLIENTres.data.data.client_id != '' && CLIENTres.data.data.client_secret != '') {
+          if (this.ocrType == 'YYZZ') {
+            this.OCR_YYZZ(CLIENTres.data.data.client_id, CLIENTres.data.data.client_secret)
+          }
+        } else {
+          this.$message.error('当前AI能力不开放调用，请联系JJQ')
+          this.submitting = false
+          this.close()
+          return
+        }
+      })
+    },
+    OCR_YYZZ(client_id, client_secret) {
+      console.log(this.previewImg)
+      // 将previreImg转为BASE64
+
+      axios({
+        url: 'https://aip.baidubce.com/oauth/2.0/token',
+        method: 'post',
+        params: {
+          grant_type: 'client_credentials',
+          client_id: client_id,
+          client_secret: client_secret,
+        },
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+      }).then((tokenRes) => {
+        console.log(tokenRes)
+      })
     },
   },
 }
