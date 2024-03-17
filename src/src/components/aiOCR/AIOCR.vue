@@ -250,13 +250,12 @@ export default {
         let OCR_RES = OCRRes.data
 
         setTimeout(() => {
-          this.submitting = false
           this.close()
+          this.submitting = false
         }, 1000)
         setTimeout(() => {
           this.$emit('OCRfinish', OCR_RES, 'YYZZ')
         }, 1200)
-        this.submitting = false
       })
     },
     OCR_YYZZ_moni() {
@@ -447,13 +446,12 @@ export default {
         let OCR_RES = OCRRes.data
 
         setTimeout(() => {
-          this.submitting = false
           this.close()
+          this.submitting = false
         }, 1000)
         setTimeout(() => {
           this.$emit('OCRfinish', OCR_RES, 'FP')
         }, 1200)
-        this.submitting = false
       })
     },
     OCR_FP_moni() {
