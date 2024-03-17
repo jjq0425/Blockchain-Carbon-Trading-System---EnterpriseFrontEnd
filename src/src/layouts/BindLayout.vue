@@ -554,7 +554,7 @@ export default {
         }
         return false
       }
-      if (containsAny(['航空', '飞行', '飞机', '民航', '运输'])) {
+      if (containsAny(['航空', '飞行', '飞机', '民航'])) {
         return '10' // 与化学相关的先对比
       } else if (containsAny(['输电', '供电', '电力供应'])) {
         return '2'
