@@ -26,6 +26,7 @@
   "info.infoSubmission.footer.errorList.field.fileListsTmp_report": "Accounting report file upload box",
   "info.infoSubmission.footer.errorList.field.fileListsTmp_source": "Data source file upload box",
   "info.infoSubmission.footer.errorList.title": "Form verification information",
+  "info.infoSubmission.pages.emissionSubmitTable.btn.newItem": "New item",
   "info.infoSubmission.pages.waitForSuperviser.reportYear": "Reporting year",
   "info.infoSubmission.pages.waitForSuperviser.submitTime": "Submission time",
   "info.infoSubmission.pages.waitForSuperviser.title2": ", waiting for supervisor audit",
@@ -52,5 +53,6 @@
   "info.submissionCenter.taskSubmit": "Submit Task",
   "info.submissionCenter.taskSubmit.title": "As an important component of China\"s carbon trading market, carbon data reporting is of great significance for promoting carbon reduction efforts. This page provides a convenient and efficient carbon data reporting platform, allowing you to easily complete the collection, organization, and submission of carbon data.",
   "info.submissionCenter.updateInfoShouldNotice": "Notice for reporter",
+  "modal.btn.delete": "delete",
   "result.success.submitSuccess": "Submit Success"
 }

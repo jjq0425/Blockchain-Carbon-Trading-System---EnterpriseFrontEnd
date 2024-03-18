@@ -84,20 +84,20 @@
       <!-- <template slot="action"> 按钮 </template> -->
       <template slot="action" slot-scope="text, record">
         <span v-if="submitType != 'detail'">
-          <a @click="editRow(record)">编辑</a>
+          <a @click="editRow(record)">{{ $t('modal.btn.edit') }}</a>
           <a-divider type="vertical" />
           <a-popconfirm title="是否要删除此行？" @confirm="removeRow(record)">
-            <a style="color: #fa5252" v-if="tableData.length > 1">删除</a>
+            <a style="color: #fa5252" v-if="tableData.length > 1">{{ $t('modal.btn.delete') }}</a>
           </a-popconfirm>
           <a-popover :title="$t('modal.notice.title')" trigger="hover">
             <template slot="content">
               <p>无法删除，需至少保留一行数据</p>
             </template>
-            <a style="color: #adb5bd" v-if="tableData.length == 1">删除</a>
+            <a style="color: #adb5bd" v-if="tableData.length == 1">{{ $t('modal.btn.delete') }}</a>
           </a-popover>
         </span>
         <span v-else>
-          <a @click="detailRow(record)">详情</a>
+          <a @click="detailRow(record)">{{ $t('modal.detail.title') }}</a>
         </span>
       </template>
     </a-table>
@@ -107,7 +107,7 @@
       icon="plus"
       @click="newRow()"
       v-if="(classdata.canAdd == null ? true : classdata.canAdd) && submitType != 'detail'"
-      >新增项目</a-button
+      >{{ $t('info.infoSubmission.pages.emissionSubmitTable.btn.newItem') }}</a-button
     >
     <emissionSubmitFormModal
       ref="emissionSubmitFormModal"

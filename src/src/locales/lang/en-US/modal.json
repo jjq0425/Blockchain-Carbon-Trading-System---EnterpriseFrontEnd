@@ -3,6 +3,7 @@
   "modal.btn.cancel": "Cancel",
   "modal.btn.close": "Close",
   "modal.btn.confirm": "Confirm",
+  "modal.btn.edit": "edit",
   "modal.btn.lastPage": "Previous page",
   "modal.btn.nextPage": "Next page",
   "modal.btn.ok2": "ok",
@@ -16,6 +17,7 @@
   "modal.loading.exportTemplateLoading": "Exporting template ...",
   "modal.loading.inLoadingWait": "Loading, please wait a moment",
   "modal.loading.inSubmitLoadingWait": "Submitting, please wait a moment",
+  "modal.loading.tradePublishLoading": "information submission in progress",
   "modal.notice.title": "Notice",
   "modal.please.select": "Please select"
 }

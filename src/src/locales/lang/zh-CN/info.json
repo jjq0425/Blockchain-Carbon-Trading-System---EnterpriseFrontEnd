@@ -26,6 +26,7 @@
   "info.infoSubmission.footer.errorList.field.fileListsTmp_report": "核算报告文件上传框",
   "info.infoSubmission.footer.errorList.field.fileListsTmp_source": "数据来源文件上传框",
   "info.infoSubmission.footer.errorList.title": "表单校验信息",
+  "info.infoSubmission.pages.emissionSubmitTable.btn.newItem": "新增项目",
   "info.infoSubmission.pages.waitForSuperviser.reportYear": "报告年度",
   "info.infoSubmission.pages.waitForSuperviser.submitTime": "提交时间",
   "info.infoSubmission.pages.waitForSuperviser.title2": ", 等待监管审核",
