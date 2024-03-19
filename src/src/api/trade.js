@@ -20,6 +20,8 @@ const tradeApi = {
     MyOrderList: '/trade/myOrderList',
     OrderDetail: '/public/order',
 
+    coCoinRecharge: '/public/coCoinRecharge',
+
 
 
 }
@@ -99,6 +101,18 @@ export function OrderDetail(orderID) {
         data: {
             token: token,
             orderID: orderID
+        }
+    })
+}
+
+export function coCoinRecharge(params) {
+    let token = localStorage.getItem('ACCESS_TOKEN')
+    return request({
+        url: tradeApi.coCoinRecharge,
+        method: 'post',
+        data: {
+            token: token,
+            ...params
         }
     })
 }

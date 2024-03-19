@@ -38,6 +38,19 @@
               @click="gotoTradeMarket()"
               >{{ $t('dashboard.data_analysis.zhi-gan-ping-gu.btn.N2') }}</a-button
             >
+            <a-button
+              :style="{ marginLeft: '8px' }"
+              style="
+                background: linear-gradient(135deg, #ffa94d, #f38181);
+                color: white;
+                border: none;
+                border-radius: 9999px;
+              "
+              @click="coCoinRecharge"
+            >
+              碳币充值</a-button
+            >
+            <coCoinRecharge ref="coCoinRecharge"></coCoinRecharge>
           </div>
         </div>
         <a-divider dashed></a-divider>
@@ -142,6 +155,7 @@ import { tradeTypeClass_CN, tradeTypeClass_EN } from '@/config/class/trade/trade
 
 import orderDetail from '@/views/trade/myTrade/orderDetail.vue'
 import orderTrackTXID from './orderTrackTXID.vue'
+import coCoinRecharge from '@/views/trade/components/coCoinRecharge'
 
 export default {
   name: 'PreviousReports',
@@ -150,6 +164,7 @@ export default {
     info,
     orderDetail,
     orderTrackTXID,
+    coCoinRecharge,
   },
   data() {
     return {
@@ -284,6 +299,9 @@ export default {
     trackOrderTXID(orderID) {
       let txID = orderID
       this.$refs.orderTrackTXID.open(txID)
+    },
+    coCoinRecharge() {
+      this.$refs.coCoinRecharge.open()
     },
   },
   computed: {

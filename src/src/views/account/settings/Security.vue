@@ -8,6 +8,7 @@
     <OneTimePwdAuth ref="OneTimePwdAuthModal" />
     <OneTimePwdCreate ref="OneTimePwdCreateModal" />
     <OneTimePwdSetting ref="OneTimePwdSettingModal" @Recreate="recreate" @initCreate="initCreate" />
+    <coCoinRecharge ref="coCoinRecharge"></coCoinRecharge>
     <a-list itemLayout="horizontal" :dataSource="data_">
       <a-list-item slot="renderItem" slot-scope="item, index" :key="index">
         <a-list-item-meta>
@@ -31,12 +32,15 @@ import OneTimePwdAuth from './OneTimePwd/OneTimePwdAuth'
 import OneTimePwdCreate from './OneTimePwd/OneTimePwdCreate'
 import OneTimePwdSetting from './OneTimePwd/OneTimePwdSetting'
 
+import coCoinRecharge from '@/views/trade/components/coCoinRecharge'
+
 import store from '@/store'
 export default {
   components: {
     OneTimePwdAuth,
     OneTimePwdCreate,
     OneTimePwdSetting,
+    coCoinRecharge,
   },
   data() {
     return {
@@ -99,6 +103,19 @@ export default {
               // this.$message.info('This is a normal message')
               // console.log(this.$refs.OneTimePwdAuthModal.open())
               this.$refs.OneTimePwdSettingModal.open()
+            },
+          },
+        },
+        {
+          title: '碳币充值',
+          description: '您当前碳币余额为' + this.$store.state.user.info.coCoin.toFixed(2) + '，点击右侧按钮可充值',
+          value: '',
+          actions: {
+            title: '充值',
+            callback: () => {
+              // this.$message.info('This is a normal message')
+              // console.log(this.$refs.OneTimePwdAuthModal.open())
+              this.$refs.coCoinRecharge.open()
             },
           },
         },

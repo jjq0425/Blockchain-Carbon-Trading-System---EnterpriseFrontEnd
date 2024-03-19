@@ -43,6 +43,19 @@
               @click="gotoTradePublish()"
               >{{ $t('trade.myPublish.table.describe_btn') }}</a-button
             >
+            <a-button
+              :style="{ marginLeft: '8px' }"
+              style="
+                background: linear-gradient(135deg, #ffa94d, #f38181);
+                color: white;
+                border: none;
+                border-radius: 9999px;
+              "
+              @click="coCoinRecharge"
+            >
+              碳币充值</a-button
+            >
+            <coCoinRecharge ref="coCoinRecharge"></coCoinRecharge>
           </div>
         </div>
         <a-divider dashed></a-divider>
@@ -132,12 +145,14 @@ import { STable } from '@/components'
 import info from './Info'
 import { MyPublishTradeList } from '@/api/trade'
 import { tradeTypeClass_CN, tradeTypeClass_EN } from '@/config/class/trade/tradeTypeClass'
+import coCoinRecharge from '@/views/trade/components/coCoinRecharge'
 
 export default {
   name: 'PreviousReports',
   components: {
     STable,
     info,
+    coCoinRecharge,
   },
   data() {
     return {
@@ -278,6 +293,9 @@ export default {
     },
     openTradeDetail(record) {
       this.$router.push({ name: 'tradeDetail', params: { tradeInfo: record } })
+    },
+    coCoinRecharge() {
+      this.$refs.coCoinRecharge.open()
     },
   },
   computed: {

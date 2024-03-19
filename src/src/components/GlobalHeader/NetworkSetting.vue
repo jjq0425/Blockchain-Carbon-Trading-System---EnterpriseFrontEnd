@@ -45,7 +45,7 @@
         <a-form-item label="您的token">
           <span style="font-size: 12px; line-height: 1px">{{ token }}</span>
         </a-form-item>
-        <a-form-item label="版本号"> 3-15 </a-form-item>
+        <a-form-item label="版本号"> 3-19 </a-form-item>
 
         <a-form-item :wrapper-col="{ span: 18, offset: 5 }">
           <a-button @click="goTosupervisor" style="margin-right: 20px"> 区块链管理端</a-button>
