@@ -456,7 +456,10 @@ export default {
       })
     },
     goTosupervisor() {
-      window.open('http://8.137.108.102:8081/#/login')
+      this.$message.info('正前往监督端，请打开新标签页')
+      setTimeout(() => {
+        window.open('https://envoutante.github.io/Blockchain-Carbon-Trading-System---SuperviseFrontEnd/dist')
+      }, 400)
     },
   },
 }
