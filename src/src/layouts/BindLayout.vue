@@ -673,9 +673,8 @@ export default {
     store.dispatch('GetInfo').then((res) => {
       // console.log('res', res)
       // this.BindStatus = res.data.auditStatus
-
       if (this.BindStatus == 'REFUSE') {
-        this.RefuseStr = res.data.auditOpinion
+        this.RefuseStr = res.auditOpinion
       }
     })
 
