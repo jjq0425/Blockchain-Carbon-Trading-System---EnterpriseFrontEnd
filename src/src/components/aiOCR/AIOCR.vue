@@ -465,10 +465,6 @@ export default {
                 row: '1',
                 word: '升',
               },
-              {
-                row: '2',
-                word: '升',
-              },
             ],
             PurchaserAddress: '湘潭市南湖区云塘街道389号52523730',
             SheetNum: '第三联：发票联',
@@ -476,10 +472,6 @@ export default {
               {
                 row: '1',
                 word: '92号车用汽油VT',
-              },
-              {
-                row: '2',
-                word: '95号车用汽油VI',
               },
             ],
             TotalAmount: '10382.59',
@@ -497,19 +489,11 @@ export default {
                 row: '1',
                 word: '13%',
               },
-              {
-                row: '2',
-                word: '13%',
-              },
             ],
             CommodityTax: [
               {
                 row: '1',
                 word: '656.14',
-              },
-              {
-                row: '2',
-                word: '693.60',
               },
             ],
             SellerBank: '中国建设银行股份有限公司湘潭广源支行43050163670800000260',
@@ -523,11 +507,7 @@ export default {
             CommodityName: [
               {
                 row: '1',
-                word: '*汽油*车用油',
-              },
-              {
-                row: '2',
-                word: '*汽油*车用油',
+                word: '*供电*电费',
               },
             ],
             CommodityVehicleType: [],
@@ -542,11 +522,7 @@ export default {
             CommodityNum: [
               {
                 row: '1',
-                word: '824.07',
-              },
-              {
-                row: '2',
-                word: '817.1',
+                word: '82.28',
               },
             ],
             PurchaserRegisterNum: '91430300184711279E',
@@ -559,10 +535,6 @@ export default {
                 row: '1',
                 word: '6.1246860097',
               },
-              {
-                row: '2',
-                word: '6.5297026068',
-              },
             ],
             CommodityStartDate: [],
             SellerName: '中国石化销售股份有限公司湖南湘潭石油分公司',
@@ -570,10 +542,6 @@ export default {
               {
                 row: '1',
                 word: '5047.17',
-              },
-              {
-                row: '2',
-                word: '5335.42',
               },
             ],
             Province: '湖南省',
