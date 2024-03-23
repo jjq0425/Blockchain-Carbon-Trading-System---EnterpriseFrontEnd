@@ -284,8 +284,8 @@ export default {
     // this.requiredTwoStepCaptcha = true
     this.$nextTick(() => {
       this.form.setFieldsValue({
-        username: 'test_jjq',
-        password: 'test_jjq',
+        username: '15000000001',
+        password: '123456',
       })
     })
     // 设置全局禁止滚动

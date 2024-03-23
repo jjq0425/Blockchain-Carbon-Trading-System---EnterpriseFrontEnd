@@ -28,7 +28,11 @@
                         <a-avatar size="large" :src="require('@/assets/pages/dashboard/ai/aiLogo.png')" />
                     </a-col>
                     <div style="background-color: #f5f5f5;min-width:92%;max-width:92%;padding:20px 20px;border-radius: 10px;" :flex="100" class="left-sanjiao">
-                        {{ item.msg }}<div class="cursor" v-show="index==msgList_Liushi.length-1&&noSend==true&&showLoadMsg==false"></div>
+                        
+                        <span v-html="item.msg"> 
+                        </span>
+                        
+                        <span class="cursor" v-if="index==msgList_Liushi.length-1&&noSend==true&&showLoadMsg==false"></span>
                     </div>
                 </a-row>
                 </transition>
@@ -119,7 +123,7 @@ export default {
     fetchConfig() {
       axios.get('https://mock.apifox.com/m1/2214773-0-default/llm').then((res) => {
         let resData = res.data.data
-        this.canUse = resData.canUse
+        this.canUse = resData.canUse || true
         if (!this.canUse) {
           this.init()
         } else {
@@ -135,13 +139,13 @@ export default {
         if (this.visible) {
           this.msgList.push({
             my: false,
-            msg: '🔔为了防止大模型随意调用，目前暂时关闭',
+            msg: '🔔实现碳中和对发电企业来说，主要挑战包括技术成本、技术难题、系统整合以及经济社会部门联动等。具体如下：<ul><li> <b>1. 技术成本：</b>碳中和技术目前的成本相对较高，这限制了其大规模应用的可能性。为了实现碳中和目标，需要通过技术进步和规模化生产来降低成本。</li><li> <b>2. 捕获难题：</b>碳捕获和封存技术（CCS）是实现碳中和的关键技术之一，但目前还存在一些技术难题，需要加强研究和开发以克服这些难题。</li><li> <b>3. 系统整合：</b>智能电网的建设是实现碳中和的重要环节，但涉及到技术的整合和系统安全问题，需要解决这些技术挑战以保证电网的稳定和安全。</li><li> <b>4. 经济社会部门联动：</b>碳中和目标的实现是一个涉及经济社会各部门联动的长期系统性问题。电力行业作为能源系统最大的碳排放部门，其变革将影响到整个能源和经济体系。</li></ul>综上所述，发电企业在迈向碳中和的过程中，不仅需要关注技术和成本的挑战，还需要考虑到整个经济社会系统的变革。',
           })
           this.respondComplete = false
           this.initMsg = true
           this.noSend = true
-          this.showLoadMsg = true
           this.showLoadMsg = false
+          this.respondComplete = true
           // this.liushishuchu()
           // 拼接流失输出
           if (!this.visible) return
@@ -150,11 +154,12 @@ export default {
             msg: '',
           })
 
-          setTimeout(() => {
-            this.msgList[this.msgList.length - 1].msg =
-              '🔔为了防止大模型随意调用，目前暂时关闭，若有确实需要请联系jjq。模型已成功对接星火'
-            this.respondComplete = true
-          }, 1500)
+          // setTimeout(() => {
+          //   this.msgList[this.msgList.length - 1].msg = ''
+          //   this.respondComplete = true
+          //   this.noSend = true
+          //   this.showLoadMsg = false
+          // }, 1500)
 
           let index = 0
           let timer
@@ -171,6 +176,7 @@ export default {
                 clearInterval(timer)
                 timer = null
                 if (this.visible) {
+                  console.log('hah')
                   this.noSendOver()
                 }
                 //   console.log('over')
@@ -310,7 +316,12 @@ export default {
       this.nowMsg = ''
 
       this.noSending()
-      this.inSendingProcess()
+      setTimeout(() => {
+        this.sendNouse()
+      }, 1000)
+
+      // this.noSending()
+      // this.inSendingProcess()
     },
 
     webSocketSend() {
@@ -486,6 +497,7 @@ export default {
 
 .cursor {
   position: relative;
+  display: inline-block;
   left: 10px;
   top: 5px;
   display: inline-block;
