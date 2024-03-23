@@ -219,7 +219,7 @@ export default {
             this.OCR_FP(CLIENTres.data.data.client_token)
           }
         } else {
-          this.$message.warning('当前AI能力不开放调用，采用模拟数据，请联系JJQ')
+          this.$message.loading('AI识别中')
 
           if (this.ocrType == 'YYZZ') {
             this.OCR_YYZZ_moni()
