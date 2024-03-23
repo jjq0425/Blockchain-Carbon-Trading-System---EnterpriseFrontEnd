@@ -291,6 +291,9 @@ export default {
   mounted() {
     ChangeBgCSS('INFO')
     GetTaskList().then((res) => {
+      if (res.data.taskList == null) {
+        res.data.taskList = []
+      }
       let taskList = res.data.taskList.sort((a, b) => {
         return b.taskYear - a.taskYear
       })
