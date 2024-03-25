@@ -502,7 +502,7 @@ export default {
             NoteDrawer: '肖幼',
             InvoiceTag: '成品油',
             InvoiceNumConfirm: '0680760',
-            OnlinePay: '2法',
+            OnlinePay: '2法O',
             Payee: '周金花',
             CommodityName: [
               {
