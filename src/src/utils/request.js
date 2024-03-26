@@ -1,4 +1,4 @@
-t axios from 'axios'
+import axios from 'axios'
 import store from '@/store'
 import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
