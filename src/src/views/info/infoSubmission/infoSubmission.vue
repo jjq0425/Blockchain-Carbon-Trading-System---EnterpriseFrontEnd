@@ -332,6 +332,8 @@ export default {
         if (this.taskInfo.auditStatus === 'REFUSE') {
           // 如果是审核被拒绝了，获取原始数据重新提交
           this.$refs.emissionSubmit.passSourceData(this.submitData, 'modify')
+        } else {
+          this.$refs.emissionSubmit.initTable()
         }
       } else if (this.NowStep == 1) {
         this.submitData = JSON.parse(JSON.stringify(this.$refs.emissionSubmit.getSourceData()))

@@ -178,7 +178,7 @@ import { Submit, GetReport } from '@/api/info'
 //   approver2: '责任人',
 //   dateRange2: '生效日期',
 //   type2: '任务类型',
-// }     
+// }
 const fieldLabels = [
   {
     checkComfirm: '填报任务确认框',
@@ -241,6 +241,7 @@ export default {
       setTimeout(() => {
         this.$nextTick(() => {
           this.dataLoading = false
+          this.$refs.emissionSubmit.passSourceData(this.submitData, 'detail')
         })
         this.$message.success('获取历史数据成功')
       }, 900)

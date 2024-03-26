@@ -196,7 +196,7 @@ export default {
     dataSourceQuestionModal,
   },
   mounted() {
-    this.initTable()
+    // this.initTable()
   },
   computed: {
     enterpriseRemainEmission() {
@@ -270,6 +270,7 @@ export default {
     },
     passSourceData(submitData, type = 'modify') {
       this.dataSource = JSON.parse(JSON.stringify(submitData))
+      console.log(this.dataSource)
       this.submitType = type
       this.initTable()
     },
