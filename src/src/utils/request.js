@@ -1,14 +1,4 @@
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-/*
- * @Author: jjq
- * @Description: 
- * 
- */
-import axios from 'axios'
+t axios from 'axios'
 import store from '@/store'
 import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
@@ -20,7 +10,7 @@ const request = axios.create({
   // API 请求的默认前缀
   // baseURL: process.env.VUE_APP_API_BASE_URL,
   // baseURL: store.state.app.baseUrl,
-  timeout: 15000 // 请求超时时间
+  timeout: 600000 // 请求超时时间
 })
 
 // 异常拦截处理器
