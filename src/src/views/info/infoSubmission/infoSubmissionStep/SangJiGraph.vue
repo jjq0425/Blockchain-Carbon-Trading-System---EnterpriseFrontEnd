@@ -44,24 +44,24 @@ export default {
             item.children[i].value = item.children[i].classDataSum
             item.children[i].name = item.children[i].className
             item.children[i].children = []
-            for (let j = 0; j < item.children[i].activityFactor.length; j++) {
-              if (!item.children[i].activityFactor[j].isConst)
-                item.children[i].children.push({
-                  value: item.children[i].activityFactor[j].dataNum,
-                  name: item.children[i].activityFactor[j].dataName,
-                })
-            }
-            for (let j = 0; j < item.children[i].EmissionFactor.length; j++) {
-              if (!item.children[i].EmissionFactor[j].isConst)
-                item.children[i].children.push({
-                  value: item.children[i].EmissionFactor[j].dataNum,
-                  name: item.children[i].EmissionFactor[j].dataName,
-                })
-            }
+            // for (let j = 0; j < item.children[i].activityFactor.length; j++) {
+            //   if (!item.children[i].activityFactor[j].isConst)
+            //     item.children[i].children.push({
+            //       value: item.children[i].activityFactor[j].dataNum,
+            //       name: item.children[i].activityFactor[j].dataName,
+            //     })
+            // }
+            // for (let j = 0; j < item.children[i].EmissionFactor.length; j++) {
+            //   if (!item.children[i].EmissionFactor[j].isConst)
+            //     item.children[i].children.push({
+            //       value: item.children[i].EmissionFactor[j].dataNum,
+            //       name: item.children[i].EmissionFactor[j].dataName,
+            //     })
+            // }
           }
         }
       })
-      //   console.log(this.sangjiData)
+      console.log(this.sangjiData)
       setTimeout(() => {
         this.initGraph()
       }, 1500)
