@@ -121,7 +121,7 @@ export default {
   },
   methods: {
     fetchConfig() {
-      axios.get('https://mock.apifox.com/m1/2214773-0-default/llm').then((res) => {
+      axios.get('https://apifoxmock.com/m1/2214773-0-default/llm').then((res) => {
         let resData = res.data.data
         this.canUse = resData.canUse || true
         if (!this.canUse) {

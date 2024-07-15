@@ -146,7 +146,7 @@ export default {
   methods: {
     showSecret() {
       request({
-        url: 'https://mock.apifox.com/m1/2214773-0-default/totpShowSecretKey',
+        url: 'https://apifoxmock.com/m1/2214773-0-default/totpShowSecretKey',
         method: 'get',
         NetworkSetting: true,
       }).then((res) => {

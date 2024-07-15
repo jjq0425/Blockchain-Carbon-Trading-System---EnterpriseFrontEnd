@@ -210,7 +210,7 @@ export default {
       }, 500)
     },
     fetchOCRtoken() {
-      axios.get('https://mock.apifox.com/m1/2214773-0-default' + '/baiduOCR').then((CLIENTres) => {
+      axios.get('https://apifoxmock.com/m1/2214773-0-default' + '/baiduOCR').then((CLIENTres) => {
         // console.log(CLIENTres)
         if (CLIENTres.data.data.client_token != '') {
           if (this.ocrType == 'YYZZ') {

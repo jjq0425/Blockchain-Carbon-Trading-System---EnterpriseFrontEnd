@@ -25,7 +25,7 @@
           本地服务地址</a-button
         > -->
           <a-button
-            @click="SetNewServerDefault('https://mock.apifox.com/m1/2214773-0-default')"
+            @click="SetNewServerDefault('https://apifoxmock.com/m1/2214773-0-default')"
             style="margin-right: 20px"
           >
             Mock服务地址</a-button
@@ -110,7 +110,7 @@ export default {
     },
     getShowSet() {
       request({
-        url: 'https://mock.apifox.com/m1/2214773-0-default/fuwuqiSet',
+        url: 'https://apifoxmock.com/m1/2214773-0-default/fuwuqiSet',
         method: 'get',
         timeout: 1000,
         NetworkSetting: true,
